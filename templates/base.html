@@ -22,11 +22,19 @@
       </a>
 
       <ul class="nav nav-pills">
-        <li class="nav-item mx-1"><a href="#" class="nav-link active" aria-current="page">Sign up</a></li>
-        <li class="nav-item mx-1"><a href="#" class="nav-link active" aria-current="page">Log in</a></li>
+        {% if request.user.is_authenticated %}
+            <li class="nav-item mx-1"><a href="{{ url('logout') }}" class="danger nav-link active" aria-current="page">Log out</a></li>
+          {% else %}
+            <li class="nav-item mx-1"><a href="{{ url('registration') }}" class="nav-link active" aria-current="page">Sign up</a></li>
+            <li class="nav-item mx-1"><a href="{{ url('login') }}" class="nav-link active" aria-current="page">Log in</a></li>
+        {% endif %}
       </ul>
     </header>
   </div>
+{% for message in get_messages(request) %}
+<div class="alert alert-warning {% if message.tags %}{{ message.tags }}{% endif %}"  role="alert">{{ message }}</div>
+{% endfor %}
+
 {% block content %}
 {% endblock %}
 </body>

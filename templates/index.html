@@ -53,10 +53,19 @@
     </div>
 
     {% else %}
+    {% if request.user.is_authenticated %}
     <div class="">
         <h1 style="text-align:center; margin-top:10%">Seems like you don`t tracking jobs yet</h1>
         <h2 style="text-align:center; cursor: pointer" class="text-primary"><a data-bs-toggle="modal" data-bs-target="#exampleModal">Start tracking</a></h2>
     </div>
+    {% else %}
+    <div class="">
+        <h1 style="text-align:center; margin-top:10%">To create your own job skills tracker, you need to</h1>
+        <h1 style="text-align:center; cursor: pointer" class="text-primary"><a href="{{ url('login') }}">Log in</a></h1>
+        <h1 style="text-align:center;">or</h1>
+        <h1 style="text-align:center; cursor: pointer" class="text-primary"><a href="{{ url('registration') }}">Sign up</a></h1>
+    </div>
+    {% endif %}
         {% endif %}
 </div>
 
@@ -134,10 +143,11 @@
 <script>
 function update_tracker(tracker_id){
     $.ajax({
-        url: '/update_tracker/',
+        url: '/update_tracker/?',
         method: 'post',
         dataType: 'html',
         data: {'tracker_id': tracker_id,
+               'next': '{{ request.path }}',
                'csrfmiddlewaretoken': '{{ csrf_token }}' ,
                'search_text': document.getElementById('search_text_'+tracker_id).value,
                'exclude_from_search': document.getElementById('exclude_from_search_'+tracker_id).value},
