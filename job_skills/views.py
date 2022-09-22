@@ -3,6 +3,7 @@ from datetime import timedelta
 import asyncio
 import threading
 from django.shortcuts import render, HttpResponse, redirect, HttpResponseRedirect, reverse
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotAllowed
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
@@ -16,30 +17,42 @@ def index(request):
     if request.session.get('error_message'):
         messages.error(request, str(request.session.get('error_message')))
         del request.session['error_message']
+    if request.user.is_authenticated:
+        trackers = JobTracker.objects.filter(user_creator=request.user.id)
+        parsers_all = ParserData.objects.filter(tracker_id__user_creator=request.user.id)
+        parsers = {}
+        for tracker in trackers:
+            try:
+                parsers[tracker.id] = parsers_all.filter(tracker_id=tracker.id)[0]
+            except IndexError:
+                pass
+        skills = {}
+        skills_all = SkillData.objects.all()
+        for parser in parsers:
+            parser_id = parsers[parser].id
+            skills[parser_id] = skills_all.filter(parser_data_id=parser_id)
+        context = {
+            'trackers': trackers,
+            'parsers': parsers,
+            'skills': skills,
+        }
+    else:
+        context = {
 
-    trackers = JobTracker.objects.all()
-    parsers_all = ParserData.objects.all()
-    parsers = {}
-    for tracker in trackers:
-        try:
-            parsers[tracker.id] = parsers_all.filter(tracker_id=tracker.id)[0]
-        except IndexError:
-            pass
-    skills = {}
-    skills_all = SkillData.objects.all()
-    for parser in parsers:
-        parser_id = parsers[parser].id
-        skills[parser_id] = skills_all.filter(parser_data_id=parser_id)
-    context = {
-        'trackers': trackers,
-        'parsers': parsers,
-        'skills': skills,
-    }
+        }
     return render(request, 'index.html', context)
 
 
+@login_required
 def create_tracker(request):
     if request.method == "POST":
+        if JobTracker.objects.filter(user_creator=request.user.id).count() >= 5:
+            if request.user.is_staff:
+                request.session['error_message'] = 'understable, have a great day!'
+            else:
+                request.session['error_message'] = 'You already created 5 trackers, which is maximum, try to delete or update other trackers'
+                return redirect('index')
+
         search_text = request.POST['search_text']
         exclude_from_search = request.POST['exclude_from_search']
         new_job_tracker = JobTracker(search_text=search_text, exclude_from_search=exclude_from_search,
@@ -52,28 +65,41 @@ def create_tracker(request):
         raise HttpResponseNotAllowed
 
 
+@login_required
 def delete_tracker(request):
     if request.method == "POST":
         tracker_to_delete = JobTracker.objects.get(id=request.POST['tracker_id'])
+
+        if request.user.id != tracker_to_delete.user_creator.id:
+            request.session['error_message'] = f'forbidden operation'
+            return HttpResponse(request.session['error_message'])
+
         today = dt.today().date()
         date_difference = today - tracker_to_delete.modified_date
-        if date_difference < timedelta(days=3):
+        if date_difference <= timedelta(days=3):
             request.session['error_message'] = f'wait {str((timedelta(days=3) - date_difference).days)} days, before delete tracker'
             return HttpResponse(request.session['error_message'])
+
         tracker_to_delete.delete()
         return HttpResponse(f'Successfully deleted {tracker_to_delete.id, tracker_to_delete.search_text}')
     else:
         raise HttpResponseNotAllowed
 
-
+@login_required
 def update_tracker(request):
     if request.method == "POST":
         tracker_to_update = JobTracker.objects.get(id=request.POST['tracker_id'])
+
+        if request.user.id != tracker_to_update.user_creator.id:
+            request.session['error_message'] = f'forbidden operation'
+            return HttpResponse(request.session['error_message'])
+
         today = dt.today().date()
         date_difference = today - tracker_to_update.modified_date
-        if date_difference < timedelta(days=3):
+        if date_difference <= timedelta(days=3):
             request.session['error_message'] = f'wait {str((timedelta(days=3) - date_difference).days)} days, before update tracker'
             return HttpResponse(request.session['error_message'])
+
         tracker_to_update.search_text = request.POST['search_text']
         tracker_to_update.exclude_from_search = request.POST['exclude_from_search']
         tracker_to_update.save()

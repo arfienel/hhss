@@ -37,7 +37,7 @@
                 </h5>
             </div>
             <div class="col-sm-2">
-                <button style="border-radius: 10px" type="button" data-bs-toggle="modal" data-bs-target="#TrackerModal{{ tracker.id }}" class="position-relative top-50 start-50 translate-middle" >
+                <button style="border-radius: 10px" type="button" data-bs-toggle="modal" data-bs-target="#TrackerModal{{ tracker.id }}" onclick="load_parser_data({{ tracker.id }})" class="position-relative top-50 start-50 translate-middle" >
                     <img id="settingsImg{{ tracker.id }}" style="width:60px;height:60px;" src="{{ static('settings.png') }}">
                 </button>
             </div>
@@ -140,6 +140,12 @@
 
 
 <!-- Scripts -->
+<script>
+    function load_parser_data(tracker_id){
+
+    }
+</script>
+
 <script>
 function update_tracker(tracker_id){
     $.ajax({
