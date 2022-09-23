@@ -37,7 +37,7 @@
                 </h5>
             </div>
             <div class="col-sm-2">
-                <button style="border-radius: 10px" type="button" data-bs-toggle="modal" data-bs-target="#TrackerModal{{ tracker.id }}" onclick="load_parser_data({{ tracker.id }})" class="position-relative top-50 start-50 translate-middle" >
+                <button style="border-radius: 10px" type="button" data-bs-toggle="modal" data-bs-target="#TrackerModal{{ tracker.id }}" id="modalBtn{{tracker.id}}" onclick="load_parser_data({{ tracker.id }})" class="position-relative top-50 start-50 translate-middle" >
                     <img id="settingsImg{{ tracker.id }}" style="width:60px;height:60px;" src="{{ static('settings.png') }}">
                 </button>
             </div>
@@ -131,6 +131,10 @@
                 </div>
                 <button type="button" onclick="update_tracker({{tracker.id}});" class="btn btn-primary">Save</button>
                 <button type="button" onclick="delete_tracker({{tracker.id}});" style="" class="btn btn-danger">Delete</button>
+                  <br>
+                <div id="tracker_stats{{tracker.id}}">
+
+                </div>
           </div>
     </div>
   </div>
@@ -141,9 +145,23 @@
 
 <!-- Scripts -->
 <script>
-    function load_parser_data(tracker_id){
-
-    }
+function load_parser_data(tracker_id){
+    $.ajax({
+        url: '/load_parser_data/?tracker_id='+tracker_id,
+        method: 'get',
+        dataType: 'html',
+        success: function(data){
+        data = JSON.parse(data);
+            div_to_append = document.getElementById('tracker_stats'+tracker_id)
+            data.forEach(skill => {
+                let p = document.createElement('p');
+                p.innerHTML = skill['name']+': '+skill['amount'];
+                div_to_append.append(p);
+            })
+            btn_call = document.getElementById('modalBtn'+tracker_id).onclick = '';
+        }
+    });
+}
 </script>
 
 <script>

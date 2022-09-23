@@ -12,26 +12,6 @@ from aiohttp import ClientSession
 from aiopg.sa import create_engine
 
 
-sqlalchemy_engine = sa.create_engine('postgresql://hhss_admin:coolpas123@localhost:5432/hhss')
-
-metadata = sa.MetaData(bind=True)
-
-metadata.reflect(sqlalchemy_engine)
-
-Base = automap_base(metadata=metadata)
-
-Base.prepare()
-
-
-ParserData = sa.Table('job_skills_parserdata', metadata,
-                      autoload=True, autoload_with=sqlalchemy_engine)
-
-SkillData = sa.Table('job_skills_skilldata', metadata,
-                     autoload=True, autoload_with=sqlalchemy_engine)
-
-JobTracker = Base.classes.job_skills_jobtracker
-
-
 try:
     app_token = open('app_token.txt', 'r').readline()
 except FileNotFoundError:
@@ -115,13 +95,31 @@ async def get_tracker(conn, tracker_id):
 
 
 async def main(tracker_id: int = None):
-    global today
+    global today, ParserData, SkillData, JobTracker
     """
     Основная функция для запуска парсера
     :type tracker_id: id трекера который надо спарсить, если не указать, то будут парсится все трекеры из бд
     """
-    dsn = 'dbname=hhss user=hhss_admin password=coolpas123 host=localhost'
+    sqlalchemy_engine = sa.create_engine('postgresql://hhss_admin:coolpas123@db:5432/hhss')
+
+    metadata = sa.MetaData(bind=True)
+
+    metadata.reflect(sqlalchemy_engine)
+
+    Base = automap_base(metadata=metadata)
+
+    Base.prepare()
+
+    ParserData = sa.Table('job_skills_parserdata', metadata,
+                          autoload=True, autoload_with=sqlalchemy_engine)
+
+    SkillData = sa.Table('job_skills_skilldata', metadata,
+                         autoload=True, autoload_with=sqlalchemy_engine)
+
+    JobTracker = Base.classes.job_skills_jobtracker
+    dsn = 'dbname=hhss user=hhss_admin password=coolpas123 host=db'
     today = datetime.today()
+
     async with create_engine(dsn=dsn) as engine:
         async with engine.acquire() as conn:
             if not tracker_id:

@@ -1,0 +1,30 @@
+version: "3.10"
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=hhss
+      - POSTGRES_USER=hhss_admin
+      - POSTGRES_PASSWORD=coolpas123
+    expose:
+      - 5432
+  web:
+    build: .
+    command: >
+      bash -c "python manage.py makemigrations 
+      && python manage.py migrate 
+      && cron
+      && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_NAME=hhss
+      - POSTGRES_USER=hhss_admin
+      - POSTGRES_PASSWORD=coolpas123
+    depends_on:
+      - db

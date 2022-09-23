@@ -12,7 +12,8 @@ SECRET_KEY = 'django-insecure-9)6y8381)ycplwu8!pputn$)-ds4sgpoyx++z(g5o^2#9zzbwh
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0']
+
 
 # Application definition
 
@@ -80,7 +81,7 @@ DATABASES = {
         'NAME': 'hhss',
         'USER': 'hhss_admin',
         'PASSWORD': 'coolpas123',
-        'HOST': 'localhost',
+        'HOST': 'db',
         'PORT': '5432',
     }
 }

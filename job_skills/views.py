@@ -2,9 +2,10 @@ from datetime import datetime as dt
 from datetime import timedelta
 import asyncio
 import threading
+import json
 from django.shortcuts import render, HttpResponse, redirect, HttpResponseRedirect, reverse
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseNotAllowed
+from django.http import HttpResponseNotAllowed, JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
@@ -31,6 +32,7 @@ def index(request):
         for parser in parsers:
             parser_id = parsers[parser].id
             skills[parser_id] = skills_all.filter(parser_data_id=parser_id)
+
         context = {
             'trackers': trackers,
             'parsers': parsers,
@@ -43,12 +45,19 @@ def index(request):
     return render(request, 'index.html', context)
 
 
+def load_parser_data(request):
+    tracker = JobTracker.objects.get(pk=request.GET.get('tracker_id'))
+    last_parser_data = ParserData.objects.filter(tracker_id=tracker.id)[0]
+    skills = SkillData.objects.filter(parser_data=last_parser_data.id).values('name', 'amount')
+    return HttpResponse(json.dumps(list(skills)), content_type='application/json')
+
+
 @login_required
 def create_tracker(request):
     if request.method == "POST":
         if JobTracker.objects.filter(user_creator=request.user.id).count() >= 5:
             if request.user.is_staff:
-                request.session['error_message'] = 'understable, have a great day!'
+                request.session['error_message'] = 'Understandable, have a great day!'
             else:
                 request.session['error_message'] = 'You already created 5 trackers, which is maximum, try to delete or update other trackers'
                 return redirect('index')
@@ -84,6 +93,7 @@ def delete_tracker(request):
         return HttpResponse(f'Successfully deleted {tracker_to_delete.id, tracker_to_delete.search_text}')
     else:
         raise HttpResponseNotAllowed
+
 
 @login_required
 def update_tracker(request):

@@ -35,3 +35,6 @@ class SkillData(models.Model):
 
     def __repr__(self):
         return f'<SkillData {self.name} {self.id}>'
+
+    class Meta:
+        ordering = ["-amount", "name"]

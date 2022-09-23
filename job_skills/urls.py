@@ -7,5 +7,6 @@ urlpatterns = [
     path('delete_tracker/', delete_tracker, name='delete_tracker'),
     path('update_tracker/', update_tracker, name='update_tracker'),
     path('accounts/registration/', registration, name='registration'),
-    path('logout/', user_logout, name='logout')
+    path('logout/', user_logout, name='logout'),
+    path('load_parser_data/', load_parser_data, name='load_parser_data'),
 ]
