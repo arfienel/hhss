@@ -9,4 +9,6 @@ urlpatterns = [
     path('accounts/registration/', registration, name='registration'),
     path('logout/', user_logout, name='logout'),
     path('load_parser_data/', load_parser_data, name='load_parser_data'),
+    path('list_trackers/', list_trackers, name='list_trackers'),
+    path('list_more_trackers/', list_more_trackers, name='list_more_trackers')
 ]

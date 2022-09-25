@@ -45,6 +45,38 @@ def index(request):
     return render(request, 'index.html', context)
 
 
+def list_trackers(request):
+    if request.GET.get('search'):
+        search_field = request.GET.get('search')
+    else:
+        search_field = ''
+    trackers_parsers = []
+    trackers = JobTracker.objects.filter(search_text__icontains=search_field)
+    for tracker in trackers:
+        parser = ParserData.objects.filter(tracker_id=tracker.id)[0].__dict__
+        skills = SkillData.objects.filter(parser_data=parser['id'])[:3].values()
+        trackers_parsers.append((tracker.__dict__, parser, skills))
+    return render(request, 'list_trackers.html', {'trackers_parsers': trackers_parsers})
+
+
+def list_more_trackers(request):
+    if request.GET.get('search'):
+        search_field = request.GET.get('search')
+    else:
+        search_field = ''
+
+    if request.GET.get('page'):
+        page = request.GET.get('page')
+    else:
+        page = 1
+
+    data = []
+    trackers = JobTracker.objects.filter(search_text=search_field)[page*5, page*5+5]
+    for tracker in trackers:
+        data.append((tracker.values(), ParserData.objects.filter(tracker_id=tracker.id)[0].values()))
+    return HttpResponse(json.dumps(list(parsers)), content_type='application/json')
+
+
 def load_parser_data(request):
     tracker = JobTracker.objects.get(pk=request.GET.get('tracker_id'))
     last_parser_data = ParserData.objects.filter(tracker_id=tracker.id)[0]

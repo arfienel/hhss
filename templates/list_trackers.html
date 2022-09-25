@@ -1,0 +1,58 @@
+{% extends 'base.html'%}
+
+{% block content %}
+    <form method="get">
+    <h1 style="text-align:center">
+        <input type="text" name="search">
+        <button type="submit">search</button>
+
+    </h1>
+{% if trackers_parsers %}
+
+    </form>
+        <br>
+
+    <div class="container">
+      {% for tracker_parser in trackers_parsers %}
+        <div class="row bg-secondary rounded mb-3 py-3">
+            <div class="col-sm-2">
+                <h3 class="position-relative top-50 start-50 translate-middle text-center text-light">{{ tracker_parser[0].search_text }}</h3>
+            </div>
+            <div class="col-sm-6">
+                <ul class="list-group list-group-flush text-center" id="job_trackers">
+
+                    {% if tracker_parser[1] %}
+
+                    {% for skill in tracker_parser[2] %}
+
+                    <li class="bg-secondary list-group-item text-light" >{{ skill.name }} - {{ skill.amount }}</li>
+                    {% endfor %}
+                    {% else %}
+                    <li class="bg-secondary list-group-item text-light" >Data is still uploading </li>
+                    <li class="bg-secondary list-group-item text-light" >Please wait </li>
+                    <li class="bg-secondary list-group-item text-light" >...</li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="col-sm-2">
+                <h5 class="position-relative top-50 start-50 translate-middle text-center text-light">
+                    {% if tracker_parser[1] %}
+                        Vacancies amount <br>{{tracker_parser[1].amount_of_vacancies}}
+                    {% else %}
+                        <img style="width:50px; height:50px;" src="{{ static('loading.gif') }}">
+                    {% endif %}
+
+                </h5>
+            </div>
+            <div class="col-sm-2">
+                <button style="border-radius: 10px" type="button" data-bs-toggle="modal" data-bs-target="#TrackerModal{{ tracker_parser[0].id}}" id="modalBtn{{tracker_parser[0].id }}" onclick="load_parser_data({{ tracker_parser[0].id }})" class="position-relative top-50 start-50 translate-middle" >
+                    <img id="settingsImg{{ tracker_parser[0].id }}" style="width:60px;height:60px;" src="{{ static('settings.png') }}">
+                </button>
+            </div>
+        </div>
+      {% endfor %}
+{% else %}
+        sorry, nihuya net
+{% endif %}
+
+{% endblock %}
