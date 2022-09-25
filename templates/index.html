@@ -2,19 +2,23 @@
 
 {% block content %}
 <div class="content">
+
+    <!-- если есть результат -->
     {% if trackers %}
     <h1 style="text-align:center">Stats list</h1>
     <br>
 
     <div class="container">
+        <!-- Начало цикла для всех трекеров -->
       {% for tracker in trackers %}
         <div class="row bg-secondary rounded mb-3 py-3">
+            <!-- Текст поиска слева -->
             <div class="col-sm-2">
                 <h3 class="position-relative top-50 start-50 translate-middle text-center text-light">{{ tracker.search_text }}</h3>
             </div>
             <div class="col-sm-6">
                 <ul class="list-group list-group-flush text-center" id="job_trackers">
-
+                    <!-- 3 навыка и их количество появлений -->
                     {% if parsers[tracker.id] %}
                     {% for skill in skills[parsers[tracker.id].id][0:3] %}
                     <li class="bg-secondary list-group-item text-light" >{{ skill.name }}</li>
@@ -26,6 +30,7 @@
                     {% endif %}
                 </ul>
             </div>
+             <!-- правая часть квадрата. Количество парсеров и шестеренка -->
             <div class="col-sm-2">
                 <h5 class="position-relative top-50 start-50 translate-middle text-center text-light">
                     {% if parsers[tracker.id] %}
@@ -52,12 +57,15 @@
         </div>
     </div>
 
+    <!-- если результата нет-->
     {% else %}
+    <!-- если чел зареган -->
     {% if request.user.is_authenticated %}
     <div class="">
         <h1 style="text-align:center; margin-top:10%">Seems like you don`t tracking jobs yet</h1>
         <h2 style="text-align:center; cursor: pointer" class="text-primary"><a data-bs-toggle="modal" data-bs-target="#exampleModal">Start tracking</a></h2>
     </div>
+    <!-- если чел НЕ зареган-->
     {% else %}
     <div class="">
         <h1 style="text-align:center; margin-top:10%">To create your own job skills tracker, you need to</h1>
@@ -72,6 +80,7 @@
 
 
 <!-- Modals -->
+<!-- Модалка создания трекера  -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -105,6 +114,7 @@
   </div>
 </div>
 
+<!-- модалка каждого трекера -->
 {% for tracker in trackers %}
 <div class="modal fade" id="TrackerModal{{ tracker.id }}" tabindex="-1"  aria-hidden="true">
   <div class="modal-dialog modal-lg">

@@ -10,6 +10,9 @@ class JobTracker(models.Model):
     status_parser = models.BooleanField(default=False)
     exclude_from_search = models.CharField(max_length=100, default='', blank=True)
 
+    def __str__(self):
+        return f'<Tracker {self.search_text} {self.id}>'
+
     def __repr__(self):
         return f'<Tracker {self.search_text} {self.id}>'
 
@@ -23,8 +26,11 @@ class ParserData(models.Model):
     class Meta:
         ordering = ["-date"]
 
+    def __str__(self):
+        return f'ParserData {self.tracker.search_text}'
+
     def __repr__(self):
-        return f'ParserData {self.id}'
+        return f'ParserData {self.tracker.search_text}'
 
 
 class SkillData(models.Model):
@@ -32,6 +38,9 @@ class SkillData(models.Model):
     tracker = models.ForeignKey(JobTracker, on_delete=models.CASCADE)
     amount = models.IntegerField(default=0)
     name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return f'<SkillData {self.name} {self.id}>'
 
     def __repr__(self):
         return f'<SkillData {self.name} {self.id}>'

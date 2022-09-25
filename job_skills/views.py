@@ -9,6 +9,7 @@ from django.http import HttpResponseNotAllowed, JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from django.core.serializers import serialize
 from .models import *
 from .hh_parser import parse_one_tracker
 from .forms import UserRegistrationForm
@@ -51,7 +52,7 @@ def list_trackers(request):
     else:
         search_field = ''
     trackers_parsers = []
-    trackers = JobTracker.objects.filter(search_text__icontains=search_field)
+    trackers = JobTracker.objects.filter(search_text__icontains=search_field)[:6]
     for tracker in trackers:
         parser = ParserData.objects.filter(tracker_id=tracker.id)[0].__dict__
         skills = SkillData.objects.filter(parser_data=parser['id'])[:3].values()
@@ -66,15 +67,19 @@ def list_more_trackers(request):
         search_field = ''
 
     if request.GET.get('page'):
-        page = request.GET.get('page')
+        page = int(request.GET.get('page'))
     else:
         page = 1
-
+    print(page)
     data = []
-    trackers = JobTracker.objects.filter(search_text=search_field)[page*5, page*5+5]
+    trackers = JobTracker.objects.filter(search_text__icontains=search_field)[page*6:page*6+6]
+
     for tracker in trackers:
-        data.append((tracker.values(), ParserData.objects.filter(tracker_id=tracker.id)[0].values()))
-    return HttpResponse(json.dumps(list(parsers)), content_type='application/json')
+        parser = ParserData.objects.filter(tracker_id=tracker.id)[:1]
+        skills = SkillData.objects.filter(parser_data=parser[0].id)[:3]
+        data.append((serialize('json', [tracker, ]), serialize('json', parser), serialize('json', skills)))
+    print(data)
+    return JsonResponse(data, safe=False, content_type='application/json')
 
 
 def load_parser_data(request):
