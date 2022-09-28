@@ -1,6 +1,7 @@
 import asyncio
 import re
 import time
+import logging
 from datetime import datetime
 from sqlalchemy.sql import select, insert, update
 import aiopg
@@ -10,6 +11,17 @@ import sqlalchemy as sa
 from sqlalchemy.ext.automap import automap_base
 from aiohttp import ClientSession
 from aiopg.sa import create_engine
+
+
+def setup_logger(name, log_file, level):
+    handler = logging.FileHandler(log_file)
+    handler.setFormatter(logging.Formatter("%(asctime)s - %(module)s - %(levelname)s - %(funcName)s: %(lineno)d - %(message)s"))
+
+    logger = logging.getLogger(name)
+    logger.setLevel(level)
+    logger.addHandler(handler)
+
+    return logger
 
 
 try:
@@ -39,7 +51,6 @@ async def get_vacancies(conn: object, search: str, tracker_id: int, excluded_fro
     number_of_vacancies = r.json()['found']
     page = 0
     id_of_vacancies = []
-
     # Получаем все id у вакансий
     async with ClientSession() as session:
         for iteration in range(number_of_vacancies // 100 + 1):
@@ -53,8 +64,14 @@ async def get_vacancies(conn: object, search: str, tracker_id: int, excluded_fro
                 except KeyError:
                     page += 1
 
-    parser_id = await conn.execute(ParserData.insert().values(amount_of_vacancies=number_of_vacancies, date=today, tracker_id=tracker_id, error_log='').returning(ParserData.c.id))
-    parser_id = (await parser_id.fetchone())[0]
+    while True:
+        try:
+            parser_id = await conn.execute(ParserData.insert().values(amount_of_vacancies=number_of_vacancies, date=today, tracker_id=tracker_id).returning(ParserData.c.id))
+            parser_id = (await parser_id.fetchone())[0]
+            break
+        except RuntimeError:
+            print('pizdec', tracker_id, search, number_of_vacancies)
+            await asyncio.sleep(5)
     # Получаем все скиллы требуемые для вакансии и загружаем их куда нибудь
     skills = {}
     async with ClientSession() as session:
@@ -63,17 +80,27 @@ async def get_vacancies(conn: object, search: str, tracker_id: int, excluded_fro
                 try:
                     vacancy = await vacancy.json()
                     vacancy['key_skills']
-                except KeyError:
+                except KeyError as exc:
+                    print(exc, vacancy)
                     continue
                 else:
                     for skill in vacancy['key_skills']:
+
                         if skill['name'] not in skills.keys():
-                            skills.setdefault(skill['name'], 1)
+                            skills[skill['name']] = 1
                         else:
                             skills[skill['name']] += 1
 
+
     for skill in skills:
-        await conn.execute(SkillData.insert().values(parser_data_id=parser_id, tracker_id=tracker_id, name=skill, amount=skills[skill]))
+        while True:
+            try:
+                await conn.execute(SkillData.insert().values(parser_data_id=parser_id, name=skill, amount=skills[skill]))
+                break
+            except RuntimeError:
+                print('pizdec', skill)
+                await asyncio.sleep(5)
+    return number_of_vacancies
 
 
 async def get_all_trackers(conn):
@@ -100,6 +127,11 @@ async def main(tracker_id: int = None):
     Основная функция для запуска парсера
     :type tracker_id: id трекера который надо спарсить, если не указать, то будут парсится все трекеры из бд
     """
+
+    info_logger = setup_logger('parser_info_logger', 'logs/parser_info_log.log', logging.INFO)
+
+    error_logger = setup_logger('parser_error_logger', 'logs/parser_error_log.log', logging.ERROR)
+
     sqlalchemy_engine = sa.create_engine('postgresql://hhss_admin:coolpas123@db:5432/hhss')
 
     metadata = sa.MetaData(bind=True)
@@ -120,20 +152,38 @@ async def main(tracker_id: int = None):
     dsn = 'dbname=hhss user=hhss_admin password=coolpas123 host=db'
     today = datetime.today()
 
+    async def start_parsing(tracker: list):
+        print(tracker)
+        try:
+            start_time = datetime.now()
+            number_of_vacancies = await get_vacancies(conn, tracker[0], tracker[2], tracker[1])
+        except Exception:
+            error_logger.exception(f'JobTracker({tracker[2]},{tracker[0]}) failed')
+        else:
+            info_logger.info(
+                f'JobTracker({tracker[2]},{tracker[0]}) with {number_of_vacancies} vacancies, parsed for {datetime.now() - start_time}')
+
     async with create_engine(dsn=dsn) as engine:
         async with engine.acquire() as conn:
             if not tracker_id:
                 trackers = await get_all_trackers(conn)
-                for tracker in trackers:
-                    await get_vacancies(conn, tracker[0], tracker[2], tracker[1])
+                await asyncio.gather(*[asyncio.ensure_future(start_parsing(tracker)) for tracker in trackers])
+
             elif tracker_id and type(tracker_id) == int:
-                tracker = await get_tracker(conn, tracker_id)
-                await get_vacancies(conn, tracker[1], tracker[0], tracker[3])
+                try:
+                    start_time = datetime.now()
+                    tracker = await get_tracker(conn, tracker_id)
+                    number_of_vacancies = await get_vacancies(conn, tracker[1], tracker[0], tracker[3])
+                except Exception:
+                    error_logger.exception(f'{tracker_id} failed')
+                else:
+                    info_logger.info(f'JobTracker({tracker_id},{tracker[1]}) with {number_of_vacancies} vacancies, parsed for {datetime.now()-start_time}')
 
 
 def parse_one_tracker(tracker_id: int = None):
     asyncio.run(main(tracker_id=tracker_id))
 
-
+start = datetime.now()
 if __name__ == "__main__":
     asyncio.run(main())
+print(datetime.now() - start)

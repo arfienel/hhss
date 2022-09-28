@@ -9,6 +9,7 @@ class JobTracker(models.Model):
     search_text = models.CharField(max_length=100)
     status_parser = models.BooleanField(default=False)
     exclude_from_search = models.CharField(max_length=100, default='', blank=True)
+    subscribers = models.ManyToManyField(User, related_name='job_tracker_subs')
 
     def __str__(self):
         return f'<Tracker {self.search_text} {self.id}>'
@@ -21,7 +22,6 @@ class ParserData(models.Model):
     tracker = models.ForeignKey(JobTracker, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
     amount_of_vacancies = models.IntegerField(default=0)
-    error_log = models.TextField(default='', blank=True, null=True)
 
     class Meta:
         ordering = ["-date"]
@@ -35,7 +35,6 @@ class ParserData(models.Model):
 
 class SkillData(models.Model):
     parser_data = models.ForeignKey(ParserData, on_delete=models.CASCADE)
-    tracker = models.ForeignKey(JobTracker, on_delete=models.CASCADE)
     amount = models.IntegerField(default=0)
     name = models.CharField(max_length=200)
 

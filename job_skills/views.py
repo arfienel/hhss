@@ -70,7 +70,7 @@ def list_more_trackers(request):
         page = int(request.GET.get('page'))
     else:
         page = 1
-    print(page)
+
     data = []
     trackers = JobTracker.objects.filter(search_text__icontains=search_field)[page*6:page*6+6]
 
@@ -78,7 +78,7 @@ def list_more_trackers(request):
         parser = ParserData.objects.filter(tracker_id=tracker.id)[:1]
         skills = SkillData.objects.filter(parser_data=parser[0].id)[:3]
         data.append((serialize('json', [tracker, ]), serialize('json', parser), serialize('json', skills)))
-    print(data)
+
     return JsonResponse(data, safe=False, content_type='application/json')
 
 
