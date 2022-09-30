@@ -1,5 +1,6 @@
 import asyncio
 import re
+import os
 import time
 import logging
 from datetime import datetime
@@ -13,7 +14,7 @@ from aiohttp import ClientSession
 from aiopg.sa import create_engine
 
 
-def setup_logger(name, log_file, level):
+def setup_logger(name: str, log_file: str, level: int):
     handler = logging.FileHandler(log_file)
     handler.setFormatter(logging.Formatter("%(asctime)s - %(module)s - %(levelname)s - %(funcName)s: %(lineno)d - %(message)s"))
 
@@ -23,6 +24,8 @@ def setup_logger(name, log_file, level):
 
     return logger
 
+
+os.chdir('/code/job_skills')
 
 try:
     app_token = open('app_token.txt', 'r').readline()
@@ -70,7 +73,6 @@ async def get_vacancies(conn: object, search: str, tracker_id: int, excluded_fro
             parser_id = (await parser_id.fetchone())[0]
             break
         except RuntimeError:
-            print('pizdec', tracker_id, search, number_of_vacancies)
             await asyncio.sleep(5)
     # Получаем все скиллы требуемые для вакансии и загружаем их куда нибудь
     skills = {}
@@ -81,7 +83,6 @@ async def get_vacancies(conn: object, search: str, tracker_id: int, excluded_fro
                     vacancy = await vacancy.json()
                     vacancy['key_skills']
                 except KeyError as exc:
-                    print(exc, vacancy)
                     continue
                 else:
                     for skill in vacancy['key_skills']:
@@ -91,14 +92,12 @@ async def get_vacancies(conn: object, search: str, tracker_id: int, excluded_fro
                         else:
                             skills[skill['name']] += 1
 
-
     for skill in skills:
         while True:
             try:
                 await conn.execute(SkillData.insert().values(parser_data_id=parser_id, name=skill, amount=skills[skill]))
                 break
             except RuntimeError:
-                print('pizdec', skill)
                 await asyncio.sleep(5)
     return number_of_vacancies
 
@@ -127,6 +126,7 @@ async def main(tracker_id: int = None):
     Основная функция для запуска парсера
     :type tracker_id: id трекера который надо спарсить, если не указать, то будут парсится все трекеры из бд
     """
+
 
     info_logger = setup_logger('parser_info_logger', 'logs/parser_info_log.log', logging.INFO)
 
@@ -183,7 +183,5 @@ async def main(tracker_id: int = None):
 def parse_one_tracker(tracker_id: int = None):
     asyncio.run(main(tracker_id=tracker_id))
 
-start = datetime.now()
 if __name__ == "__main__":
     asyncio.run(main())
-print(datetime.now() - start)

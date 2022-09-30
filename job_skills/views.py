@@ -88,6 +88,10 @@ def load_parser_data(request):
     skills = SkillData.objects.filter(parser_data=last_parser_data.id).values('name', 'amount')
     return HttpResponse(json.dumps(list(skills)), content_type='application/json')
 
+@login_required
+def subscribe_on_tracker(request):
+    if request.method == "POST":
+        pass
 
 @login_required
 def create_tracker(request):

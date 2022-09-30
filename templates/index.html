@@ -21,7 +21,7 @@
                     <!-- 3 навыка и их количество появлений -->
                     {% if parsers[tracker.id] %}
                     {% for skill in skills[parsers[tracker.id].id][0:3] %}
-                    <li class="bg-secondary list-group-item text-light" >{{ skill.name }}</li>
+                    <li class="bg-secondary list-group-item text-light" >{{ skill.name }} - {{ skill.amount }}</li>
                     {% endfor %}
                     {% else %}
                     <li class="bg-secondary list-group-item text-light" >Data is still uploading </li>
