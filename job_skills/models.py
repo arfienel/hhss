@@ -12,7 +12,6 @@ class JobTracker(models.Model):
     subscribers = models.ManyToManyField(User, related_name='job_tracker_subs')
 
     def __str__(self):
-        bobobobo = 'клим мама папа максим тихан '
         return f'<Tracker {self.search_text} {self.id}>'
 
     def __repr__(self):
