@@ -1,0 +1,10 @@
+/venv
+venv
+/data/
+data/
+/__pycache__
+__pycache__
+app_token.txt
+*.log
+!logs/.gitkeep
+!.gitignore
