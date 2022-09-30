@@ -37,12 +37,16 @@
   </div>
 <!-- Сообщения об ошибках -->
 {% for message in get_messages(request) %}
-<div class="alert alert-warning {% if message.tags %}{{ message.tags }}{% endif %}"  role="alert">{{ message }}</div>
+<div id="message" class="alert alert-warning {% if message.tags %}{{ message.tags }}{% endif %}"  role="alert">{{ message }}</div>
 {% endfor %}
 
 <!-- Контент страницы -->
 {% block content %}
 {% endblock %}
 </body>
-
 </html>
+<script>
+  $(function(){
+	$("#message").delay(5000).slideUp(300);
+});
+</script>

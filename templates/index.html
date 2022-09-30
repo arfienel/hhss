@@ -14,7 +14,7 @@
         <div class="row bg-secondary rounded mb-3 py-3">
             <!-- Текст поиска слева -->
             <div class="col-sm-2">
-                <h3 class="position-relative top-50 start-50 translate-middle text-center text-light">{{ tracker.search_text }}</h3>
+                <h3 class="position-relative top-50 start-50 translate-middle text-center text-light text-limit">{{ tracker.search_text }}</h3>
             </div>
             <div class="col-sm-6">
                 <ul class="list-group list-group-flush text-center" id="job_trackers">
@@ -121,7 +121,7 @@
     <div class="modal-content">
 
           <div class="modal-header">
-            <h4 class="modal-title">{{ tracker.search_text }}</h4>
+            <h4 class="modal-title headline-limit">{{ tracker.search_text }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
