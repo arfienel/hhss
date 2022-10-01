@@ -1,14 +1,14 @@
 .content {
-margin:2% 10% 0% 10%
+  margin: 2% 10% 0% 10%;
 }
-.text-limit{
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.text-limit {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.headline-limit{
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.headline-limit {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
