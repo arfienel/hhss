@@ -4,9 +4,9 @@ from django.core.exceptions import ValidationError
 
 
 class UserRegistrationForm(forms.Form):
-    username = forms.CharField(label='username', max_length=100)
+    username = forms.CharField(label='Username', max_length=100)
     password = forms.CharField(widget=forms.PasswordInput())
-    password2 = forms.CharField(widget=forms.PasswordInput(), label='password confirmation')
+    password2 = forms.CharField(widget=forms.PasswordInput(), label='Password confirmation')
     email = forms.EmailField(max_length=254, widget=forms.EmailInput())
 
     def clean(self):

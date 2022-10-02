@@ -1,6 +1,7 @@
 .content {
   margin: 2% 10% 0% 10%;
 }
+/*База*/
 .text-limit {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -11,4 +12,135 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.btn-reg {
+  height: 40px;
+  width: 110px;
+  border: none;
+  border-radius: 5px;
+  background-color: #0d6efd;
+  color: white;
+  font-size: 16px;
+  display: block;
+  margin: 30px auto;
+}
+.btn-reg:hover {
+  height: 40px;
+  width: 110px;
+  border: none;
+  border-radius: 5px;
+  background-color: #0859d3;
+  color: #e2dfdf;
+  font-size: 16px;
+  display: block;
+  margin: 30px auto;
+}
+/*Страница регистрации*/
+.form-reg {
+  height: 400px;
+}
+.form-reg p label {
+  display: block;
+  font-size: 18px;
+  font-weight: 1000px;
+}
+.form-reg p input {
+  font-size: 18px;
+  padding: 5px;
+  display: block;
+  border-radius: 15px;
+  border: 1.5px solid #c2c4c9;
+  background-color: #f2f2f2;
+  width: 100%;
+  margin: 10px 0 0 0;
+  height: 45px;
+  box-sizing: border-box;
+}
+/*Страница авторизации*/
+.form-log {
+  height: 250px;
+}
+.form-log p label {
+  display: block;
+  font-size: 18px;
+}
+.form-log p input {
+  font-size: 18px;
+  padding: 5px;
+  display: block;
+  border-radius: 15px;
+  border: 1.5px solid #c2c4c9;
+  background-color: #f2f2f2;
+  width: 100%;
+  margin: 10px 0 0 0;
+  height: 45px;
+  box-sizing: border-box;
+}
+.btn-log {
+  height: 40px;
+  width: 110px;
+  border: none;
+  border-radius: 5px;
+  background-color: #0d6efd;
+  color: white;
+  font-size: 16px;
+  display: block;
+  float: right;
+}
+.btn-log:hover {
+  height: 40px;
+  width: 110px;
+  border: none;
+  border-radius: 5px;
+  background-color: #0859d3;
+  color: #e2dfdf;
+  font-size: 16px;
+  display: block;
+  float: right;
+}
+.lost-password2 {
+  text-decoration: none;
+}
+.message-log {
+  display: inline-block;
+  width: 100%;
+  margin-top: 5px;
+  text-align: center;
+}
+/*Общее у страницы авторизации и регистрации*/
+.headline-reg-log {
+  margin-bottom: 15px;
+  font-size: 25px;
+  padding-bottom: px;
+  text-align: center;
+  margin-top: -70px;
+}
+.registration-login {
+  width: 600px;
+  margin: 0 auto;
+  border: 1px solid #c2c4c9;
+  padding: 150px 70px;
+  border-radius: 10px;
+}
+.btn-reg-log {
+  height: 40px;
+  width: 110px;
+  border: none;
+  border-radius: 5px;
+  background-color: #0d6efd;
+  color: white;
+  font-size: 16px;
+  display: block;
+  margin: 30px auto;
+}
+.btn-reg-log:hover {
+  height: 40px;
+  width: 110px;
+  border: none;
+  border-radius: 5px;
+  background-color: #0859d3;
+  color: #e2dfdf;
+  font-size: 16px;
+  display: block;
+  margin: 30px auto;
 }
