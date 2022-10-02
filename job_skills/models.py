@@ -10,12 +10,14 @@ class JobTracker(models.Model):
     search_text = models.CharField(max_length=100)
     status_parser = models.BooleanField(default=False)
     exclude_from_search = models.CharField(max_length=100, default='', blank=True)
+    hh_url = models.URLField(default='https://hh.ru')
     subscribers = models.ManyToManyField(User, related_name='job_tracker_subs')
 
     def save(self, *args, **kwargs):
         if not kwargs.pop('skip_date_modify', False):
             self.modified_date = datetime.datetime.now()
-
+        print(args, kwargs)
+        self.hh_url = f'https://hh.ru/search/vacancy?excluded_text={self.exclude_from_search}&search_field=name&search_field=company_name&search_field=description&text={self.search_text}'
         super(JobTracker, self).save(*args, **kwargs)
 
     def __str__(self):

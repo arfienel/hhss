@@ -110,11 +110,12 @@
       <div class="col-sm-6">
         <ul class="list-group list-group-flush text-center" id="job_trackers">
           <!-- 3 навыка и их количество появлений -->
-          {% if parsers[tracker.id] %} {% for skill in skills[parsers[tracker.id].id][0:3] %}
-          <li class="bg-secondary list-group-item text-light">
-            {{ skill.name }} - {{ skill.amount }}
-          </li>
-          {% endfor %}
+          {% if parsers[tracker.id] %}
+            {% for skill in skills[parsers[tracker.id].id][0:3] %}
+            <li class="bg-secondary list-group-item text-light">
+              {{ skill.name }} - {{ skill.amount }}
+            </li>
+            {% endfor %}
 
           {% else %}
           <li class="bg-secondary list-group-item text-light">
@@ -129,8 +130,9 @@
       <div class="col-sm-2">
         <h5 class="position-relative top-50 start-50 translate-middle text-center text-light">
           {% if parsers[tracker.id] %} Vacancies amount
-          <br />{{parsers[tracker.id].amount_of_vacancies}} {% else %}
-          <img style="width: 50px; height: 50px" src="{{ static('loading.gif') }}"/>
+            <br />{{parsers[tracker.id].amount_of_vacancies}}
+          {% else %}
+            <img style="width: 50px; height: 50px" src="{{ static('loading.gif') }}"/>
           {% endif %}
         </h5>
       </div>
@@ -174,6 +176,7 @@
             </div>
             <div class="form-text">Divide each parameter with comma</div>
           </div>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -192,7 +195,7 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title headline-limit">{{ tracker.search_text }}</h4>
+          <h4 class="modal-title headline-limit"><a href="{{ tracker.hh_url }}">{{ tracker.search_text }}</a></h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -204,7 +207,7 @@
             </div>
           {% endif %}
 
-          {% if request.user.id == tracker.user_creator %}
+          {% if request.user.id == tracker.user_creator.id %}
             <div class="mb-3">
               <label class="form-label">Search text</label>
               <input type="text" minlength="3" maxlength="60" id="search_text_{{tracker.id}}" value="{{tracker.search_text}}" class="form-control" name="search_text"/>
@@ -229,6 +232,7 @@
               </div>
             {% endif %}
           {% endif %}
+
 
           <div id="tracker_stats{{tracker.id}}"></div>
         </div>

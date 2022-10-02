@@ -50,7 +50,10 @@ def index(request):
         }
     else:
         context = {
-
+            'subscribed_trackers': [],
+            'trackers': [],
+            'parsers': [],
+            'skills': [],
         }
     return render(request, 'index.html', context)
 
@@ -154,9 +157,12 @@ def delete_tracker(request):
 
         today = dt.today().date()
         date_difference = today - tracker_to_delete.modified_date
-        if date_difference <= timedelta(days=3):
+        if request.user.is_staff:
+            pass
+        elif date_difference <= timedelta(days=3):
             request.session['error_message'] = f'wait {str((timedelta(days=3) - date_difference).days)} days, before delete tracker'
             return HttpResponse(request.session['error_message'])
+
 
         tracker_to_delete.delete()
         return HttpResponse(f'Successfully deleted {tracker_to_delete.id, tracker_to_delete.search_text}')
@@ -175,7 +181,9 @@ def update_tracker(request):
 
         today = dt.today().date()
         date_difference = today - tracker_to_update.modified_date
-        if date_difference <= timedelta(days=3):
+        if request.user.is_staff:
+            pass
+        elif date_difference <= timedelta(days=3):
             request.session['error_message'] = f'wait {str((timedelta(days=3) - date_difference).days)} days, before update tracker'
             return HttpResponse(request.session['error_message'])
 

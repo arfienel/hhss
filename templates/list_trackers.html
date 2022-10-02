@@ -75,7 +75,7 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">{{ tracker_parser[0].search_text }}</h4>
+          <h4 class="modal-title"><a href="{{ tracker_parser[0].hh_url }}">{{ tracker_parser[0].search_text }}</a></h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
@@ -211,7 +211,7 @@
                       <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                               <div class="modal-header">
-                                <h4 class="modal-title">${tracker['search_text']}</h4>
+                                <h4 class="modal-title"><a href="${tracker['hh_url']}">${tracker['search_text']}</a></h4>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div class="modal-body">
