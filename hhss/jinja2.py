@@ -10,5 +10,8 @@ def environment(**options):
         'get_messages': messages.get_messages,
         'static': staticfiles_storage.url,
         'url': reverse,
+        'zip': zip,
+        'list': list,
+        'len': len,
     })
     return env

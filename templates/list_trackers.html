@@ -1,4 +1,5 @@
-{% extends 'base.html'%} {% block content %}
+{% extends 'base.html'%}
+{% block content %}
 <form method="get">
   <h1 style="text-align: center">
     <input type="text" name="search" />
@@ -25,12 +26,14 @@
     <!-- 3 навыка и их количество появлений -->
     <div class="col-sm-6">
       <ul class="list-group list-group-flush text-center" id="job_trackers">
-        {% if tracker_parser[1] %} {% for skill in tracker_parser[2] %}
+        {% if tracker_parser[1] %}
+          {% for skill in tracker_parser[2] %}
 
-        <li class="bg-secondary list-group-item text-light">
-          {{ skill.name }} - {{ skill.amount }}
-        </li>
-        {% endfor %} {% else %}
+          <li class="bg-secondary list-group-item text-light">
+            {{ skill.name }} - {{ skill.amount }}
+          </li>
+          {% endfor %}
+        {% else %}
         <li class="bg-secondary list-group-item text-light">
           Data is still uploading
         </li>
@@ -43,63 +46,39 @@
     <!-- правая часть квадрата. Количество парсеров и шестеренка -->
     <div class="col-sm-2">
       <h5
-        class="position-relative top-50 start-50 translate-middle text-center text-light"
-      >
-        {% if tracker_parser[1] %} Vacancies amount
-        <br />{{tracker_parser[1].amount_of_vacancies}} {% else %}
-        <img
-          style="width: 50px; height: 50px"
-          src="{{ static('loading.gif') }}"
-        />
+        class="position-relative top-50 start-50 translate-middle text-center text-light">
+        {% if tracker_parser[1] %}
+        Vacancies amount
+        <br />{{tracker_parser[1].amount_of_vacancies}}
+        {% else %}
+        <img style="width: 50px; height: 50px" src="{{ static('loading.gif') }}"/>
         {% endif %}
       </h5>
     </div>
     <div class="col-sm-2">
       <button
-        style="border-radius: 10px"
-        type="button"
-        data-bs-toggle="modal"
-        data-bs-target="#TrackerModal{{ tracker_parser[0].id}}"
-        id="modalBtn{{tracker_parser[0].id }}"
-        onclick="load_parser_data({{ tracker_parser[0].id }})"
-        class="position-relative top-50 start-50 translate-middle"
-      >
-        <img
-          id="settingsImg{{ tracker_parser[0].id }}"
-          style="width: 60px; height: 60px"
-          src="{{ static('settings.png') }}"
-        />
+        style="border-radius: 10px" type="button" data-bs-toggle="modal" data-bs-target="#TrackerModal{{ tracker_parser[0].id}}" id="modalBtn{{tracker_parser[0].id }}" onclick="load_parser_data({{ tracker_parser[0].id }})" class="position-relative top-50 start-50 translate-middle">
+        <img id="settingsImg{{ tracker_parser[0].id }}" style="width: 60px; height: 60px" src="{{ static('settings.png') }}"/>
       </button>
     </div>
   </div>
   {% endfor %}
 
   <!-- если результата нет-->
-  {% else %} sorry, nihuya net {% endif %}
+  {% else %}
+    sorry, nihuya net
+  {% endif %}
 
   <!-- модалка каждого трекера -->
   {% for tracker_parser in trackers_parsers %}
-  <div
-    class="modal fade"
-    id="TrackerModal{{ tracker_parser[0].id }}"
-    tabindex="-1"
-    aria-hidden="true"
-  >
+  <div class="modal fade" id="TrackerModal{{ tracker_parser[0].id }}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">{{ tracker_parser[0].search_text }}</h4>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <h3>Текст запроса - {{tracker_parser[0].search_text}}</h3>
-          </div>
+
           <div class="modal-body">
                 <div class="mb-3">
                     <h3>Текст запроса - {{tracker_parser[0].search_text}}</h3>
@@ -123,15 +102,16 @@
 
                 </div>
           </div>
-          {% endif %}
+
           <br />
           <br />
           <div id="tracker_stats{{ tracker_parser[0].id }}"></div>
-        </div>
+
+
       </div>
     </div>
   </div>
-  {% endfor %}
+{% endfor %}
 
   <script>
     page = 0
@@ -208,12 +188,28 @@
                             </div>
                         `;
                     };
+                    console.log(tracker);
+
+                    if(tracker['user_creator'] == {{request.user.id}}){
+                      modal_subscribe_part = '';
+                    }
+                    else {
+                      if(tracker['subscribers'].includes({{request.user.id}})){
+                        modal_subscribe_part = `
+                          <button type="button" onclick="unsubscribe_from_tracker(`+ tracker_id +`);" id="sub_button` + tracker_id + `" style="" class="btn btn-danger">unsubscribe</button>
+                        `;
+                      }
+                      else {
+                        modal_subscribe_part = `
+                          <button type="button" onclick="subscribe_on_tracker(`+ tracker_id +`);" id="sub_button` + tracker_id + `" style="" class="btn btn-info">subscribe</button>
+                        `;
+                      }
+                    }
 
                     modal_to_insert = `
                     <div class="modal fade" id="TrackerModal${tracker_id}" tabindex="-1"  aria-hidden="true">
                       <div class="modal-dialog modal-lg">
                         <div class="modal-content">
-
                               <div class="modal-header">
                                 <h4 class="modal-title">${tracker['search_text']}</h4>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -223,7 +219,9 @@
                                         <h3>Текст запроса - ${tracker['search_text']}</h3>
                                     </div>
                                     ` + modal_exclude_from_search_part + `
-                                    <br>
+
+                                    ` + modal_subscribe_part + `
+                                      <br>
                                       <br>
                                     <div id="tracker_stats${tracker_id}">
 
@@ -295,5 +293,6 @@
     });
 }
 </script>
+
 {% endblock %}
 

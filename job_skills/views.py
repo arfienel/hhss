@@ -7,7 +7,7 @@ from django.shortcuts import render, HttpResponse, redirect, HttpResponseRedirec
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotAllowed, JsonResponse
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.db.models import Q
 from django.core.serializers import serialize
@@ -24,6 +24,7 @@ def index(request):
         trackers = JobTracker.objects.filter(Q(user_creator=request.user.id) | Q(subscribers__in=(request.user.id,)))
         parsers_all = ParserData.objects.all()
         parsers = {}
+
         for tracker in trackers:
             try:
                 parsers[tracker.id] = parsers_all.filter(tracker_id=tracker.id)[0]
@@ -35,7 +36,14 @@ def index(request):
             parser_id = parsers[parser].id
             skills[parser_id] = skills_all.filter(parser_data_id=parser_id)
 
+        subscribed_trackers = []
+        for tracker in trackers:
+            if request.user.id in [sub[0] for sub in tracker.subscribers.values_list('id')]:
+                subscribed_trackers.append(tracker)
+                trackers = trackers.exclude(pk=tracker.id)
+
         context = {
+            'subscribed_trackers': subscribed_trackers,
             'trackers': trackers,
             'parsers': parsers,
             'skills': skills,
@@ -81,11 +89,11 @@ def list_more_trackers(request):
     trackers = JobTracker.objects.filter(search_text__icontains=search_field).order_by('-modified_date')[page*6:page*6+6]
 
     for tracker in trackers:
-        print(tracker.search_text)
+        print(tracker.subscribers.values_list('id'))
         parser = ParserData.objects.filter(tracker_id=tracker.id)[:1]
         skills = SkillData.objects.filter(parser_data=parser[0].id)[:3]
         data.append((serialize('json', [tracker, ]), serialize('json', parser), serialize('json', skills)))
-
+    print(data)
     return JsonResponse(data, safe=False, content_type='application/json')
 
 
