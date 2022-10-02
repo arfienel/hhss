@@ -1,80 +1,104 @@
-{% extends 'base.html'%}
+{% extends 'base.html'%} {% block content %}
+<form method="get">
+  <h1 style="text-align: center">
+    <input type="text" name="search" />
+    <button type="submit">search</button>
+  </h1>
+  <!-- если есть результат -->
+  {% if trackers_parsers %}
+</form>
+<br />
 
-{% block content %}
-    <form method="get">
-    <h1 style="text-align:center">
-        <input type="text" name="search">
-        <button type="submit">search</button>
+<div class="container" id="list_trackers">
+  <!-- Начало цикла для всех трекеров -->
+  {% for tracker_parser in trackers_parsers %}
+  <div class="row bg-secondary rounded mb-3 py-3">
+    <!-- Текст поиска слева -->
+    <div class="col-sm-2">
+      <h3
+        class="position-relative top-50 start-50 translate-middle text-center text-light"
+      >
+        {{ tracker_parser[0].search_text }}
+      </h3>
+    </div>
 
-    </h1>
-<!-- если есть результат -->
-{% if trackers_parsers %}
+    <!-- 3 навыка и их количество появлений -->
+    <div class="col-sm-6">
+      <ul class="list-group list-group-flush text-center" id="job_trackers">
+        {% if tracker_parser[1] %} {% for skill in tracker_parser[2] %}
 
-    </form>
-        <br>
+        <li class="bg-secondary list-group-item text-light">
+          {{ skill.name }} - {{ skill.amount }}
+        </li>
+        {% endfor %} {% else %}
+        <li class="bg-secondary list-group-item text-light">
+          Data is still uploading
+        </li>
+        <li class="bg-secondary list-group-item text-light">Please wait</li>
+        <li class="bg-secondary list-group-item text-light">...</li>
+        {% endif %}
+      </ul>
+    </div>
 
-    <div class="container" id="list_trackers">
+    <!-- правая часть квадрата. Количество парсеров и шестеренка -->
+    <div class="col-sm-2">
+      <h5
+        class="position-relative top-50 start-50 translate-middle text-center text-light"
+      >
+        {% if tracker_parser[1] %} Vacancies amount
+        <br />{{tracker_parser[1].amount_of_vacancies}} {% else %}
+        <img
+          style="width: 50px; height: 50px"
+          src="{{ static('loading.gif') }}"
+        />
+        {% endif %}
+      </h5>
+    </div>
+    <div class="col-sm-2">
+      <button
+        style="border-radius: 10px"
+        type="button"
+        data-bs-toggle="modal"
+        data-bs-target="#TrackerModal{{ tracker_parser[0].id}}"
+        id="modalBtn{{tracker_parser[0].id }}"
+        onclick="load_parser_data({{ tracker_parser[0].id }})"
+        class="position-relative top-50 start-50 translate-middle"
+      >
+        <img
+          id="settingsImg{{ tracker_parser[0].id }}"
+          style="width: 60px; height: 60px"
+          src="{{ static('settings.png') }}"
+        />
+      </button>
+    </div>
+  </div>
+  {% endfor %}
 
-        <!-- Начало цикла для всех трекеров -->
-      {% for tracker_parser in trackers_parsers %}
-        <div class="row bg-secondary rounded mb-3 py-3">
-            <!-- Текст поиска слева -->
-            <div class="col-sm-2">
-                <h3 class="position-relative top-50 start-50 translate-middle text-center text-light">{{ tracker_parser[0].search_text }}</h3>
-            </div>
+  <!-- если результата нет-->
+  {% else %} sorry, nihuya net {% endif %}
 
-            <!-- 3 навыка и их количество появлений -->
-            <div class="col-sm-6">
-                <ul class="list-group list-group-flush text-center" id="job_trackers">
-
-                    {% if tracker_parser[1] %}
-
-                    {% for skill in tracker_parser[2] %}
-
-                    <li class="bg-secondary list-group-item text-light" >{{ skill.name }} - {{ skill.amount }}</li>
-                    {% endfor %}
-                    {% else %}
-                    <li class="bg-secondary list-group-item text-light" >Data is still uploading </li>
-                    <li class="bg-secondary list-group-item text-light" >Please wait </li>
-                    <li class="bg-secondary list-group-item text-light" >...</li>
-                    {% endif %}
-                </ul>
-            </div>
-
-            <!-- правая часть квадрата. Количество парсеров и шестеренка -->
-            <div class="col-sm-2">
-                <h5 class="position-relative top-50 start-50 translate-middle text-center text-light">
-                    {% if tracker_parser[1] %}
-                        Vacancies amount <br>{{tracker_parser[1].amount_of_vacancies}}
-                    {% else %}
-                        <img style="width:50px; height:50px;" src="{{ static('loading.gif') }}">
-                    {% endif %}
-
-                </h5>
-            </div>
-            <div class="col-sm-2">
-                <button style="border-radius: 10px" type="button" data-bs-toggle="modal" data-bs-target="#TrackerModal{{ tracker_parser[0].id}}" id="modalBtn{{tracker_parser[0].id }}" onclick="load_parser_data({{ tracker_parser[0].id }})" class="position-relative top-50 start-50 translate-middle" >
-                    <img id="settingsImg{{ tracker_parser[0].id }}" style="width:60px;height:60px;" src="{{ static('settings.png') }}">
-                </button>
-            </div>
+  <!-- модалка каждого трекера -->
+  {% for tracker_parser in trackers_parsers %}
+  <div
+    class="modal fade"
+    id="TrackerModal{{ tracker_parser[0].id }}"
+    tabindex="-1"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">{{ tracker_parser[0].search_text }}</h4>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
-      {% endfor %}
-
-<!-- если результата нет-->
-{% else %}
-        sorry, nihuya net
-{% endif %}
-
-
-<!-- модалка каждого трекера -->
-{% for tracker_parser in trackers_parsers %}
-<div class="modal fade" id="TrackerModal{{ tracker_parser[0].id }}" tabindex="-1"  aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-
-          <div class="modal-header">
-            <h4 class="modal-title">{{ tracker_parser[0].search_text }}</h4>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-body">
+          <div class="mb-3">
+            <h3>Текст запроса - {{tracker_parser[0].search_text}}</h3>
           </div>
           <div class="modal-body">
                 <div class="mb-3">
@@ -99,140 +123,145 @@
 
                 </div>
           </div>
+          {% endif %}
+          <br />
+          <br />
+          <div id="tracker_stats{{ tracker_parser[0].id }}"></div>
+        </div>
+      </div>
     </div>
   </div>
+  {% endfor %}
+
+  <script>
+    page = 0
+        window.onscroll = function() {
+          var d = document.documentElement;
+          var offset = d.scrollTop + window.innerHeight;
+          var height = d.offsetHeight;
+
+
+          if (offset === height) {
+            page++;
+            $.ajax({
+                url: '/list_more_trackers/'+'?page='+page{% if request.GET['search'] %}+'&?search='+{{ request.GET['search'] }} {% endif %},
+                method: 'get',
+                dataType: 'html',
+                success: function(data){
+                data = JSON.parse(data);
+                container_to_append = document.getElementById('list_trackers')
+                data.forEach(array => {
+                    tracker = JSON.parse(array[0])[0]['fields'];
+                    parser = JSON.parse(array[1])[0]['fields'];
+                    skills = JSON.parse(array[2]);
+                    tracker_id = JSON.parse(array[0])[0]['pk'];
+
+                    if(skills[0]){
+
+                    html_skills_part = `
+                    <div class="col-sm-6">
+                    <ul class="list-group list-group-flush text-center" id="job_trackers">
+
+                                <li class="bg-secondary list-group-item text-light">${skills[0]['fields']['name']} - ${skills[0]['fields']['amount']}</li>
+                                <li class="bg-secondary list-group-item text-light">${skills[1]['fields']['name']} - ${skills[1]['fields']['amount']}</li>
+                                <li class="bg-secondary list-group-item text-light">${skills[2]['fields']['name']} - ${skills[2]['fields']['amount']}</li>
+                            </ul>
+                     </div>
+                    `;}
+                    else{
+                    html_skills_part = `<div class="col-sm-6"></div>`;
+                    };
+
+                    html_to_insert = `
+                    <div class="row bg-secondary rounded mb-3 py-3">
+                        <!-- Текст поиска слева -->
+                        <div class="col-sm-2">
+                            <h3 class="position-relative top-50 start-50 translate-middle text-center text-light">${tracker['search_text']}</h3>
+                        </div>
+
+                        <!-- 3 навыка и их количество появлений -->
+                        ` + html_skills_part + `
+
+                        <!-- правая часть квадрата. Количество парсеров и шестеренка -->
+                        <div class="col-sm-2">
+                            <h5 class="position-relative top-50 start-50 translate-middle text-center text-light">
+
+                                    Vacancies amount <br>${parser['amount_of_vacancies']}
+
+
+                            </h5>
+                        </div>
+                        <div class="col-sm-2">
+                            <button style="border-radius: 10px" type="button" data-bs-toggle="modal" data-bs-target="#TrackerModal${tracker_id}" id="modalBtn${tracker_id}" onclick="load_parser_data(${tracker_id})" class="position-relative top-50 start-50 translate-middle">
+                                <img id="settingsImg${tracker_id}" style="width:60px;height:60px;" src="/static/settings.png">
+                            </button>
+                        </div>
+                    </div>
+                    `;
+                    container_to_append.innerHTML += html_to_insert;
+
+                    modal_exclude_from_search_part = ``;
+                    if(tracker['exclude_from_search']){
+                        modal_exclude_from_search_part = `
+                            <div class="mb-3">
+                                <h4>Исключено из запроса - ${tracker['exclude_from_search']}</h4>
+                            </div>
+                        `;
+                    };
+
+                    modal_to_insert = `
+                    <div class="modal fade" id="TrackerModal${tracker_id}" tabindex="-1"  aria-hidden="true">
+                      <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+
+                              <div class="modal-header">
+                                <h4 class="modal-title">${tracker['search_text']}</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                    <div class="mb-3">
+                                        <h3>Текст запроса - ${tracker['search_text']}</h3>
+                                    </div>
+                                    ` + modal_exclude_from_search_part + `
+                                    <br>
+                                      <br>
+                                    <div id="tracker_stats${tracker_id}">
+
+                                    </div>
+                              </div>
+                        </div>
+                      </div>
+                    </div>
+                    `;
+
+                    container_to_append.innerHTML += modal_to_insert;
+                    });
+                }
+            });
+          }
+        };
+  </script>
 </div>
-{% endfor %}
-
-
-        <script>
-        page = 0
-            window.onscroll = function() {
-              var d = document.documentElement;
-              var offset = d.scrollTop + window.innerHeight;
-              var height = d.offsetHeight;
-
-
-              if (offset === height) {
-                page++;
-                $.ajax({
-                    url: '/list_more_trackers/'+'?page='+page{% if request.GET['search'] %}+'&?search='+{{ request.GET['search'] }} {% endif %},
-                    method: 'get',
-                    dataType: 'html',
-                    success: function(data){
-                    data = JSON.parse(data);
-                    container_to_append = document.getElementById('list_trackers')
-                    data.forEach(array => {
-                        tracker = JSON.parse(array[0])[0]['fields'];
-                        parser = JSON.parse(array[1])[0]['fields'];
-                        skills = JSON.parse(array[2]);
-                        tracker_id = JSON.parse(array[0])[0]['pk'];
-
-                        if(skills[0]){
-
-                        html_skills_part = `
-                        <div class="col-sm-6">
-                        <ul class="list-group list-group-flush text-center" id="job_trackers">
-
-                                    <li class="bg-secondary list-group-item text-light">${skills[0]['fields']['name']} - ${skills[0]['fields']['amount']}</li>
-                                    <li class="bg-secondary list-group-item text-light">${skills[1]['fields']['name']} - ${skills[1]['fields']['amount']}</li>
-                                    <li class="bg-secondary list-group-item text-light">${skills[2]['fields']['name']} - ${skills[2]['fields']['amount']}</li>
-                                </ul>
-                         </div>
-                        `;}
-                        else{
-                        html_skills_part = `<div class="col-sm-6"></div>`;
-                        };
-
-                        html_to_insert = `
-                        <div class="row bg-secondary rounded mb-3 py-3">
-                            <!-- Текст поиска слева -->
-                            <div class="col-sm-2">
-                                <h3 class="position-relative top-50 start-50 translate-middle text-center text-light">${tracker['search_text']}</h3>
-                            </div>
-
-                            <!-- 3 навыка и их количество появлений -->
-                            ` + html_skills_part + `
-
-                            <!-- правая часть квадрата. Количество парсеров и шестеренка -->
-                            <div class="col-sm-2">
-                                <h5 class="position-relative top-50 start-50 translate-middle text-center text-light">
-
-                                        Vacancies amount <br>${parser['amount_of_vacancies']}
-
-
-                                </h5>
-                            </div>
-                            <div class="col-sm-2">
-                                <button style="border-radius: 10px" type="button" data-bs-toggle="modal" data-bs-target="#TrackerModal${tracker_id}" id="modalBtn${tracker_id}" onclick="load_parser_data(${tracker_id})" class="position-relative top-50 start-50 translate-middle">
-                                    <img id="settingsImg${tracker_id}" style="width:60px;height:60px;" src="/static/settings.png">
-                                </button>
-                            </div>
-                        </div>
-                        `;
-                        container_to_append.innerHTML += html_to_insert;
-
-                        modal_exclude_from_search_part = ``;
-                        if(tracker['exclude_from_search']){
-                            modal_exclude_from_search_part = `
-                                <div class="mb-3">
-                                    <h4>Исключено из запроса - ${tracker['exclude_from_search']}</h4>
-                                </div>
-                            `;
-                        };
-
-                        modal_to_insert = `
-                        <div class="modal fade" id="TrackerModal${tracker_id}" tabindex="-1"  aria-hidden="true">
-                          <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-
-                                  <div class="modal-header">
-                                    <h4 class="modal-title">${tracker['search_text']}</h4>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                  </div>
-                                  <div class="modal-body">
-                                        <div class="mb-3">
-                                            <h3>Текст запроса - ${tracker['search_text']}</h3>
-                                        </div>
-                                        ` + modal_exclude_from_search_part + `
-                                        <br>
-                                          <br>
-                                        <div id="tracker_stats${tracker_id}">
-
-                                        </div>
-                                  </div>
-                            </div>
-                          </div>
-                        </div>
-                        `;
-
-                        container_to_append.innerHTML += modal_to_insert;
-                        });
-                    }
-                });
-              }
-            };
-        </script>
-    </div>
 
 <script>
-    function load_parser_data(tracker_id){
+  function load_parser_data(tracker_id) {
     $.ajax({
-        url: '/load_parser_data/?tracker_id='+tracker_id,
-        method: 'get',
-        dataType: 'html',
-        success: function(data){
+      url: "/load_parser_data/?tracker_id=" + tracker_id,
+      method: "get",
+      dataType: "html",
+      success: function (data) {
         data = JSON.parse(data);
-            div_to_append = document.getElementById('tracker_stats'+tracker_id)
-            data.forEach(skill => {
-                let p = document.createElement('p');
-                p.innerHTML = skill['name']+': '+skill['amount'];
-                div_to_append.append(p);
-            })
-            btn_call = document.getElementById('modalBtn'+tracker_id).onclick = '';
-        }
+        div_to_append = document.getElementById("tracker_stats" + tracker_id);
+        data.forEach((skill) => {
+          let p = document.createElement("p");
+          p.innerHTML = skill["name"] + ": " + skill["amount"];
+          div_to_append.append(p);
+        });
+        btn_call = document.getElementById("modalBtn" + tracker_id).onclick =
+          "";
+      },
     });
-}
+  }
 </script>
 
 <script>
@@ -267,3 +296,4 @@
 }
 </script>
 {% endblock %}
+
