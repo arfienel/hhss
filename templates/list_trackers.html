@@ -100,11 +100,28 @@
           <div class="mb-3">
             <h3>Текст запроса - {{tracker_parser[0].search_text}}</h3>
           </div>
-          {% if tracker_parser[0].exclude_from_search %}
-          <div class="mb-3">
-            <h4>
-              Исключено из запроса - {{ tracker_parser[0].exclude_from_search }}
-            </h4>
+          <div class="modal-body">
+                <div class="mb-3">
+                    <h3>Текст запроса - {{tracker_parser[0].search_text}}</h3>
+                </div>
+                {% if tracker_parser[0].exclude_from_search %}
+                <div class="mb-3">
+                    <h4>Исключено из запроса - {{ tracker_parser[0].exclude_from_search }}</h4>
+                </div>
+                {% endif %}
+                {% if request.user.id == tracker_parser[0].user_creator_id %}
+
+                {% elif request.user.id in tracker_parser[0].subscribers %}
+                    <button type="button" onclick="unsubscribe_from_tracker({{tracker_parser[0].id}});" id="sub_button{{tracker_parser[0].id}}" style="" class="btn btn-danger">unsubscribe</button>
+
+                {% else %}
+                    <button type="button" onclick="subscribe_on_tracker({{tracker_parser[0].id}});" id="sub_button{{tracker_parser[0].id}}" style="" class="btn btn-info">subscribe</button>
+              {% endif %}
+                <br>
+                  <br>
+                <div id="tracker_stats{{ tracker_parser[0].id }}">
+
+                </div>
           </div>
           {% endif %}
           <br />
@@ -246,4 +263,37 @@
     });
   }
 </script>
+
+<script>
+    function subscribe_on_tracker(tracker_id){
+    sub_button = document.getElementById('sub_button'+tracker_id);
+    sub_button.disabled = true;
+    $.ajax({
+        url: '/subscribe_on_tracker/',
+        method: 'post',
+        dataType: 'html',
+        data: {'tracker_id': tracker_id,
+               'csrfmiddlewaretoken': '{{ csrf_token }}' ,},
+        success: function(data){
+            sub_button.outerHTML = '<button type="button" onclick="unsubscribe_from_tracker('+ tracker_id +');" id="sub_button'+ tracker_id +'" style="" class="btn btn-danger">unsubscribe</button>'
+        }
+    });
+}
+
+    function unsubscribe_from_tracker(tracker_id){
+        sub_button = document.getElementById('sub_button'+tracker_id);
+    sub_button.disabled = true;
+    $.ajax({
+        url: '/unsubscribe_from_tracker/',
+        method: 'post',
+        dataType: 'html',
+        data: {'tracker_id': tracker_id,
+               'csrfmiddlewaretoken': '{{ csrf_token }}' ,},
+        success: function(data){
+                        sub_button.outerHTML = '<button type="button" onclick="subscribe_on_tracker('+ tracker_id +');" id="sub_button'+ tracker_id +'" style="" class="btn btn-info">subscribe</button>'
+        }
+    });
+}
+</script>
 {% endblock %}
+

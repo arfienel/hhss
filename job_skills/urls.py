@@ -10,5 +10,7 @@ urlpatterns = [
     path('logout/', user_logout, name='logout'),
     path('load_parser_data/', load_parser_data, name='load_parser_data'),
     path('list_trackers/', list_trackers, name='list_trackers'),
-    path('list_more_trackers/', list_more_trackers, name='list_more_trackers')
+    path('list_more_trackers/', list_more_trackers, name='list_more_trackers'),
+    path('subscribe_on_tracker/', subscribe_on_tracker, name='subscribe_on_tracker'),
+    path('unsubscribe_from_tracker/', unsubscribe_from_tracker, name='unsubscribe_from_tracker'),
 ]

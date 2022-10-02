@@ -1,15 +1,22 @@
 import datetime
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.timezone import now
 
 
 class JobTracker(models.Model):
     user_creator = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
-    modified_date = models.DateField(auto_now=True)
+    modified_date = models.DateField(default=now)
     search_text = models.CharField(max_length=100)
     status_parser = models.BooleanField(default=False)
     exclude_from_search = models.CharField(max_length=100, default='', blank=True)
     subscribers = models.ManyToManyField(User, related_name='job_tracker_subs')
+
+    def save(self, *args, **kwargs):
+        if not kwargs.pop('skip_date_modify', False):
+            self.modified_date = datetime.datetime.now()
+
+        super(JobTracker, self).save(*args, **kwargs)
 
     def __str__(self):
         return f'<Tracker {self.search_text} {self.id}>'
