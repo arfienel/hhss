@@ -75,17 +75,14 @@
   </div>
   <!-- если чел НЕ зареган-->
   {% else %}
-  <div class="">
-    <h1 style="text-align: center; margin-top: 10%">
-      To create your own job skills tracker, you need to
-    </h1>
-    <h1 style="text-align: center; cursor: pointer" class="text-primary">
+  <div class="need-to-log-reg">
+    <h1>To create your own job skills tracker,</h1> 
+    <h2>you need to 
       <a href="{{ url('login') }}">Log in</a>
-    </h1>
-    <h1 style="text-align: center">or</h1>
-    <h1 style="text-align: center; cursor: pointer" class="text-primary">
+      <span>or</span>
       <a href="{{ url('registration') }}">Sign up</a>
-    </h1>
+    </h2>
+    <h1 style="text-align: center; cursor: pointer" class="text-primary">
   </div>
   {% endif %} {% endif %}
 </div>

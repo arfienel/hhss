@@ -1,13 +1,12 @@
-{% extends 'base.html'%}
-{% block content %}
-<form method="get">
-  <h1 style="text-align: center">
-    <input type="text" name="search" />
-    <button type="submit">search</button>
-  </h1>
-  <!-- если есть результат -->
-  {% if trackers_parsers %}
-</form>
+{% extends 'base.html'%} {% block content %}
+<div class="form-wrapper">
+  <form method="get" class="search-bar">
+    <input type="text" name="search" placeholder="Search" />
+    <button type="submit"><img src="../static/search.png" /></button>
+    <!-- если есть результат -->
+    {% if trackers_parsers %}
+  </form>
+</div>
 <br />
 
 <div class="container" id="list_trackers">
@@ -17,7 +16,7 @@
     <!-- Текст поиска слева -->
     <div class="col-sm-2">
       <h3
-        class="position-relative top-50 start-50 translate-middle text-center text-light"
+        class="position-relative top-50 start-50 translate-middle text-center text-light text-limit"
       >
         {{ tracker_parser[0].search_text }}
       </h3>
@@ -26,14 +25,12 @@
     <!-- 3 навыка и их количество появлений -->
     <div class="col-sm-6">
       <ul class="list-group list-group-flush text-center" id="job_trackers">
-        {% if tracker_parser[1] %}
-          {% for skill in tracker_parser[2] %}
+        {% if tracker_parser[1] %} {% for skill in tracker_parser[2] %}
 
-          <li class="bg-secondary list-group-item text-light">
-            {{ skill.name }} - {{ skill.amount }}
-          </li>
-          {% endfor %}
-        {% else %}
+        <li class="bg-secondary list-group-item text-light">
+          {{ skill.name }} - {{ skill.amount }}
+        </li>
+        {% endfor %} {% else %}
         <li class="bg-secondary list-group-item text-light">
           Data is still uploading
         </li>
@@ -46,72 +43,111 @@
     <!-- правая часть квадрата. Количество парсеров и шестеренка -->
     <div class="col-sm-2">
       <h5
-        class="position-relative top-50 start-50 translate-middle text-center text-light">
-        {% if tracker_parser[1] %}
-        Vacancies amount
-        <br />{{tracker_parser[1].amount_of_vacancies}}
-        {% else %}
-        <img style="width: 50px; height: 50px" src="{{ static('loading.gif') }}"/>
+        class="position-relative top-50 start-50 translate-middle text-center text-light"
+      >
+        {% if tracker_parser[1] %} Vacancies amount
+        <br />{{tracker_parser[1].amount_of_vacancies}} {% else %}
+        <img
+          style="width: 50px; height: 50px"
+          src="{{ static('loading.gif') }}"
+        />
         {% endif %}
       </h5>
     </div>
     <div class="col-sm-2">
       <button
-        style="border-radius: 10px" type="button" data-bs-toggle="modal" data-bs-target="#TrackerModal{{ tracker_parser[0].id}}" id="modalBtn{{tracker_parser[0].id }}" onclick="load_parser_data({{ tracker_parser[0].id }})" class="position-relative top-50 start-50 translate-middle">
-        <img id="settingsImg{{ tracker_parser[0].id }}" style="width: 60px; height: 60px" src="{{ static('settings.png') }}"/>
+        style="border-radius: 10px"
+        type="button"
+        data-bs-toggle="modal"
+        data-bs-target="#TrackerModal{{ tracker_parser[0].id}}"
+        id="modalBtn{{tracker_parser[0].id }}"
+        onclick="load_parser_data({{ tracker_parser[0].id }})"
+        class="position-relative top-50 start-50 translate-middle"
+      >
+        <img
+          id="settingsImg{{ tracker_parser[0].id }}"
+          style="width: 60px; height: 60px"
+          src="{{ static('settings.png') }}"
+        />
       </button>
     </div>
   </div>
   {% endfor %}
 
   <!-- если результата нет-->
-  {% else %}
-    sorry, nihuya net
-  {% endif %}
+  {% else %} sorry, nihuya net {% endif %}
 
   <!-- модалка каждого трекера -->
   {% for tracker_parser in trackers_parsers %}
-  <div class="modal fade" id="TrackerModal{{ tracker_parser[0].id }}" tabindex="-1" aria-hidden="true">
+  <div
+    class="modal fade"
+    id="TrackerModal{{ tracker_parser[0].id }}"
+    tabindex="-1"
+    aria-hidden="true"
+  >
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title"><a href="{{ tracker_parser[0].hh_url }}">{{ tracker_parser[0].search_text }}</a></h4>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h4 class="modal-title headline-limit">
+            <a href="{{ tracker_parser[0].hh_url }}"
+              >{{ tracker_parser[0].search_text }}</a
+            >
+          </h4>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
 
-          <div class="modal-body">
-                <div class="mb-3">
-                    <h3>Текст запроса - {{tracker_parser[0].search_text}}</h3>
-                </div>
-                {% if tracker_parser[0].exclude_from_search %}
-                <div class="mb-3">
-                    <h4>Исключено из запроса - {{ tracker_parser[0].exclude_from_search }}</h4>
-                </div>
-                {% endif %}
-                {% if request.user.id == tracker_parser[0].user_creator_id %}
-
-                {% elif request.user.id in tracker_parser[0].subscribers %}
-                    <button type="button" onclick="unsubscribe_from_tracker({{tracker_parser[0].id}});" id="sub_button{{tracker_parser[0].id}}" style="" class="btn btn-danger">unsubscribe</button>
-
-                {% else %}
-                    <button type="button" onclick="subscribe_on_tracker({{tracker_parser[0].id}});" id="sub_button{{tracker_parser[0].id}}" style="" class="btn btn-info">subscribe</button>
-              {% endif %}
-                <br>
-                  <br>
-                <div id="tracker_stats{{ tracker_parser[0].id }}">
-
-                </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <h3 class="transfer-request">
+              Текст запроса - {{tracker_parser[0].search_text}}
+            </h3>
           </div>
+          {% if tracker_parser[0].exclude_from_search %}
+          <div class="mb-3">
+            <h4>
+              Исключено из запроса - {{ tracker_parser[0].exclude_from_search }}
+            </h4>
+          </div>
+          {% endif %} {% if request.user.id == tracker_parser[0].user_creator_id
+          %} {% elif request.user.id in tracker_parser[0].subscribers %}
+          <button
+            type="button"
+            onclick="unsubscribe_from_tracker({{tracker_parser[0].id}});"
+            id="sub_button{{tracker_parser[0].id}}"
+            style=""
+            class="btn btn-danger"
+          >
+            unsubscribe
+          </button>
 
+          {% else %}
+          <button
+            type="button"
+            onclick="subscribe_on_tracker({{tracker_parser[0].id}});"
+            id="sub_button{{tracker_parser[0].id}}"
+            style=""
+            class="btn btn-info"
+          >
+            subscribe
+          </button>
+          {% endif %}
           <br />
           <br />
           <div id="tracker_stats{{ tracker_parser[0].id }}"></div>
+        </div>
 
-
+        <br />
+        <br />
+        <div id="tracker_stats{{ tracker_parser[0].id }}"></div>
       </div>
     </div>
   </div>
-{% endfor %}
+  {% endfor %}
 
   <script>
     page = 0
@@ -151,12 +187,11 @@
                     else{
                     html_skills_part = `<div class="col-sm-6"></div>`;
                     };
-
                     html_to_insert = `
                     <div class="row bg-secondary rounded mb-3 py-3">
                         <!-- Текст поиска слева -->
                         <div class="col-sm-2">
-                            <h3 class="position-relative top-50 start-50 translate-middle text-center text-light">${tracker['search_text']}</h3>
+                            <h3 class="position-relative top-50 start-50 translate-middle text-center text-light text-limit">${tracker['search_text']}</h3>
                         </div>
 
                         <!-- 3 навыка и их количество появлений -->
@@ -263,36 +298,43 @@
 </script>
 
 <script>
-    function subscribe_on_tracker(tracker_id){
-    sub_button = document.getElementById('sub_button'+tracker_id);
+  function subscribe_on_tracker(tracker_id) {
+    sub_button = document.getElementById("sub_button" + tracker_id);
     sub_button.disabled = true;
     $.ajax({
-        url: '/subscribe_on_tracker/',
-        method: 'post',
-        dataType: 'html',
-        data: {'tracker_id': tracker_id,
-               'csrfmiddlewaretoken': '{{ csrf_token }}' ,},
-        success: function(data){
-            sub_button.outerHTML = '<button type="button" onclick="unsubscribe_from_tracker('+ tracker_id +');" id="sub_button'+ tracker_id +'" style="" class="btn btn-danger">unsubscribe</button>'
-        }
+      url: "/subscribe_on_tracker/",
+      method: "post",
+      dataType: "html",
+      data: { tracker_id: tracker_id, csrfmiddlewaretoken: "{{ csrf_token }}" },
+      success: function (data) {
+        sub_button.outerHTML =
+          '<button type="button" onclick="unsubscribe_from_tracker(' +
+          tracker_id +
+          ');" id="sub_button' +
+          tracker_id +
+          '" style="" class="btn btn-danger">unsubscribe</button>';
+      },
     });
-}
+  }
 
-    function unsubscribe_from_tracker(tracker_id){
-        sub_button = document.getElementById('sub_button'+tracker_id);
+  function unsubscribe_from_tracker(tracker_id) {
+    sub_button = document.getElementById("sub_button" + tracker_id);
     sub_button.disabled = true;
     $.ajax({
-        url: '/unsubscribe_from_tracker/',
-        method: 'post',
-        dataType: 'html',
-        data: {'tracker_id': tracker_id,
-               'csrfmiddlewaretoken': '{{ csrf_token }}' ,},
-        success: function(data){
-                        sub_button.outerHTML = '<button type="button" onclick="subscribe_on_tracker('+ tracker_id +');" id="sub_button'+ tracker_id +'" style="" class="btn btn-info">subscribe</button>'
-        }
+      url: "/unsubscribe_from_tracker/",
+      method: "post",
+      dataType: "html",
+      data: { tracker_id: tracker_id, csrfmiddlewaretoken: "{{ csrf_token }}" },
+      success: function (data) {
+        sub_button.outerHTML =
+          '<button type="button" onclick="subscribe_on_tracker(' +
+          tracker_id +
+          ');" id="sub_button' +
+          tracker_id +
+          '" style="" class="btn btn-info">subscribe</button>';
+      },
     });
-}
+  }
 </script>
 
 {% endblock %}
-

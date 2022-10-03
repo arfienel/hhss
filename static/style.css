@@ -1,7 +1,28 @@
+* {
+  box-sizing: border-box;
+}
 .content {
   margin: 2% 10% 0% 10%;
 }
 /*База*/
+.need-to-log-reg {
+  border: 1px solid #c2c4c9;
+  border-radius: 15px;
+  text-align: center;
+  padding: 30px;
+  width: 800px;
+  margin: 0 auto;
+  margin-top: 200px;
+}
+
+.need-to-log-reg a {
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 32px;
+}
+.transfer-request {
+  word-wrap: break-word;
+}
 .text-limit {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -46,7 +67,7 @@
 }
 .form-reg p input {
   font-size: 18px;
-  padding: 5px;
+  padding: 10px;
   display: block;
   border-radius: 15px;
   border: 1.5px solid #c2c4c9;
@@ -55,6 +76,7 @@
   margin: 10px 0 0 0;
   height: 45px;
   box-sizing: border-box;
+  outline: none;
 }
 /*Страница авторизации*/
 .form-log {
@@ -66,7 +88,7 @@
 }
 .form-log p input {
   font-size: 18px;
-  padding: 5px;
+  padding: 10px;
   display: block;
   border-radius: 15px;
   border: 1.5px solid #c2c4c9;
@@ -75,6 +97,7 @@
   margin: 10px 0 0 0;
   height: 45px;
   box-sizing: border-box;
+  outline: none;
 }
 .btn-log {
   height: 40px;
@@ -143,4 +166,53 @@
   font-size: 16px;
   display: block;
   margin: 30px auto;
+}
+/*List_trackers*/
+.form-wrapper {
+  width: 700px;
+  margin: 0 auto;
+}
+.search-bar {
+  width: 100%;
+  max-width: 700px;
+  background-color: #6c757d;
+  border-radius: 60px;
+  padding: 5px 20px;
+  display: flex;
+  align-items: center;
+}
+.search-bar input {
+  -webkit-appearance: none;
+  background-color: transparent;
+  flex: 1;
+  border: 0;
+  outline: none;
+  padding: 18px 20px;
+  font-size: 20px;
+  color: white;
+}
+.search-bar input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 50px #6c757d inset;
+  -webkit-text-fill-color: #fff;
+  font-size: 20px !important;
+}
+::placeholder {
+  color: white;
+}
+.search-bar button img {
+  width: 25px;
+}
+.search-bar button {
+  border: 0;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  background-color: white;
+}
+.search-bar button:hover {
+  border: 0;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  background-color: #e6e6e6;
 }
