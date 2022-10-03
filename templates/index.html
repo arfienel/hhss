@@ -82,7 +82,7 @@
       <span>or</span>
       <a href="{{ url('registration') }}">Sign up</a>
     </h2>
-    <h1 style="text-align: center; cursor: pointer" class="text-primary">
+    <h1 style="text-align: center; cursor: pointer" class="text-primary"></h1>
   </div>
   {% endif %} {% endif %}
 </div>
@@ -185,7 +185,7 @@
     </div>
   </div>
 </div>
-
+  </div>
 <!-- модалка каждого трекера -->
 {% for tracker in list(trackers) + subscribed_trackers %}
   <div class="modal fade" id="TrackerModal{{ tracker.id }}" tabindex="-1" aria-hidden="true">
@@ -229,7 +229,15 @@
               </div>
             {% endif %}
           {% endif %}
-
+          <button
+            type="button"
+            onclick="unsubscribe_from_tracker({{tracker.id}});"
+            id="sub_button{{tracker.id}}"
+            style=""
+            class="btn btn-danger"
+          >
+            unsubscribe
+          </button>
 
           <div id="tracker_stats{{tracker.id}}"></div>
         </div>
@@ -301,4 +309,17 @@
     }
   }
 </script>
+
+function unsubscribe_from_tracker(tracker_id) {
+  $.ajax({
+    url: "/unsubscribe_from_tracker/",
+    method: "post",
+    dataType: "html",
+    data: { tracker_id: tracker_id, csrfmiddlewaretoken: "{{ csrf_token }}" },
+    success: function (data) {
+
+    },
+  });
+}
+
 {% endblock %}

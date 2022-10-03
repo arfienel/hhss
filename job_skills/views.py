@@ -92,11 +92,9 @@ def list_more_trackers(request):
     trackers = JobTracker.objects.filter(search_text__icontains=search_field).order_by('-modified_date')[page*6:page*6+6]
 
     for tracker in trackers:
-        print(tracker.subscribers.values_list('id'))
         parser = ParserData.objects.filter(tracker_id=tracker.id)[:1]
         skills = SkillData.objects.filter(parser_data=parser[0].id)[:3]
         data.append((serialize('json', [tracker, ]), serialize('json', parser), serialize('json', skills)))
-    print(data)
     return JsonResponse(data, safe=False, content_type='application/json')
 
 
