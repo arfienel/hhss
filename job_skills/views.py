@@ -7,8 +7,9 @@ from django.shortcuts import render, HttpResponse, redirect, HttpResponseRedirec
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotAllowed, JsonResponse
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.db.models import Q
 from django.core.serializers import serialize
 from .models import *
 from .hh_parser import parse_one_tracker
@@ -20,9 +21,10 @@ def index(request):
         messages.error(request, str(request.session.get('error_message')))
         del request.session['error_message']
     if request.user.is_authenticated:
-        trackers = JobTracker.objects.filter(user_creator=request.user.id)
-        parsers_all = ParserData.objects.filter(tracker_id__user_creator=request.user.id)
+        trackers = JobTracker.objects.filter(Q(user_creator=request.user.id) | Q(subscribers__in=(request.user.id,)))
+        parsers_all = ParserData.objects.all()
         parsers = {}
+
         for tracker in trackers:
             try:
                 parsers[tracker.id] = parsers_all.filter(tracker_id=tracker.id)[0]
@@ -34,14 +36,24 @@ def index(request):
             parser_id = parsers[parser].id
             skills[parser_id] = skills_all.filter(parser_data_id=parser_id)
 
+        subscribed_trackers = []
+        for tracker in trackers:
+            if request.user.id in [sub[0] for sub in tracker.subscribers.values_list('id')]:
+                subscribed_trackers.append(tracker)
+                trackers = trackers.exclude(pk=tracker.id)
+
         context = {
+            'subscribed_trackers': subscribed_trackers,
             'trackers': trackers,
             'parsers': parsers,
             'skills': skills,
         }
     else:
         context = {
-
+            'subscribed_trackers': [],
+            'trackers': [],
+            'parsers': [],
+            'skills': [],
         }
     return render(request, 'index.html', context)
 
@@ -52,11 +64,16 @@ def list_trackers(request):
     else:
         search_field = ''
     trackers_parsers = []
-    trackers = JobTracker.objects.filter(search_text__icontains=search_field)[:6]
+    trackers = JobTracker.objects.filter(search_text__icontains=search_field).order_by('-modified_date')[:6]
+
     for tracker in trackers:
+        tracker_to_append = tracker.__dict__
+        tracker_to_append['subscribers'] = [sub[0] for sub in tracker.subscribers.values_list('id')]
         parser = ParserData.objects.filter(tracker_id=tracker.id)[0].__dict__
         skills = SkillData.objects.filter(parser_data=parser['id'])[:3].values()
-        trackers_parsers.append((tracker.__dict__, parser, skills))
+
+        trackers_parsers.append((tracker_to_append, parser, skills))
+
     return render(request, 'list_trackers.html', {'trackers_parsers': trackers_parsers})
 
 
@@ -72,13 +89,14 @@ def list_more_trackers(request):
         page = 1
 
     data = []
-    trackers = JobTracker.objects.filter(search_text__icontains=search_field)[page*6:page*6+6]
+    trackers = JobTracker.objects.filter(search_text__icontains=search_field).order_by('-modified_date')[page*6:page*6+6]
 
     for tracker in trackers:
+        print(tracker.subscribers.values_list('id'))
         parser = ParserData.objects.filter(tracker_id=tracker.id)[:1]
         skills = SkillData.objects.filter(parser_data=parser[0].id)[:3]
         data.append((serialize('json', [tracker, ]), serialize('json', parser), serialize('json', skills)))
-
+    print(data)
     return JsonResponse(data, safe=False, content_type='application/json')
 
 
@@ -92,7 +110,19 @@ def load_parser_data(request):
 @login_required
 def subscribe_on_tracker(request):
     if request.method == "POST":
-        pass
+        tracker = JobTracker.objects.get(id=request.POST['tracker_id'])
+        tracker.subscribers.add(request.user)
+        tracker.save(skip_date_modify=True)
+        return HttpResponse('good')
+
+
+def unsubscribe_from_tracker(request):
+    if request.method == "POST":
+        tracker = JobTracker.objects.get(id=request.POST['tracker_id'])
+        tracker.subscribers.remove(request.user)
+        tracker.save(skip_date_modify=True)
+        return HttpResponse('good')
+
 
 @login_required
 def create_tracker(request):
@@ -127,9 +157,12 @@ def delete_tracker(request):
 
         today = dt.today().date()
         date_difference = today - tracker_to_delete.modified_date
-        if date_difference <= timedelta(days=3):
+        if request.user.is_staff:
+            pass
+        elif date_difference <= timedelta(days=3):
             request.session['error_message'] = f'wait {str((timedelta(days=3) - date_difference).days)} days, before delete tracker'
             return HttpResponse(request.session['error_message'])
+
 
         tracker_to_delete.delete()
         return HttpResponse(f'Successfully deleted {tracker_to_delete.id, tracker_to_delete.search_text}')
@@ -148,7 +181,9 @@ def update_tracker(request):
 
         today = dt.today().date()
         date_difference = today - tracker_to_update.modified_date
-        if date_difference <= timedelta(days=3):
+        if request.user.is_staff:
+            pass
+        elif date_difference <= timedelta(days=3):
             request.session['error_message'] = f'wait {str((timedelta(days=3) - date_difference).days)} days, before update tracker'
             return HttpResponse(request.session['error_message'])
 

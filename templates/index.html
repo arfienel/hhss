@@ -1,8 +1,9 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %}
+{% block content %}
 <div class="content">
   <!-- если есть результат -->
   {% if trackers %}
-  <h1 style="text-align: center">Stats list</h1>
+  <h1 style="text-align: center">Your created trackers</h1>
   <br />
 
   <div class="container">
@@ -11,21 +12,19 @@
     <div class="row bg-secondary rounded mb-3 py-3">
       <!-- Текст поиска слева -->
       <div class="col-sm-2">
-        <h3
-          class="position-relative top-50 start-50 translate-middle text-center text-light text-limit"
-        >
+        <h3 class="position-relative top-50 start-50 translate-middle text-center text-light text-limit">
           {{ tracker.search_text }}
         </h3>
       </div>
       <div class="col-sm-6">
         <ul class="list-group list-group-flush text-center" id="job_trackers">
           <!-- 3 навыка и их количество появлений -->
-          {% if parsers[tracker.id] %} {% for skill in
-          skills[parsers[tracker.id].id][0:3] %}
+          {% if parsers[tracker.id] %} {% for skill in skills[parsers[tracker.id].id][0:3] %}
           <li class="bg-secondary list-group-item text-light">
             {{ skill.name }} - {{ skill.amount }}
           </li>
-          {% endfor %} {% else %}
+          {% endfor %}
+          {% else %}
           <li class="bg-secondary list-group-item text-light">
             Data is still uploading
           </li>
@@ -36,44 +35,26 @@
       </div>
       <!-- правая часть квадрата. Количество парсеров и шестеренка -->
       <div class="col-sm-2">
-        <h5
-          class="position-relative top-50 start-50 translate-middle text-center text-light"
-        >
-          {% if parsers[tracker.id] %} Vacancies amount
-          <br />{{parsers[tracker.id].amount_of_vacancies}} {% else %}
-          <img
-            style="width: 50px; height: 50px"
-            src="{{ static('loading.gif') }}"
-          />
+        <h5 class="position-relative top-50 start-50 translate-middle text-center text-light">
+          {% if parsers[tracker.id] %}
+          Vacancies amount
+          <br>
+          {{parsers[tracker.id].amount_of_vacancies}}
+          {% else %}
+          <img style="width: 50px; height: 50px" src="{{ static('loading.gif') }}"/>
           {% endif %}
         </h5>
       </div>
       <div class="col-sm-2">
-        <button
-          style="border-radius: 10px"
-          type="button"
-          data-bs-toggle="modal"
-          data-bs-target="#TrackerModal{{ tracker.id }}"
-          id="modalBtn{{tracker.id}}"
-          onclick="load_parser_data({{ tracker.id }})"
-          class="position-relative top-50 start-50 translate-middle"
-        >
-          <img
-            id="settingsImg{{ tracker.id }}"
-            style="width: 60px; height: 60px"
-            src="{{ static('settings.png') }}"
-          />
+        <button style="border-radius: 10px" type="button" data-bs-toggle="modal" data-bs-target="#TrackerModal{{ tracker.id }}" id="modalBtn{{tracker.id}}" onclick="load_parser_data({{ tracker.id }})" class="position-relative top-50 start-50 translate-middle">
+          <img id="settingsImg{{ tracker.id }}" style="width: 60px; height: 60px" src="{{ static('settings.png') }}"/>
         </button>
       </div>
     </div>
     {% endfor %}
     <div class="row rounded py-3">
       <div class="col-sm-4">
-        <button
-          data-bs-toggle="modal"
-          data-bs-target="#exampleModal"
-          class="btn btn-success py-3 px-4"
-        >
+        <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-success py-3 px-4">
           <h4>Add tracker</h4>
         </button>
       </div>
@@ -89,9 +70,7 @@
       Seems like you don`t tracking jobs yet
     </h1>
     <h2 style="text-align: center; cursor: pointer" class="text-primary">
-      <a data-bs-toggle="modal" data-bs-target="#exampleModal"
-        >Start tracking</a
-      >
+      <a data-bs-toggle="modal" data-bs-target="#exampleModal">Start tracking</a>
     </h2>
   </div>
   <!-- если чел НЕ зареган-->
@@ -111,34 +90,76 @@
   {% endif %} {% endif %}
 </div>
 
+
+<!-- subscribed trackers -->
+{% if subscribed_trackers %}
+
+<h1 style="text-align: center">Your subscribed trackers</h1>
+  <br />
+
+  <div class="container">
+    <!-- Начало цикла для всех трекеров -->
+    {% for tracker in subscribed_trackers %}
+    <div class="row bg-secondary rounded mb-3 py-3">
+      <!-- Текст поиска слева -->
+      <div class="col-sm-2">
+        <h3 class="position-relative top-50 start-50 translate-middle text-center text-light text-limit">
+          {{ tracker.search_text }}
+        </h3>
+      </div>
+      <div class="col-sm-6">
+        <ul class="list-group list-group-flush text-center" id="job_trackers">
+          <!-- 3 навыка и их количество появлений -->
+          {% if parsers[tracker.id] %}
+            {% for skill in skills[parsers[tracker.id].id][0:3] %}
+            <li class="bg-secondary list-group-item text-light">
+              {{ skill.name }} - {{ skill.amount }}
+            </li>
+            {% endfor %}
+
+          {% else %}
+          <li class="bg-secondary list-group-item text-light">
+            Data is still uploading
+          </li>
+          <li class="bg-secondary list-group-item text-light">Please wait</li>
+          <li class="bg-secondary list-group-item text-light">...</li>
+          {% endif %}
+        </ul>
+      </div>
+      <!-- правая часть квадрата. Количество парсеров и шестеренка -->
+      <div class="col-sm-2">
+        <h5 class="position-relative top-50 start-50 translate-middle text-center text-light">
+          {% if parsers[tracker.id] %} Vacancies amount
+            <br />{{parsers[tracker.id].amount_of_vacancies}}
+          {% else %}
+            <img style="width: 50px; height: 50px" src="{{ static('loading.gif') }}"/>
+          {% endif %}
+        </h5>
+      </div>
+      <div class="col-sm-2">
+        <button style="border-radius: 10px" type="button" data-bs-toggle="modal" data-bs-target="#TrackerModal{{ tracker.id }}" id="modalBtn{{tracker.id}}" onclick="load_parser_data({{ tracker.id }})" class="position-relative top-50 start-50 translate-middle">
+          <img id="settingsImg{{ tracker.id }}" style="width: 60px; height: 60px" src="{{ static('settings.png') }}"/>
+        </button>
+      </div>
+    </div>
+    {% endfor %}
+
+{% endif %}
+
+
 <!-- Modals -->
 <!-- Модалка создания трекера  -->
-<div
-  class="modal fade"
-  id="exampleModal"
-  tabindex="-1"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <form method="POST" action="{{ url('create_tracker') }}">
-        <input
-          type="hidden"
-          name="csrfmiddlewaretoken"
-          value="{{ csrf_token }}"
-        />
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"/>
 
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">
             Creating job skill stats tracker
           </h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="mb-3">
@@ -149,23 +170,16 @@
 
           <div class="mb-3">
             <label class="form-label">Exclude from search</label>
-            <input
-              type="text"
-              class="form-control"
-              name="exclude_from_search"
-            />
+            <input type="text" class="form-control" name="exclude_from_search"/>
             <div class="form-text">
               Enter text that you don`t want to see in job description
             </div>
             <div class="form-text">Divide each parameter with comma</div>
           </div>
+
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
             Close
           </button>
           <button type="submit" class="btn btn-primary">Create</button>
@@ -176,82 +190,55 @@
 </div>
 
 <!-- модалка каждого трекера -->
-{% for tracker in trackers %}
-<div
-  class="modal fade"
-  id="TrackerModal{{ tracker.id }}"
-  tabindex="-1"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title headline-limit">{{ tracker.search_text }}</h4>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <div class="mb-3">
-          <h6
-            class="text-success"
-            id="succ_text_{{tracker.id}}"
-            style="display: none"
-          >
-            Job tracker updated successfully
-          </h6>
+{% for tracker in list(trackers) + subscribed_trackers %}
+  <div class="modal fade" id="TrackerModal{{ tracker.id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title headline-limit"><a href="{{ tracker.hh_url }}">{{ tracker.search_text }}</a></h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="mb-3">
-          <label class="form-label">Search text</label>
-          <input
-            type="text"
-            minlength="3"
-            maxlength="60"
-            id="search_text_{{tracker.id}}"
-            value="{{tracker.search_text}}"
-            class="form-control"
-            name="search_text"
-          />
-          <div class="form-text">Enter a job title you want to track</div>
+        <div class="modal-body">
+          {% if request.user.id == tracker.user_creator %}
+            <div class="mb-3">
+              <h6 class="text-success" id="succ_text_{{tracker.id}}" style="display: none">
+                Job tracker updated successfully
+              </h6>
+            </div>
+          {% endif %}
+
+          {% if request.user.id == tracker.user_creator.id %}
+            <div class="mb-3">
+              <label class="form-label">Search text</label>
+              <input type="text" minlength="3" maxlength="60" id="search_text_{{tracker.id}}" value="{{tracker.search_text}}" class="form-control" name="search_text"/>
+              <div class="form-text">Enter a job title you want to track</div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Exclude from search</label>
+              <input type="text" id="exclude_from_search_{{tracker.id}}" value="{{tracker.exclude_from_search}}" class="form-control" name="exclude_from_search"/>
+              <div class="form-text">Enter text that you don`t want to see in job description</div>
+              <div class="form-text">Please, divide each parameter with comma</div>
+            </div>
+            <button type="button" onclick="update_tracker({{tracker.id}});" class="btn btn-primary">Save</button>
+            <button type="button" onclick="delete_tracker({{tracker.id}});" style="" class="btn btn-danger">Delete</button>
+            <br />
+          {% else %}
+              <div class="mb-3">
+                  <h3>Текст запроса - {{tracker.search_text}}</h3>
+              </div>
+            {% if tracker.exclude_from_search %}
+              <div class="mb-3">
+                  <h4>Исключено из запроса - {{ tracker.exclude_from_search }}</h4>
+              </div>
+            {% endif %}
+          {% endif %}
+
+
+          <div id="tracker_stats{{tracker.id}}"></div>
         </div>
-        <div class="mb-3">
-          <label class="form-label">Exclude from search</label>
-          <input
-            type="text"
-            id="exclude_from_search_{{tracker.id}}"
-            value="{{tracker.exclude_from_search}}"
-            class="form-control"
-            name="exclude_from_search"
-          />
-          <div class="form-text">
-            Enter text that you don`t want to see in job description
-          </div>
-          <div class="form-text">Please, divide each parameter with comma</div>
-        </div>
-        <button
-          type="button"
-          onclick="update_tracker({{tracker.id}});"
-          class="btn btn-primary"
-        >
-          Save
-        </button>
-        <button
-          type="button"
-          onclick="delete_tracker({{tracker.id}});"
-          style=""
-          class="btn btn-danger"
-        >
-          Delete
-        </button>
-        <br />
-        <div id="tracker_stats{{tracker.id}}"></div>
       </div>
     </div>
   </div>
-</div>
 {% endfor %}
 
 <!-- Scripts -->
