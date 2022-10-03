@@ -1,14 +1,13 @@
 {% extends 'base.html' %} {% block content %}
-<h2>Sign up</h2>
-<form class="form-reg" method="post">
-  <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
-  {% for error in form.errors %} {{ form.errors[error] }} {% endfor %} {% for
-  field in form %}
-  <p>
-    {{ field.label_tag() }}<br />
-    {{ field }}
-  </p>
-  {% endfor %}
-  <button type="submit">Sign up</button>
-</form>
+<fieldset class="registration-login">
+  <h2 class="headline-reg-log">Sign up</h2>
+  <form class="form-reg" method="post">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+    {% for error in form.errors %} {{ form.errors[error] }} {% endfor %} {% for
+    field in form %}
+    <p>{{ field.label_tag() }} {{ field }}</p>
+    {% endfor %}
+    <button class="btn-reg" type="submit">Sign up</button>
+  </form>
+</fieldset>
 {% endblock %}

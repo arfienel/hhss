@@ -1,6 +1,5 @@
-{% extends "base.html" %} {% block content %} {% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %} {% if next %} {% if user.is_authenticated %}
+{% extends "base.html" %} {% block content %} {% if form.errors %} {% endif %}
+{% if next %} {% if user.is_authenticated %}
 <p>
   Your account doesn't have access to this page. To proceed, please login with
   an account that has access.
@@ -8,23 +7,31 @@
 {% else %}
 <p>Please login to see this page.</p>
 {% endif %} {% endif %}
-
-<form method="post" action="{{ url('login') }}">
-  <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
-  <table>
-    <tr>
-      <td>{{ form.username.label_tag() }}</td>
-      <td>{{ form.username }}</td>
-    </tr>
-    <tr>
-      <td>{{ form.password.label_tag() }}</td>
-      <td>{{ form.password }}</td>
-    </tr>
-  </table>
-  <input type="submit" value="login" />
-  <input type="hidden" name="next" value="{{ next }}" />
-</form>
-
-<p><a href="{{ url('password_reset') }}">Lost password?</a></p>
+<fieldset class="registration-login">
+  <h2 class="headline-reg-log">Login</h2>
+  <form class="form-log" method="post" action="{{ url('login') }}">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+    <p>{{ form.username.label_tag() }} {{ form.username }}</p>
+    <p>{{ form.password.label_tag() }} {{ form.password }}</p>
+    <p
+      style="
+        float: left;
+        width: 50%;
+        display: block;
+        margin-top: 16px;
+        font-size: 16px;
+      "
+    >
+      <a class="lost-password2" href="{{ url('password_reset') }}"
+        >Lost password?</a
+      >
+    </p>
+    <input class="btn-log" type="submit" value="login" />
+    <input type="hidden" name="next" value="{{ next }}" />
+  </form>
+  <p class="message-log">
+    Your username and password didn't match. Please try again.
+  </p>
+</fieldset>
 
 {% endblock %}
