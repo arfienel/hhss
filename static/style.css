@@ -121,8 +121,9 @@
   display: block;
   float: right;
 }
-.lost-password2 {
+.lost-password {
   text-decoration: none;
+  color: rgb(0, 102, 239);
 }
 .message-log {
   display: inline-block;
@@ -170,7 +171,7 @@
 /*List_trackers*/
 .form-wrapper {
   width: 700px;
-  margin: 0 auto;
+  margin: 0 auto 20px auto;
 }
 .search-bar {
   width: 100%;

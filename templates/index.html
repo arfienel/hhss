@@ -9,12 +9,7 @@
   <div class="container">
     <!-- Начало цикла для всех трекеров -->
     {% for tracker in trackers %}
-    <div class="row bg-secondary rounded mb-3 py-3">
-      <!-- Текст поиска слева -->
-      <div class="col-sm-2">
-        <h3 class="position-relative top-50 start-50 translate-middle text-center text-light text-limit">
-          {{ tracker.search_text }}
-        </h3>
+ 
       </div>
       <div class="col-sm-6">
         <ul class="list-group list-group-flush text-center" id="job_trackers">
@@ -100,9 +95,9 @@
     <div class="row bg-secondary rounded mb-3 py-3">
       <!-- Текст поиска слева -->
       <div class="col-sm-2">
-        <h3 class="position-relative top-50 start-50 translate-middle text-center text-light text-limit">
+        <h2 class="position-relative top-50 start-50 translate-middle text-center text-light text-limit">
           {{ tracker.search_text }}
-        </h3>
+        </h2>
       </div>
       <div class="col-sm-6">
         <ul class="list-group list-group-flush text-center" id="job_trackers">
@@ -125,17 +120,18 @@
       </div>
       <!-- правая часть квадрата. Количество парсеров и шестеренка -->
       <div class="col-sm-2">
-        <h5 class="position-relative top-50 start-50 translate-middle text-center text-light">
+        <h3 style="font-size: 20px;" class="position-relative top-50 start-50 translate-middle text-center text-light">
           {% if parsers[tracker.id] %} Vacancies amount
             <br />{{parsers[tracker.id].amount_of_vacancies}}
           {% else %}
             <img style="width: 50px; height: 50px" src="{{ static('loading.gif') }}"/>
           {% endif %}
-        </h5>
+        </h3>
       </div>
       <div class="col-sm-2">
+        
         <button style="border-radius: 10px" type="button" data-bs-toggle="modal" data-bs-target="#TrackerModal{{ tracker.id }}" id="modalBtn{{tracker.id}}" onclick="load_parser_data({{ tracker.id }})" class="position-relative top-50 start-50 translate-middle">
-          <img id="settingsImg{{ tracker.id }}" style="width: 60px; height: 60px" src="{{ static('settings.png') }}"/>
+          <img id="settingsImg{{ tracker.id }}" style="width: 60px; height: 60px" src="{{ static('settings.png') }}" alt="settings"/>
         </button>
       </div>
     </div>
@@ -153,9 +149,9 @@
         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"/>
 
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">
+          <h2 class="modal-title" id="exampleModalLabel">
             Creating job skill stats tracker
-          </h5>
+          </h2>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">

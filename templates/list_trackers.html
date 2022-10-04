@@ -2,12 +2,11 @@
 <div class="form-wrapper">
   <form method="get" class="search-bar">
     <input type="text" name="search" placeholder="Search" />
-    <button type="submit"><img src="../static/search.png" /></button>
+    <button type="submit"><img src="../static/search.png" alt=""/></button>
     <!-- если есть результат -->
     {% if trackers_parsers %}
   </form>
 </div>
-<br />
 
 <div class="container" id="list_trackers">
   <!-- Начало цикла для всех трекеров -->
@@ -68,6 +67,7 @@
           id="settingsImg{{ tracker_parser[0].id }}"
           style="width: 60px; height: 60px"
           src="{{ static('settings.png') }}"
+          alt="settings"
         />
       </button>
     </div>
@@ -188,7 +188,7 @@
                     <div class="row bg-secondary rounded mb-3 py-3">
                         <!-- Текст поиска слева -->
                         <div class="col-sm-2">
-                            <h3 class="position-relative top-50 start-50 translate-middle text-center text-light text-limit">${tracker['search_text']}</h3>
+                            <h2 class="position-relative top-50 start-50 translate-middle text-center text-light text-limit">${tracker['search_text']}</h2>
                         </div>
 
                         <!-- 3 навыка и их количество появлений -->
