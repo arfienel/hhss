@@ -1,8 +1,13 @@
 * {
   box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 .content {
-  margin: 2% 10% 0% 10%;
+  margin: 2% 4% 0% 4%;
+}
+.btn-margin {
+  margin-left: -12px;
+  margin-top: -15px;
 }
 /*База*/
 .need-to-log-reg {
@@ -14,7 +19,6 @@
   margin: 0 auto;
   margin-top: 200px;
 }
-
 .need-to-log-reg a {
   cursor: pointer;
   text-decoration: none;
@@ -171,7 +175,7 @@
 /*List_trackers*/
 .form-wrapper {
   width: 700px;
-  margin: 0 auto 20px auto;
+  margin: 0 auto 25px auto;
 }
 .search-bar {
   width: 100%;
@@ -216,4 +220,13 @@
   width: 45px;
   height: 45px;
   background-color: #e6e6e6;
+}
+.grey-box {
+  max-width: 100%;
+  height: 160px;
+}
+.alert-position {
+  max-width: 170px;
+  width: 100%;
+  margin: 0 auto;
 }
