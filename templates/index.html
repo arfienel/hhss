@@ -2,8 +2,8 @@
 <div class="content">
   <!-- если есть результат -->
   {% if trackers %}
-  <h1 style="text-align: center">Your created trackers</h1>
-  <br />
+  <h1 style="text-align: center;margin-bottom: 20px;">Your created trackers</h1>
+
 
   <div class="container">
     <!-- Начало цикла для всех трекеров -->
@@ -113,8 +113,7 @@
 <!-- subscribed trackers -->
 {% if subscribed_trackers %}
 
-<h1 style="text-align: center">Your subscribed trackers</h1>
-<br />
+<h1 style="text-align: center;margin-bottom: 20px;margin-top: 20px;">Your subscribed trackers</h1>
 
 <div class="container">
   <!-- Начало цикла для всех трекеров -->
@@ -179,7 +178,7 @@
       </button>
     </div>
   </div>
-  {% endfor %} {% endif %}
+{% endfor %} {% endif %}</div>
 
   <!-- Modals -->
   <!-- Модалка создания трекера  -->
@@ -213,7 +212,7 @@
           <div class="modal-body">
             <div class="mb-3">
               <label class="form-label">Search text</label>
-              <input type="text" class="form-control" name="search_text" />
+              <input type="text"  class="form-control" name="search_text" />
               <div class="form-text">Enter a job title you want to track</div>
             </div>
 

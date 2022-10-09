@@ -9,6 +9,9 @@
   margin-left: -12px;
   margin-top: -15px;
 }
+.container:last-of-type {
+  border-bottom: 2px solid #dee2e6;
+}
 /*База*/
 .need-to-log-reg {
   border: 1px solid #c2c4c9;
@@ -175,7 +178,7 @@
 /*List_trackers*/
 .form-wrapper {
   width: 700px;
-  margin: 0 auto 25px auto;
+  margin: 0 auto 27px auto;
 }
 .search-bar {
   width: 100%;
@@ -222,7 +225,7 @@
   background-color: #e6e6e6;
 }
 .grey-box {
-  max-width: 100%;
+  max-width: 102%;
   height: 160px;
 }
 .alert-position {
