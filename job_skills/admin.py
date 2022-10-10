@@ -17,4 +17,5 @@ class ParserDataAdmin(admin.ModelAdmin):
 admin.site.register(JobTracker, JobTrackerAdmin)
 admin.site.register(SkillData, SkillDataAdmin)
 admin.site.register(ParserData, ParserDataAdmin)
+admin.site.register(Area)
 # Register your models here.

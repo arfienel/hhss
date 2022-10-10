@@ -31,3 +31,4 @@ types-cryptography==3.3.23
 ujson==5.5.0
 urllib3==1.26.12
 yarl==1.8.1
+django-debug-toolbar==3.7.0

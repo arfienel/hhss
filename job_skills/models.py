@@ -2,6 +2,19 @@ import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.timezone import now
+from django.contrib.postgres.fields import ArrayField
+
+
+class Area(models.Model):
+    hh_id = models.IntegerField(unique=True)
+    name = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return f'<Area {self.name} {self.hh_id}>'
+
+    class Meta:
+        ordering = ['name']
+        unique_together = ('hh_id', 'name')
 
 
 class JobTracker(models.Model):
@@ -12,6 +25,7 @@ class JobTracker(models.Model):
     exclude_from_search = models.CharField(max_length=100, default='', blank=True)
     hh_url = models.URLField(default='https://hh.ru')
     subscribers = models.ManyToManyField(User, related_name='job_tracker_subs')
+    areas = ArrayField(models.IntegerField(), default=[])
 
     def save(self, *args, **kwargs):
         if not kwargs.pop('skip_date_modify', False):
