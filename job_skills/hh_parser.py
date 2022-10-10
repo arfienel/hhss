@@ -12,6 +12,7 @@ import sqlalchemy as sa
 from sqlalchemy.ext.automap import automap_base
 from aiohttp import ClientSession
 from aiopg.sa import create_engine
+from psycopg2.errors import UniqueViolation
 
 
 def setup_logger(name: str, log_file: str, level: int):
@@ -46,11 +47,12 @@ else:
         }
 
 
-async def get_vacancies(conn: object, search: str, tracker_id: int, excluded_from_search: str = 0) -> None:
+async def get_vacancies(conn: object, search: str, tracker_id: int, excluded_from_search: str = 0, areas: list = (0)) -> None:
     """
     ассинхронная функция для парсинга hh на вакансии и заполнения ими БД
     """
-    r = requests.get(f'https://api.hh.ru/vacancies/', params={'text': f'{search}', 'per_page': '0'}, headers=HEADERS)
+    r = requests.get(f'https://api.hh.ru/vacancies/', params=(('text', f'{search}'), ('per_page', '0'), *(('area', area) for area in areas)), headers=HEADERS)
+    print(r.url)
     number_of_vacancies = r.json()['found']
     page = 0
     id_of_vacancies = []
@@ -58,7 +60,7 @@ async def get_vacancies(conn: object, search: str, tracker_id: int, excluded_fro
     async with ClientSession() as session:
         for iteration in range(number_of_vacancies // 100 + 1):
             async with session.get(f'https://api.hh.ru/vacancies/',
-                                   params={'text': f'{search}', 'excluded_text': excluded_from_search, 'per_page': '100', 'page': f'{page}'}, headers=HEADERS) as vacancies:
+                                   params=(('text', f'{search}'), ('excluded_text', excluded_from_search), ('per_page', '100'), ('page', f'{page}'), *(('area', area) for area in areas)), headers=HEADERS) as vacancies:
                 try:
                     vacancies_json = await vacancies.json()
                     for item in vacancies_json['items']:
@@ -107,12 +109,45 @@ async def get_all_trackers(conn):
     ассинхроная функция для получения всех трекеров из бд
     """
     result = []
-    async for row in conn.execute(select(JobTracker.search_text, JobTracker.exclude_from_search, JobTracker.id)):
+    async for row in conn.execute(select(JobTracker.search_text, JobTracker.exclude_from_search, JobTracker.id, JobTracker.areas)):
         result.append(row)
     return result
 
 
-async def get_tracker(conn, tracker_id):
+async def update_all_areas(conn):
+    """
+
+    :param conn:
+    """
+    areas = []
+
+    def unnest(nested_areas):
+        for k, v in nested_areas.items():
+            if k == 'id':
+                hh_id = v
+            if k == 'name':
+                name = v
+            if k == 'areas':
+                areas.append((hh_id, name))
+                for area in v:
+                    unnest(area)
+
+    r = requests.get(f'https://api.hh.ru/areas/')
+    for item in r.json():
+        unnest(item)
+
+    for area in areas:
+        while True:
+            try:
+                await conn.execute(Area.insert().values(hh_id=area[0], name=area[1]))
+                break
+            except RuntimeError:
+                await asyncio.sleep(5)
+            except UniqueViolation:
+                break
+
+
+async def get_tracker(conn, tracker_id: int):
     """
     ассинхроная функция для получения всех трекеров из бд
     """
@@ -121,12 +156,11 @@ async def get_tracker(conn, tracker_id):
 
 
 async def main(tracker_id: int = None):
-    global today, ParserData, SkillData, JobTracker
+    global today, ParserData, SkillData, JobTracker, Area
     """
     Основная функция для запуска парсера
     :type tracker_id: id трекера который надо спарсить, если не указать, то будут парсится все трекеры из бд
     """
-
 
     info_logger = setup_logger('parser_info_logger', 'logs/parser_info_log.log', logging.INFO)
 
@@ -148,15 +182,21 @@ async def main(tracker_id: int = None):
     SkillData = sa.Table('job_skills_skilldata', metadata,
                          autoload=True, autoload_with=sqlalchemy_engine)
 
+    Area = sa.Table('job_skills_area', metadata,
+                         autoload=True, autoload_with=sqlalchemy_engine)
+
     JobTracker = Base.classes.job_skills_jobtracker
     dsn = 'dbname=hhss user=hhss_admin password=coolpas123 host=db'
     today = datetime.today()
 
     async def start_parsing(tracker: list):
-        print(tracker)
+        """
+        ассинхроный запуск парсинга трекера и его логирование
+        """
         try:
             start_time = datetime.now()
-            number_of_vacancies = await get_vacancies(conn, tracker[0], tracker[2], tracker[1])
+            print(tracker)
+            number_of_vacancies = await get_vacancies(conn, tracker[0], tracker[2], tracker[1], tracker[3])
         except Exception:
             error_logger.exception(f'JobTracker({tracker[2]},{tracker[0]}) failed')
         else:
@@ -166,6 +206,7 @@ async def main(tracker_id: int = None):
     async with create_engine(dsn=dsn) as engine:
         async with engine.acquire() as conn:
             if not tracker_id:
+                await update_all_areas(conn)
                 trackers = await get_all_trackers(conn)
                 await asyncio.gather(*[asyncio.ensure_future(start_parsing(tracker)) for tracker in trackers])
 
@@ -173,7 +214,7 @@ async def main(tracker_id: int = None):
                 try:
                     start_time = datetime.now()
                     tracker = await get_tracker(conn, tracker_id)
-                    number_of_vacancies = await get_vacancies(conn, tracker[1], tracker[0], tracker[3])
+                    number_of_vacancies = await get_vacancies(conn, tracker[1], tracker[0], tracker[3], tracker[7])
                 except Exception:
                     error_logger.exception(f'{tracker_id} failed')
                 else:
@@ -182,6 +223,7 @@ async def main(tracker_id: int = None):
 
 def parse_one_tracker(tracker_id: int = None):
     asyncio.run(main(tracker_id=tracker_id))
+
 
 if __name__ == "__main__":
     asyncio.run(main())

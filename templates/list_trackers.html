@@ -115,8 +115,14 @@
               Исключено из запроса - {{ tracker_parser[0].exclude_from_search }}
             </h4>
           </div>
-          {% endif %} {% if request.user.id == tracker_parser[0].user_creator_id
-          %} {% elif request.user.id in tracker_parser[0].subscribers %}
+          {% endif %}
+          <div class="mb-3">
+          {% for area in tracker_parser[3] %}
+            <p>{{ area.name }}</p>
+          {% endfor %}
+          </div>
+          {% if request.user.id == tracker_parser[0].user_creator_id %}
+          {% elif request.user.id in tracker_parser[0].subscribers %}
           <button
             type="button"
             onclick="unsubscribe_from_tracker({{tracker_parser[0].id}});"
@@ -168,6 +174,12 @@
                     tracker = JSON.parse(array[0])[0]['fields'];
                     parser = JSON.parse(array[1])[0]['fields'];
                     skills = JSON.parse(array[2]);
+                    areas_fields = JSON.parse(array[3]);
+                    areas = [];
+                    areas_fields.forEach(area => {
+                      areas.push(area['fields']['name']);
+                    });
+                    console.log(areas,tracker);
                     tracker_id = JSON.parse(array[0])[0]['pk'];
 
                     if(skills[0]){
@@ -207,6 +219,10 @@
                     `;
                     container_to_append.innerHTML += html_to_insert;
 
+
+
+
+                    // модалка трекера
                     modal_exclude_from_search_part = ``;
                     if(tracker['exclude_from_search']){
                         modal_exclude_from_search_part = `
@@ -215,7 +231,6 @@
                             </div>
                         `;
                     };
-                    console.log(tracker);
 
                     if(tracker['user_creator'] == {{request.user.id}}){
                       modal_subscribe_part = '';
@@ -245,7 +260,8 @@
                                     <div class="mb-3">
                                         <h3>Текст запроса - ${tracker['search_text']}</h3>
                                     </div>
-                                    ` + modal_exclude_from_search_part + `
+                                    ` + modal_exclude_from_search_part + `<br>
+                                    ` + areas.toString() + `<br>
                                     ` + modal_subscribe_part + `
                                       <br>
                                       <br>

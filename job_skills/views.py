@@ -47,6 +47,7 @@ def index(request):
             'trackers': trackers,
             'parsers': parsers,
             'skills': skills,
+            'areas': Area.objects.all()
         }
     else:
         context = {
@@ -54,6 +55,7 @@ def index(request):
             'trackers': [],
             'parsers': [],
             'skills': [],
+            'areas': Area.objects.all()
         }
     return render(request, 'index.html', context)
 
@@ -64,15 +66,15 @@ def list_trackers(request):
     else:
         search_field = ''
     trackers_parsers = []
-    trackers = JobTracker.objects.filter(search_text__icontains=search_field).order_by('-modified_date')[:6]
+    trackers = JobTracker.objects.filter(search_text__icontains=search_field).order_by('-modified_date', 'pk')[:6].all()
 
     for tracker in trackers:
         tracker_to_append = tracker.__dict__
         tracker_to_append['subscribers'] = [sub[0] for sub in tracker.subscribers.values_list('id')]
+        areas = Area.objects.filter(hh_id__in=tracker.areas)
         parser = ParserData.objects.filter(tracker_id=tracker.id)[0].__dict__
         skills = SkillData.objects.filter(parser_data=parser['id'])[:3].values()
-
-        trackers_parsers.append((tracker_to_append, parser, skills))
+        trackers_parsers.append((tracker_to_append, parser, skills, areas))
 
     return render(request, 'list_trackers.html', {'trackers_parsers': trackers_parsers})
 
@@ -89,12 +91,13 @@ def list_more_trackers(request):
         page = 1
 
     data = []
-    trackers = JobTracker.objects.filter(search_text__icontains=search_field).order_by('-modified_date')[page*6:page*6+6]
+    trackers = JobTracker.objects.filter(search_text__icontains=search_field).order_by('-modified_date', 'pk')[page*6:page*6+6].all()
 
     for tracker in trackers:
+        areas = Area.objects.filter(hh_id__in=tracker.areas)
         parser = ParserData.objects.filter(tracker_id=tracker.id)[:1]
         skills = SkillData.objects.filter(parser_data=parser[0].id)[:3]
-        data.append((serialize('json', [tracker, ]), serialize('json', parser), serialize('json', skills)))
+        data.append((serialize('json', [tracker, ]), serialize('json', parser), serialize('json', skills), serialize('json', areas)))
     return JsonResponse(data, safe=False, content_type='application/json')
 
 
@@ -122,6 +125,34 @@ def unsubscribe_from_tracker(request):
         return HttpResponse('good')
 
 
+def validate_search_text(request, tracker):
+    search_text = request.POST['search_text']
+    if len(search_text) < 2:
+        if any(['js', '1c', '1с', 'c#']) == search_text.lower():
+            pass
+        else:
+            request.session['error_message'] = 'minimum 3 letters'
+            return 0
+
+    return search_text
+
+
+def validate_areas(request, tracker):
+    try:
+        if 'area[]' in request.POST:
+            area = request.POST.getlist('area[]')
+        else:
+            area = []
+        areas = [int(ar) for ar in area]
+    except Exception as exc:
+        # добавить логгер и ошибки попроавить
+        print(exc)
+        request.session['error_message'] = 'incorrectly selected areas'
+        return 0
+    else:
+        return areas
+
+
 @login_required
 def create_tracker(request):
     if request.method == "POST":
@@ -132,10 +163,11 @@ def create_tracker(request):
                 request.session['error_message'] = 'You already created 5 trackers, which is maximum, try to delete or update other trackers'
                 return redirect('index')
 
-        search_text = request.POST['search_text']
-        exclude_from_search = request.POST['exclude_from_search']
-        new_job_tracker = JobTracker(search_text=search_text, exclude_from_search=exclude_from_search,
-                                     user_creator=request.user)
+        new_job_tracker = JobTracker()
+        validate_search_text(request, new_job_tracker)
+        validate_areas(request, new_job_tracker)
+        new_job_tracker.exclude_from_search = request.POST['exclude_from_search']
+        new_job_tracker.user_creator = request.user
         new_job_tracker.save()
         thread = threading.Thread(target=parse_one_tracker, args=[new_job_tracker.id])
         thread.start()
@@ -160,8 +192,6 @@ def delete_tracker(request):
         elif date_difference <= timedelta(days=3):
             request.session['error_message'] = f'wait {str((timedelta(days=3) - date_difference).days)} days, before delete tracker'
             return HttpResponse(request.session['error_message'])
-
-
         tracker_to_delete.delete()
         return HttpResponse(f'Successfully deleted {tracker_to_delete.id, tracker_to_delete.search_text}')
     else:
@@ -184,10 +214,14 @@ def update_tracker(request):
         elif date_difference <= timedelta(days=3):
             request.session['error_message'] = f'wait {str((timedelta(days=3) - date_difference).days)} days, before update tracker'
             return HttpResponse(request.session['error_message'])
-
-        tracker_to_update.search_text = request.POST['search_text']
+        tracker_to_update.search_text = validate_search_text(request, tracker_to_update)
+        tracker_to_update.areas = validate_areas(request, tracker_to_update)
+        if tracker_to_update.search_text == 0 or tracker_to_update.areas == 0:
+            return redirect('index')
         tracker_to_update.exclude_from_search = request.POST['exclude_from_search']
         tracker_to_update.save()
+        thread = threading.Thread(target=parse_one_tracker, args=[tracker_to_update.id])
+        thread.start()
         return HttpResponse(f'Successfully updated {tracker_to_update.id, tracker_to_update.search_text}')
     else:
         raise HttpResponseNotAllowed
