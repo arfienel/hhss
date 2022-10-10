@@ -211,36 +211,31 @@
 </div>
   </div>
 
+
 <!-- модалка каждого трекера -->
 {% for tracker in list(trackers) + subscribed_trackers %}
   <div class="modal fade" id="trackerModal{{ tracker.id }}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
-        <form method="POST" action="{{ url('create_tracker') }}">
-          <input
-            type="hidden"
-            name="csrfmiddlewaretoken"
-            value="{{ csrf_token }}"
-          />
+        <div class="modal-header">
+          <h4 class="modal-title headline-limit"><a href="{{ tracker.hh_url }}">{{ tracker.search_text }}</a></h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          {% if request.user.id == tracker.user_creator %}
+            <div class="mb-3">
+              <h6 class="text-success" id="succ_text_{{tracker.id}}" style="display: none">
+                Job tracker updated successfully
+              </h6>
+            </div>
+          {% endif %}
 
-          <div class="modal-header">
-            <h2 class="modal-title" id="exampleModalLabel">
-              Creating job skill stats tracker
-            </h2>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
+          {% if request.user.id == tracker.user_creator.id %}
             <div class="mb-3">
               <label class="form-label">Search text</label>
-              <input type="text"  class="form-control" name="search_text" />
+              <input type="text" minlength="3" maxlength="60" id="search_text_{{tracker.id}}" value="{{tracker.search_text}}" class="form-control" name="search_text"/>
               <div class="form-text">Enter a job title you want to track</div>
             </div>
-
             <div class="mb-3">
               <label class="form-label">Exclude from search</label>
               <input type="text" id="exclude_from_search_{{tracker.id}}" value="{{tracker.exclude_from_search}}" class="form-control" name="exclude_from_search"/>
@@ -290,75 +285,12 @@
           {% endif %}
           <div id="tracker_stats{{tracker.id}}"></div>
         </div>
-        {% endif %} {% if request.user.id == tracker.user_creator.id %}
-        <div class="mb-3">
-          <label class="form-label">Search text</label>
-          <input
-            type="text"
-            minlength="3"
-            maxlength="60"
-            id="search_text_{{tracker.id}}"
-            value="{{tracker.search_text}}"
-            class="form-control"
-            name="search_text"
-          />
-          <div class="form-text">Enter a job title you want to track</div>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Exclude from search</label>
-          <input
-            type="text"
-            id="exclude_from_search_{{tracker.id}}"
-            value="{{tracker.exclude_from_search}}"
-            class="form-control"
-            name="exclude_from_search"
-          />
-          <div class="form-text">
-            Enter text that you don`t want to see in job description
-          </div>
-          <div class="form-text">Please, divide each parameter with comma</div>
-        </div>
-        <button
-          type="button"
-          onclick="update_tracker({{tracker.id}});"
-          class="btn btn-primary"
-        >
-          Save
-        </button>
-        <button
-          type="button"
-          onclick="delete_tracker({{tracker.id}});"
-          style=""
-          class="btn btn-danger"
-        >
-          Delete
-        </button>
-        <br />
-        {% else %}
-        <div class="mb-3">
-          <h3>Текст запроса - {{tracker.search_text}}</h3>
-        </div>
-        {% if tracker.exclude_from_search %}
-        <div class="mb-3">
-          <h4>Исключено из запроса - {{ tracker.exclude_from_search }}</h4>
-        </div>
-        {% endif %} {% endif %}
-        <button
-          type="button"
-          onclick="unsubscribe_from_tracker({{tracker.id}});"
-          id="sub_button{{tracker.id}}"
-          style=""
-          class="btn btn-danger"
-        >
-          unsubscribe
-        </button>
-
-        <div id="tracker_stats{{tracker.id}}"></div>
       </div>
     </div>
   </div>
-</div>
 {% endfor %}
+
+
 <!-- Scripts -->
 <script>
     $('#createTrackerArea').select2({
