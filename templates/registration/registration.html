@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %}
 <fieldset class="registration-login">
-  <h2 class="headline-reg-log">Sign up</h2>
+  <h1 class="headline-reg-log">Sign up</h1>
   <form class="form-reg" method="post">
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
     {% for error in form.errors %} {{ form.errors[error] }} {% endfor %} {% for

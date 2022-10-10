@@ -1,8 +1,16 @@
 * {
   box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 .content {
-  margin: 2% 10% 0% 10%;
+  margin: 2% 4% 0% 4%;
+}
+.btn-margin {
+  margin-left: -12px;
+  margin-top: -15px;
+}
+.container:last-of-type {
+  border-bottom: 2px solid #dee2e6;
 }
 /*База*/
 .need-to-log-reg {
@@ -14,7 +22,6 @@
   margin: 0 auto;
   margin-top: 200px;
 }
-
 .need-to-log-reg a {
   cursor: pointer;
   text-decoration: none;
@@ -121,8 +128,9 @@
   display: block;
   float: right;
 }
-.lost-password2 {
+.lost-password {
   text-decoration: none;
+  color: rgb(0, 102, 239);
 }
 .message-log {
   display: inline-block;
@@ -170,7 +178,7 @@
 /*List_trackers*/
 .form-wrapper {
   width: 700px;
-  margin: 0 auto;
+  margin: 0 auto 27px auto;
 }
 .search-bar {
   width: 100%;
@@ -215,4 +223,13 @@
   width: 45px;
   height: 45px;
   background-color: #e6e6e6;
+}
+.grey-box {
+  max-width: 102%;
+  height: 160px;
+}
+.alert-position {
+  max-width: 170px;
+  width: 100%;
+  margin: 0 auto;
 }

@@ -2,17 +2,14 @@
 <div class="form-wrapper">
   <form method="get" class="search-bar">
     <input type="text" name="search" placeholder="Search" />
-    <button type="submit"><img src="../static/search.png" /></button>
-    <!-- если есть результат -->
-    {% if trackers_parsers %}
+    <button type="submit"><img src="../static/search.png" alt="" /></button>
   </form>
 </div>
-<br />
-
+<div class="alert-position" id="search-alert">{% if trackers_parsers %}</div>
 <div class="container" id="list_trackers">
   <!-- Начало цикла для всех трекеров -->
   {% for tracker_parser in trackers_parsers %}
-  <div class="row bg-secondary rounded mb-3 py-3">
+  <div class="row bg-secondary rounded mb-3 py-3 grey-box">
     <!-- Текст поиска слева -->
     <div class="col-sm-2">
       <h3
@@ -68,6 +65,7 @@
           id="settingsImg{{ tracker_parser[0].id }}"
           style="width: 60px; height: 60px"
           src="{{ static('settings.png') }}"
+          alt="settings"
         />
       </button>
     </div>
@@ -75,7 +73,11 @@
   {% endfor %}
 
   <!-- если результата нет-->
-  {% else %} sorry, nihuya net {% endif %}
+  {% else %}
+  <div class="alert alert-warning" role="alert">
+    <p style="margin-bottom: 0">Nothing was found</p>
+  </div>
+  {% endif %}
 
   <!-- модалка каждого трекера -->
   {% for tracker_parser in trackers_parsers %}
@@ -146,7 +148,6 @@
           <br />
           <div id="tracker_stats{{ tracker_parser[0].id }}"></div>
         </div>
-
       </div>
     </div>
   </div>
@@ -186,7 +187,6 @@
                     html_skills_part = `
                     <div class="col-sm-6">
                     <ul class="list-group list-group-flush text-center" id="job_trackers">
-
                                 <li class="bg-secondary list-group-item text-light">${skills[0]['fields']['name']} - ${skills[0]['fields']['amount']}</li>
                                 <li class="bg-secondary list-group-item text-light">${skills[1]['fields']['name']} - ${skills[1]['fields']['amount']}</li>
                                 <li class="bg-secondary list-group-item text-light">${skills[2]['fields']['name']} - ${skills[2]['fields']['amount']}</li>
@@ -197,22 +197,17 @@
                     html_skills_part = `<div class="col-sm-6"></div>`;
                     };
                     html_to_insert = `
-                    <div class="row bg-secondary rounded mb-3 py-3">
+                    <div class="row bg-secondary rounded mb-3 py-3 grey-box">
                         <!-- Текст поиска слева -->
                         <div class="col-sm-2">
-                            <h3 class="position-relative top-50 start-50 translate-middle text-center text-light text-limit">${tracker['search_text']}</h3>
+                            <h2 class="position-relative top-50 start-50 translate-middle text-center text-light text-limit">${tracker['search_text']}</h2>
                         </div>
-
                         <!-- 3 навыка и их количество появлений -->
                         ` + html_skills_part + `
-
                         <!-- правая часть квадрата. Количество парсеров и шестеренка -->
                         <div class="col-sm-2">
                             <h5 class="position-relative top-50 start-50 translate-middle text-center text-light">
-
                                     Vacancies amount <br>${parser['amount_of_vacancies']}
-
-
                             </h5>
                         </div>
                         <div class="col-sm-2">
@@ -265,14 +260,12 @@
                                     <div class="mb-3">
                                         <h3>Текст запроса - ${tracker['search_text']}</h3>
                                     </div>
-
                                     ` + modal_exclude_from_search_part + `<br>
                                     ` + areas.toString() + `<br>
                                     ` + modal_subscribe_part + `
                                       <br>
                                       <br>
                                     <div id="tracker_stats${tracker_id}">
-
                                     </div>
                               </div>
                         </div>
@@ -348,6 +341,12 @@
       },
     });
   }
+</script>
+
+<script>
+  $(function () {
+    $("#search-alert").delay(3000).slideUp(200);
+  });
 </script>
 
 {% endblock %}

@@ -8,7 +8,7 @@
 <p>Please login to see this page.</p>
 {% endif %} {% endif %}
 <fieldset class="registration-login">
-  <h2 class="headline-reg-log">Log in</h2>
+  <h1 class="headline-reg-log">Log in</h1>
   <form class="form-log" method="post" action="{{ url('login') }}">
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
     <p>{{ form.username.label_tag() }} {{ form.username }}</p>
@@ -22,7 +22,7 @@
         font-size: 16px;
       "
     >
-      <a class="lost-password2" href="{{ url('password_reset') }}"
+      <a class="lost-password" href="{{ url('password_reset') }}"
         >Lost password?</a
       >
     </p>
