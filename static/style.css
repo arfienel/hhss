@@ -17,6 +17,38 @@ html {
 .container:last-of-type {
   border-bottom: 2px solid #dee2e6;
 }
+/*index*/
+.form-group{
+  padding: 10px;
+}
+.form-group p{
+  margin-bottom: 3px;
+  font-weight: 700;
+  margin-top: 5px;
+}
+.form-mrg {
+
+}
+.form-group label{
+  padding-top: 1.5px;
+  padding-bottom: 1.5px;
+  display: flex;
+  align-items: center;
+}
+.form-flex{
+  display: inline-block;
+}
+.form-group input{
+  margin-right: 5px;
+  width: 15px;
+  height: 15px;
+}
+.form-left{
+  float: left;
+  display: inline-block;
+  margin-right: 50px;
+}
+
 /*База*/
 .need-to-log-reg {
   border: 1px solid #c2c4c9;
@@ -132,11 +164,11 @@ header .container-header {
   font-size: 18px;
   padding: 10px;
   display: block;
-  border-radius: 15px;
+  border-radius: 10px;
   border: 1.5px solid #c2c4c9;
   background-color: #f2f2f2;
   width: 100%;
-  margin: 10px 0 0 0;
+  margin-top: 10px;
   height: 45px;
   box-sizing: border-box;
   outline: none;
@@ -153,7 +185,7 @@ header .container-header {
   font-size: 18px;
   padding: 10px;
   display: block;
-  border-radius: 15px;
+  border-radius: 10px;
   border: 1.5px solid #c2c4c9;
   background-color: #f2f2f2;
   width: 100%;
@@ -234,7 +266,7 @@ header .container-header {
 /*List_trackers*/
 .form-wrapper {
   width: 700px;
-  margin: 0 auto 27px auto;
+  margin: 27px auto 27px auto;
 }
 .search-bar {
   width: 100%;
