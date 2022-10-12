@@ -128,7 +128,7 @@ def unsubscribe_from_tracker(request):
         return HttpResponse('good')
 
 
-def validate_search_text(request, tracker):
+def validate_search_text(request):
     search_text = request.POST['search_text']
     if len(search_text) < 2:
         if any(['js', '1c', '1с', 'c#']) == search_text.lower():
@@ -140,7 +140,7 @@ def validate_search_text(request, tracker):
     return search_text
 
 
-def validate_areas(request, tracker):
+def validate_areas(request):
     try:
         if 'area[]' in request.POST:
             area = request.POST.getlist('area[]')
@@ -167,8 +167,10 @@ def create_tracker(request):
                 return redirect('index')
 
         new_job_tracker = JobTracker()
-        validate_search_text(request, new_job_tracker)
-        validate_areas(request, new_job_tracker)
+        new_job_tracker.search_text = validate_search_text(request)
+        new_job_tracker.areas = validate_areas(request)
+        if new_job_tracker.search_text == 0 or new_job_tracker.areas == 0:
+            return redirect('index')
         new_job_tracker.exclude_from_search = request.POST['exclude_from_search']
         new_job_tracker.user_creator = request.user
         new_job_tracker.save()
@@ -217,8 +219,8 @@ def update_tracker(request):
         elif date_difference <= timedelta(days=3):
             request.session['error_message'] = f'wait {str((timedelta(days=3) - date_difference).days)} days, before update tracker'
             return HttpResponse(request.session['error_message'])
-        tracker_to_update.search_text = validate_search_text(request, tracker_to_update)
-        tracker_to_update.areas = validate_areas(request, tracker_to_update)
+        tracker_to_update.search_text = validate_search_text(request)
+        tracker_to_update.areas = validate_areas(request)
         if tracker_to_update.search_text == 0 or tracker_to_update.areas == 0:
             return redirect('index')
         tracker_to_update.exclude_from_search = request.POST['exclude_from_search']
