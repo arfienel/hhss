@@ -69,13 +69,16 @@ def list_trackers(request):
     trackers = JobTracker.objects.filter(search_text__icontains=search_field).order_by('-modified_date', 'pk')[:6].all()
 
     for tracker in trackers:
-        tracker_to_append = tracker.__dict__
-        tracker_to_append['subscribers'] = [sub[0] for sub in tracker.subscribers.values_list('id')]
-        areas = Area.objects.filter(hh_id__in=tracker.areas)
-        parser = ParserData.objects.filter(tracker_id=tracker.id)[0].__dict__
-        skills = SkillData.objects.filter(parser_data=parser['id'])[:3].values()
-        trackers_parsers.append((tracker_to_append, parser, skills, areas))
-
+        try:
+            tracker_to_append = tracker.__dict__
+            tracker_to_append['subscribers'] = [sub[0] for sub in tracker.subscribers.values_list('id')]
+            areas = Area.objects.filter(hh_id__in=tracker.areas)
+            parser = ParserData.objects.filter(tracker_id=tracker.id)[0].__dict__
+            skills = SkillData.objects.filter(parser_data=parser['id'])[:3].values()
+            trackers_parsers.append((tracker_to_append, parser, skills, areas))
+        except IndexError:
+            # logger ebanut suda
+            pass
     return render(request, 'list_trackers.html', {'trackers_parsers': trackers_parsers})
 
 
