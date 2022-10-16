@@ -37,7 +37,7 @@
       <!-- правая часть квадрата. Количество парсеров и шестеренка -->
       <div class="col-sm-2">
         <h5
-          class="position-relative top-50 start-50 translate-middle text-center text-light"
+          class="position-relative top-50 start-50 translate-middle text-center text-light text-border"
         >
           {% if parsers[tracker.id] %} Vacancies amount
           <br />
@@ -77,21 +77,19 @@
   {% else %}
   <!-- если чел зареган -->
   {% if request.user.is_authenticated %}
-  <div class="">
-    <h1 style="text-align: center; margin-top: 10%">
+  <div class="welcome">
+    <h1>
       Seems like you don`t tracking jobs yet
     </h1>
     <h2 style="text-align: center; cursor: pointer" class="text-primary">
-
       <a data-bs-toggle="modal" data-bs-target="#createTrackerModal"
         >Start tracking</a
       >
-
     </h2>
   </div>
   <!-- если чел НЕ зареган-->
   {% else %}
-  <div class="need-to-log-reg">
+  <div class="welcome">
     <h1>To create your own job skills tracker,</h1>
     <h2>
       you need to
@@ -146,8 +144,10 @@
           {% if parsers[tracker.id] %} Vacancies amount
             <br />{{parsers[tracker.id].amount_of_vacancies}}
           {% else %}
+          <div class="sherst">
             <img style="width: 50px; height: 50px" src="{{ static('loading.gif') }}"/>
-          {% endif %}
+          </div>
+            {% endif %}
         </h5>
       </div>
       <div class="col-sm-2">
@@ -164,7 +164,7 @@
 <div class="modal fade" id="createTrackerModal" tabindex="-1"  aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form method="POST" action="{{ url('create_tracker') }}">
+      <form class="modal-form" method="POST" action="{{ url('create_tracker') }}">
         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"/>
 
         <div class="modal-header">
@@ -173,7 +173,7 @@
           </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <fo class="modal-body">
           <div class="mb-3">
             <label class="form-label">Search text</label>
             <input type="text" class="form-control" name="search_text" />
@@ -184,9 +184,8 @@
             <label class="form-label">Exclude from search</label>
             <input type="text" class="form-control" name="exclude_from_search"/>
             <div class="form-text">
-              Enter text that you don`t want to see in job description
+              Enter text that you don`t want to see in job description. Divide each parameter with comma
             </div>
-            <div class="form-text">Divide each parameter with comma</div>
           </div>
 
           <div class="mb-3">
@@ -200,12 +199,6 @@
           </div>
           <div class="form-group">
             <div class="form-left">
-              <p>Регион</p>
-              <label for="russia"><input type="checkbox" value="russia" name="region">Россия</label>
-              <label for="moscow"><input type="checkbox" value="moscow" name="region" >Москва</label>
-              <label for="st-peterburg"><input type="checkbox" value="st-petersburg" name="region">Санк-Петербург</label>
-              <label for="kazakhstan"><input type="checkbox" value="kazakhstan" name="region">Казахстан</label>
-              <label for="almaty"><input type="checkbox" value="almaty" name="region">Алматы</label>
               <p>Тип занятости</p>
               <label for="full-time"><input type="checkbox" value="full-time" name="employment-type">Полная занятость</label>
               <label for="partial"><input type="checkbox" value="partial" name="employment-type">Частичная занятость</label>
@@ -266,8 +259,7 @@
             <div class="mb-3">
               <label class="form-label">Exclude from search</label>
               <input type="text" id="exclude_from_search_{{tracker.id}}" value="{{tracker.exclude_from_search}}" class="form-control" name="exclude_from_search"/>
-              <div class="form-text">Enter text that you don`t want to see in job description</div>
-              <div class="form-text">Please, divide each parameter with comma</div>
+              <div class="form-text">Enter text that you don`t want to see in job description. Please, divide each parameter with comma</div>
             </div>
           <div class="mb-3">
             <label class="form-label">Select your areas to search</label><br>
@@ -281,13 +273,7 @@
             subscribers - {{ tracker.subscribers.count() }}
           <br>
           <div class="form-group">
-            <div class="form-left">
-              <p>Регион</p>
-              <label for="russia"><input type="checkbox" value="russia" name="region">Россия</label>
-              <label for="moscow"><input type="checkbox" value="moscow" name="region" >Москва</label>
-              <label for="st-peterburg"><input type="checkbox" value="st-petersburg" name="region">Санк-Петербург</label>
-              <label for="kazakhstan"><input type="checkbox" value="kazakhstan" name="region">Казахстан</label>
-              <label for="almaty"><input type="checkbox" value="almaty" name="region">Алматы</label>
+            <div class="form-left2">
               <p>Тип занятости</p>
               <label for="full-time"><input type="checkbox" value="full-time" name="employment-type">Полная занятость</label>
               <label for="partial"><input type="checkbox" value="partial" name="employment-type">Частичная занятость</label>
@@ -295,12 +281,14 @@
               <label for="volunteering"><input type="checkbox" value="volunteering" name="employment-type">Волонтерство</label>
               <label for="internship"><input type="checkbox" value="internship" name="employment-type">Стажировка</label>
             </div>
-            <p>График работы</p>
-            <label for="full-day"><input type="checkbox" value="full-day" name="timetable">Полный день</label>
-            <label for="remote"><input type="checkbox" value="remote" name="timetable">Удаленная работа</label>
-            <label for="flexible"><input type="checkbox" value="flexible" name="timetable">Гибкий график</label>
-            <label for="replaceable"><input type="checkbox" value="replaceable" name="timetable">Сменный график</label>
-            <label for="shift"><input type="checkbox" value="shift" name="timetable">Вахтовый метод</label>
+            <div class="float-left">
+              <p>График работы</p>
+              <label for="full-day"><input type="checkbox" value="full-day" name="timetable">Полный день</label>
+              <label for="remote"><input type="checkbox" value="remote" name="timetable">Удаленная работа</label>
+              <label for="flexible"><input type="checkbox" value="flexible" name="timetable">Гибкий график</label>
+              <label for="replaceable"><input type="checkbox" value="replaceable" name="timetable">Сменный график</label>
+              <label for="shift"><input type="checkbox" value="shift" name="timetable">Вахтовый метод</label>
+            </div>
             <p>Опыт работы</p>
             <label for="doesnt-matter"><input type="radio" id="doesnt-matter" name="work-experience">Не имеет значения</label>
             <label for="from-3-to-6-years-old"><input type="radio" id="from-3-to-6-years-old" name="work-experience">От 3 до 6 лет</label>
@@ -308,9 +296,9 @@
             <label for="no-experience"><input type="radio" id="no-experience" name="work-experience">Нет опыта</label>
             <label for="over-6-years"><input type="radio" id="over-6-years" name="work-experience">Более 6 лет</label>
         </div>
-            <button type="button" onclick="update_tracker({{tracker.id}});" class="btn btn-primary">Save</button>
-            <button type="button" onclick="delete_tracker({{tracker.id}});" style="" class="btn btn-danger">Delete</button>
-            <br /><br>
+            <button type="button" onclick="update_tracker({{tracker.id}});" style="margin-bottom: 10px;margin-top: 10px;" class="btn btn-primary">Save</button>
+            <button type="button" onclick="delete_tracker({{tracker.id}});" style="margin-bottom: 10px;margin-top: 10px;" class="btn btn-danger">Delete</button>
+            
             
           {% else %}
               <div class="mb-3">
@@ -339,7 +327,7 @@
           </button>
           <br><br>
           {% endif %}
-          <div id="tracker_stats{{tracker.id}}"></div>
+          <div class="tracker-status" id="tracker_stats{{tracker.id}}"></div>
         </div>
       </div>
     </div>
