@@ -242,7 +242,6 @@ def update_tracker(request):
         if request.user.id != tracker_to_update.user_creator.id:
             request.session['error_message'] = f'forbidden operation'
             return HttpResponse(request.session['error_message'])
-        print(request.POST)
         today = dt.today().date()
         date_difference = today - tracker_to_update.modified_date
         if request.user.is_staff:

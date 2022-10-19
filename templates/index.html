@@ -276,19 +276,19 @@
           <div class="form-group">
             <div class="form-left2">
               <p>Тип занятости</p>
-              <label><input type="checkbox" value="full-time" name="employment-type[]" {% if 'full-time' in tracker.employment_type %} checked {% endif %}>Полная занятость</label>
-              <label><input type="checkbox" value="partial" name="employment-type[]" {% if 'partial' in tracker.employment_type %} checked {% endif %}>Частичная занятость</label>
+              <label><input type="checkbox" value="full" name="employment-type[]" {% if 'full' in tracker.employment_type %} checked {% endif %}>Полная занятость</label>
+              <label><input type="checkbox" value="part" name="employment-type[]" {% if 'part' in tracker.employment_type %} checked {% endif %}>Частичная занятость</label>
               <label><input type="checkbox" value="project" name="employment-type[]" {% if 'project' in tracker.employment_type %} checked {% endif %}>Проектная работа</label>
-              <label><input type="checkbox" value="volunteering" name="employment-type[]" {% if 'volunteering' in tracker.employment_type %} checked {% endif %}>Волонтерство</label>
-              <label><input type="checkbox" value="internship" name="employment-type[]" {% if 'internship' in tracker.employment_type %} checked {% endif %}>Стажировка</label>
+              <label><input type="checkbox" value="volunteer" name="employment-type[]" {% if 'volunteer' in tracker.employment_type %} checked {% endif %}>Волонтерство</label>
+              <label><input type="checkbox" value="probation" name="employment-type[]" {% if 'probation' in tracker.employment_type %} checked {% endif %}>Стажировка</label>
             </div>
             <div class="float-left">
               <p>График работы</p>
-              <label><input type="checkbox" value="full-day" name="timetable[]" {% if 'full-day' in tracker.work_schedule %}checked{% endif %}>Полный день</label>
+              <label><input type="checkbox" value="fullDay" name="timetable[]" {% if 'fullDay' in tracker.work_schedule %}checked{% endif %}>Полный день</label>
               <label><input type="checkbox" value="remote" name="timetable[]" {% if 'remote' in tracker.work_schedule %}checked{% endif %}>Удаленная работа</label>
               <label><input type="checkbox" value="flexible" name="timetable[]" {% if 'flexible' in tracker.work_schedule %}checked{% endif %}>Гибкий график</label>
-              <label><input type="checkbox" value="replaceable" name="timetable[]"> {% if 'replaceable' in tracker.work_schedule %}checked{% endif %}Сменный график</label>
-              <label><input type="checkbox" value="shift" name="timetable[]" {% if 'shift' in tracker.work_schedule %}checked{% endif %}>Вахтовый метод</label>
+              <label><input type="checkbox" value="shift" name="timetable[]"> {% if 'shift' in tracker.work_schedule %}checked{% endif %}Сменный график</label>
+              <label><input type="checkbox" value="flyInFlyOut" name="timetable[]" {% if 'flyInFlyOut' in tracker.work_schedule %}checked{% endif %}>Вахтовый метод</label>
             </div>
             <p>Опыт работы</p>
             <label for="doesnt-matter{{tracker.id}}"><input type="radio" id="doesnt-matter{{tracker.id}}" value="" name="work-experience" {% if tracker.work_experience == '' %} checked {% endif %}>Не имеет значения</label>
