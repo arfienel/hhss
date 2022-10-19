@@ -6,26 +6,29 @@ from django.contrib.postgres.fields import ArrayField
 
 
 class Area(models.Model):
-    hh_id = models.IntegerField(unique=True)
-    name = models.CharField(max_length=1000)
+    hh_id = models.IntegerField(unique=True, db_index=True)
+    name = models.CharField(max_length=1000, db_index=True)
 
     def __str__(self):
         return f'<Area {self.name} {self.hh_id}>'
 
     class Meta:
-        ordering = ['name']
         unique_together = ('hh_id', 'name')
 
 
 class JobTracker(models.Model):
     user_creator = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
-    modified_date = models.DateField(default=now)
-    search_text = models.CharField(max_length=100)
+    modified_date = models.DateField(default=now, db_index=True)
+    search_text = models.CharField(max_length=100, db_index=True)
     status_parser = models.BooleanField(default=False)
     exclude_from_search = models.CharField(max_length=100, default='', blank=True)
     hh_url = models.URLField(default='https://hh.ru')
     subscribers = models.ManyToManyField(User, related_name='job_tracker_subs')
-    areas = ArrayField(models.IntegerField(), default=[])
+    areas = ArrayField(models.IntegerField(), default=[], db_index=True)
+    employment_type = ArrayField(models.CharField(max_length=100), default=[], db_index=True)
+    work_experience = models.CharField(max_length=100, default='', blank=True, db_index=True)
+    work_schedule = ArrayField(models.CharField(max_length=100), default=[], db_index=True)
+
 
     def save(self, *args, **kwargs):
         if not kwargs.pop('skip_date_modify', False):
@@ -43,7 +46,7 @@ class JobTracker(models.Model):
 
 class ParserData(models.Model):
     tracker = models.ForeignKey(JobTracker, on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(auto_now_add=True, db_index=True)
     amount_of_vacancies = models.IntegerField(default=0)
 
     class Meta:

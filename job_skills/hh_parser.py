@@ -116,7 +116,6 @@ async def get_all_trackers(conn):
 
 async def update_all_areas(conn):
     """
-
     :param conn:
     """
     areas = []

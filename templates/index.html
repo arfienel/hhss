@@ -173,7 +173,7 @@
           </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <fo class="modal-body">
+        <div class="modal-body">
           <div class="mb-3">
             <label class="form-label">Search text</label>
             <input type="text" class="form-control" name="search_text" />
@@ -200,24 +200,24 @@
           <div class="form-group">
             <div class="form-left">
               <p>Тип занятости</p>
-              <label for="full-time"><input type="checkbox" value="full-time" name="employment-type">Полная занятость</label>
-              <label for="partial"><input type="checkbox" value="partial" name="employment-type">Частичная занятость</label>
-              <label for="project"><input type="checkbox" value="project" name="employment-type">Проектная работа</label>
-              <label for="volunteering"><input type="checkbox" value="volunteering" name="employment-type">Волонтерство</label>
-              <label for="internship"><input type="checkbox" value="internship" name="employment-type">Стажировка</label>
+              <label><input type="checkbox" value="full-time" name="employment-type[]">Полная занятость</label>
+              <label><input type="checkbox" value="partial" name="employment-type[]">Частичная занятость</label>
+              <label><input type="checkbox" value="project" name="employment-type[]">Проектная работа</label>
+              <label><input type="checkbox" value="volunteering" name="employment-type[]">Волонтерство</label>
+              <label><input type="checkbox" value="internship" name="employment-type[]">Стажировка</label>
             </div>
             <p>График работы</p>
-            <label for="full-day"><input type="checkbox" value="full-day" name="timetable">Полный день</label>
-            <label for="remote"><input type="checkbox" value="remote" name="timetable">Удаленная работа</label>
-            <label for="flexible"><input type="checkbox" value="flexible" name="timetable">Гибкий график</label>
-            <label for="replaceable"><input type="checkbox" value="replaceable" name="timetable">Сменный график</label>
-            <label for="shift"><input type="checkbox" value="shift" name="timetable">Вахтовый метод</label>
+            <label><input type="checkbox" value="full-day" name="timetable[]">Полный день</label>
+            <label><input type="checkbox" value="remote" name="timetable[]">Удаленная работа</label>
+            <label><input type="checkbox" value="flexible" name="timetable[]">Гибкий график</label>
+            <label><input type="checkbox" value="replaceable" name="timetable[]">Сменный график</label>
+            <label><input type="checkbox" value="shift" name="timetable[]">Вахтовый метод</label>
             <p>Опыт работы</p>
-            <label for="doesnt-matter"><input type="radio" id="doesnt-matter" name="work-experience">Не имеет значения</label>
-            <label for="from-3-to-6-years-old"><input type="radio" id="from-3-to-6-years-old" name="work-experience">От 3 до 6 лет</label>
-            <label for="from-1-to-3-years"><input type="radio" id="from-1-to-3-years" name="work-experience">От 1 года до 3 лет</label>
-            <label for="no-experience"><input type="radio" id="no-experience" name="work-experience">Нет опыта</label>
-            <label for="over-6-years"><input type="radio" id="over-6-years" name="work-experience">Более 6 лет</label>
+            <label ><input type="radio" id="doesnt-matter" value="" name="work-experience" checked>Не имеет значения</label>
+            <label ><input type="radio" id="from-3-to-6-years-old" value="between3And6" name="work-experience">От 3 до 6 лет</label>
+            <label ><input type="radio" id="from-1-to-3-years" value="between1And3" name="work-experience">От 1 года до 3 лет</label>
+            <label ><input type="radio" id="no-experience" value="noExperience" name="work-experience">Нет опыта</label>
+            <label ><input type="radio" id="over-6-years" value="moreThan6" name="work-experience">Более 6 лет</label>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -225,8 +225,8 @@
           </button>
           <button type="submit" class="btn btn-primary">Create</button>
         </div>
-      </form>
     </div>
+   </form>
   </div>
 </div>
   </div>
@@ -237,6 +237,7 @@
   <div class="modal fade" id="trackerModal{{ tracker.id }}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
+        <form id="trackerForm{{tracker.id}}">
         <div class="modal-header">
           <h4 class="modal-title headline-limit"><a href="{{ tracker.hh_url }}">{{ tracker.search_text }}</a></h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -275,26 +276,26 @@
           <div class="form-group">
             <div class="form-left2">
               <p>Тип занятости</p>
-              <label for="full-time"><input type="checkbox" value="full-time" name="employment-type">Полная занятость</label>
-              <label for="partial"><input type="checkbox" value="partial" name="employment-type">Частичная занятость</label>
-              <label for="project"><input type="checkbox" value="project" name="employment-type">Проектная работа</label>
-              <label for="volunteering"><input type="checkbox" value="volunteering" name="employment-type">Волонтерство</label>
-              <label for="internship"><input type="checkbox" value="internship" name="employment-type">Стажировка</label>
+              <label><input type="checkbox" value="full-time" name="employment-type[]" {% if 'full-time' in tracker.employment_type %} checked {% endif %}>Полная занятость</label>
+              <label><input type="checkbox" value="partial" name="employment-type[]" {% if 'partial' in tracker.employment_type %} checked {% endif %}>Частичная занятость</label>
+              <label><input type="checkbox" value="project" name="employment-type[]" {% if 'project' in tracker.employment_type %} checked {% endif %}>Проектная работа</label>
+              <label><input type="checkbox" value="volunteering" name="employment-type[]" {% if 'volunteering' in tracker.employment_type %} checked {% endif %}>Волонтерство</label>
+              <label><input type="checkbox" value="internship" name="employment-type[]" {% if 'internship' in tracker.employment_type %} checked {% endif %}>Стажировка</label>
             </div>
             <div class="float-left">
               <p>График работы</p>
-              <label for="full-day"><input type="checkbox" value="full-day" name="timetable">Полный день</label>
-              <label for="remote"><input type="checkbox" value="remote" name="timetable">Удаленная работа</label>
-              <label for="flexible"><input type="checkbox" value="flexible" name="timetable">Гибкий график</label>
-              <label for="replaceable"><input type="checkbox" value="replaceable" name="timetable">Сменный график</label>
-              <label for="shift"><input type="checkbox" value="shift" name="timetable">Вахтовый метод</label>
+              <label><input type="checkbox" value="full-day" name="timetable[]" {% if 'full-day' in tracker.work_schedule %}checked{% endif %}>Полный день</label>
+              <label><input type="checkbox" value="remote" name="timetable[]" {% if 'remote' in tracker.work_schedule %}checked{% endif %}>Удаленная работа</label>
+              <label><input type="checkbox" value="flexible" name="timetable[]" {% if 'flexible' in tracker.work_schedule %}checked{% endif %}>Гибкий график</label>
+              <label><input type="checkbox" value="replaceable" name="timetable[]"> {% if 'replaceable' in tracker.work_schedule %}checked{% endif %}Сменный график</label>
+              <label><input type="checkbox" value="shift" name="timetable[]" {% if 'shift' in tracker.work_schedule %}checked{% endif %}>Вахтовый метод</label>
             </div>
             <p>Опыт работы</p>
-            <label for="doesnt-matter"><input type="radio" id="doesnt-matter" name="work-experience">Не имеет значения</label>
-            <label for="from-3-to-6-years-old"><input type="radio" id="from-3-to-6-years-old" name="work-experience">От 3 до 6 лет</label>
-            <label for="from-1-to-3-years"><input type="radio" id="from-1-to-3-years" name="work-experience">От 1 года до 3 лет</label>
-            <label for="no-experience"><input type="radio" id="no-experience" name="work-experience">Нет опыта</label>
-            <label for="over-6-years"><input type="radio" id="over-6-years" name="work-experience">Более 6 лет</label>
+            <label for="doesnt-matter{{tracker.id}}"><input type="radio" id="doesnt-matter{{tracker.id}}" value="" name="work-experience" {% if tracker.work_experience == '' %} checked {% endif %}>Не имеет значения</label>
+            <label for="from-3-to-6-years-old{{tracker.id}}"><input type="radio" value="between3And6" id="from-3-to-6-years-old{{tracker.id}}" name="work-experience" {% if tracker.work_experience == 'between3And6' %} checked {% endif %}>От 3 до 6 лет</label>
+            <label for="from-1-to-3-years{{tracker.id}}"><input type="radio" value="between1And3" id="from-1-to-3-years{{tracker.id}}" name="work-experience" {% if tracker.work_experience == 'between1And3' %} checked {% endif %}>От 1 года до 3 лет</label>
+            <label for="no-experience{{tracker.id}}"><input type="radio" value="noExperience" id="no-experience{{tracker.id}}" name="work-experience" {% if tracker.work_experience == 'noExperience' %} checked {% endif %}>Нет опыта</label>
+            <label for="over-6-years{{tracker.id}}"><input type="radio" value="moreThan6" id="over-6-years{{tracker.id}}" name="work-experience" {% if tracker.work_experience == 'moreThan6' %} checked {% endif %}>Более 6 лет</label>
         </div>
             <button type="button" onclick="update_tracker({{tracker.id}});" style="margin-bottom: 10px;margin-top: 10px;" class="btn btn-primary">Save</button>
             <button type="button" onclick="delete_tracker({{tracker.id}});" style="margin-bottom: 10px;margin-top: 10px;" class="btn btn-danger">Delete</button>
@@ -329,7 +330,9 @@
           {% endif %}
           <div class="tracker-status" id="tracker_stats{{tracker.id}}"></div>
         </div>
+          </form>
       </div>
+
     </div>
   </div>
 {% endfor %}
@@ -368,6 +371,22 @@
 </script>
 <script>
   function update_tracker(tracker_id) {
+    form = $("#trackerForm" + tracker_id).serializeArray();
+    timetables = [];
+    employment_types = [];
+    work_experience = "";
+    form.forEach((el) => {
+    if(el.name == 'timetable[]'){
+      timetables.push(el.value);
+    }
+    if(el.name == 'employment-type[]'){
+       employment_types.push(el.value);
+    }
+    if(el.name == 'work-experience'){
+      work_experience = el.value;
+    }
+    });
+
     $.ajax({
       url: "/update_tracker/?",
       method: "post",
@@ -376,11 +395,13 @@
         tracker_id: tracker_id,
         next: "{{ request.path }}",
         csrfmiddlewaretoken: "{{ csrf_token }}",
-        search_text: document.getElementById("search_text_" + tracker_id).value,
-        exclude_from_search: document.getElementById(
-          "exclude_from_search_" + tracker_id
-        ).value,
+        search_text: form[0].value,
+        exclude_from_search: form[1].value,
+        'work-experience': work_experience,
+        'timetable[]': timetables,
+        'employment-type[]': employment_types,
         'area[]': $('#updateTrackerArea' + tracker_id).val(),
+
       },
       success: function (data) {
         location.reload();
