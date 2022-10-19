@@ -47,7 +47,7 @@ def index(request):
             'trackers': trackers,
             'parsers': parsers,
             'skills': skills,
-            'areas': Area.objects.all()
+            'areas': Area.objects.order_by('name').all()
         }
     else:
         context = {
@@ -55,7 +55,6 @@ def index(request):
             'trackers': [],
             'parsers': [],
             'skills': [],
-            'areas': Area.objects.all()
         }
     return render(request, 'index.html', context)
 
@@ -156,6 +155,37 @@ def validate_areas(request):
         return areas
 
 
+def validate_work_schedule(request):
+    try:
+        if 'timetable[]' in request.POST:
+            timetable = request.POST.getlist('timetable[]')
+        else:
+            timetable = []
+        timetables = [str(ar) for ar in timetable]
+    except Exception as exc:
+        # добавить логгер и ошибки попроавить
+        print(exc)
+        request.session['error_message'] = 'incorrectly selected work schedule'
+        return 0
+    else:
+        return timetables
+
+
+def validate_employment_type(request):
+    try:
+        if 'employment-type[]' in request.POST:
+            employment_type = request.POST.getlist('employment-type[]')
+        else:
+            employment_type = []
+        employment_types = [str(ar) for ar in employment_type]
+    except Exception as exc:
+        # добавить логгер и ошибки попроавить
+        print(exc)
+        request.session['error_message'] = 'incorrectly selected employment types'
+        return 0
+    else:
+        return employment_types
+
 @login_required
 def create_tracker(request):
     if request.method == "POST":
@@ -165,13 +195,15 @@ def create_tracker(request):
             else:
                 request.session['error_message'] = 'You already created 5 trackers, which is maximum, try to delete or update other trackers'
                 return redirect('index')
-
         new_job_tracker = JobTracker()
         new_job_tracker.search_text = validate_search_text(request)
         new_job_tracker.areas = validate_areas(request)
-        if new_job_tracker.search_text == 0 or new_job_tracker.areas == 0:
+        new_job_tracker.work_schedule = validate_work_schedule(request)
+        new_job_tracker.employment_type = validate_employment_type(request)
+        if new_job_tracker.search_text == 0 or new_job_tracker.areas == 0 or new_job_tracker.work_schedule == 0 or new_job_tracker.employment_type == 0:
             return redirect('index')
         new_job_tracker.exclude_from_search = request.POST['exclude_from_search']
+        new_job_tracker.work_experience = request.POST['work-experience']
         new_job_tracker.user_creator = request.user
         new_job_tracker.save()
         thread = threading.Thread(target=parse_one_tracker, args=[new_job_tracker.id])
@@ -189,7 +221,6 @@ def delete_tracker(request):
         if request.user.id != tracker_to_delete.user_creator.id:
             request.session['error_message'] = f'forbidden operation'
             return HttpResponse(request.session['error_message'])
-
         today = dt.today().date()
         date_difference = today - tracker_to_delete.modified_date
         if request.user.is_staff:
@@ -211,7 +242,6 @@ def update_tracker(request):
         if request.user.id != tracker_to_update.user_creator.id:
             request.session['error_message'] = f'forbidden operation'
             return HttpResponse(request.session['error_message'])
-
         today = dt.today().date()
         date_difference = today - tracker_to_update.modified_date
         if request.user.is_staff:
@@ -221,12 +251,15 @@ def update_tracker(request):
             return HttpResponse(request.session['error_message'])
         tracker_to_update.search_text = validate_search_text(request)
         tracker_to_update.areas = validate_areas(request)
-        if tracker_to_update.search_text == 0 or tracker_to_update.areas == 0:
+        tracker_to_update.work_schedule = validate_work_schedule(request)
+        tracker_to_update.employment_type = validate_employment_type(request)
+        if tracker_to_update.search_text == 0 or tracker_to_update.areas == 0 or tracker_to_update.work_schedule == 0 or tracker_to_update.employment_type == 0:
             return redirect('index')
+        tracker_to_update.work_experience = request.POST['work-experience']
         tracker_to_update.exclude_from_search = request.POST['exclude_from_search']
         tracker_to_update.save()
-        thread = threading.Thread(target=parse_one_tracker, args=[tracker_to_update.id])
-        thread.start()
+        #thread = threading.Thread(target=parse_one_tracker, args=[tracker_to_update.id])
+        #thread.start()
         return HttpResponse(f'Successfully updated {tracker_to_update.id, tracker_to_update.search_text}')
     else:
         raise HttpResponseNotAllowed
