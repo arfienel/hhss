@@ -247,139 +247,38 @@
                 {% for area in areas %}
                 <option value="{{area.hh_id}}">{{area.name}}</option>
                 {% endfor %}
-              </select>
-            </div>
-            <div class="form-group">
-              <div class="form-left">
-                <p>Тип занятости</p>
-                <label
-                  ><input
-                    type="checkbox"
-                    value="full-time"
-                    name="employment-type[]"
-                  />Полная занятость</label
-                >
-                <label
-                  ><input
-                    type="checkbox"
-                    value="partial"
-                    name="employment-type[]"
-                  />Частичная занятость</label
-                >
-                <label
-                  ><input
-                    type="checkbox"
-                    value="project"
-                    name="employment-type[]"
-                  />Проектная работа</label
-                >
-                <label
-                  ><input
-                    type="checkbox"
-                    value="volunteering"
-                    name="employment-type[]"
-                  />Волонтерство</label
-                >
-                <label
-                  ><input
-                    type="checkbox"
-                    value="internship"
-                    name="employment-type[]"
-                  />Стажировка</label
-                >
-              </div>
-              <p>График работы</p>
-              <label
-                ><input
-                  type="checkbox"
-                  value="full-day"
-                  name="timetable[]"
-                />Полный день</label
-              >
-              <label
-                ><input
-                  type="checkbox"
-                  value="remote"
-                  name="timetable[]"
-                />Удаленная работа</label
-              >
-              <label
-                ><input
-                  type="checkbox"
-                  value="flexible"
-                  name="timetable[]"
-                />Гибкий график</label
-              >
-              <label
-                ><input
-                  type="checkbox"
-                  value="replaceable"
-                  name="timetable[]"
-                />Сменный график</label
-              >
-              <label
-                ><input
-                  type="checkbox"
-                  value="shift"
-                  name="timetable[]"
-                />Вахтовый метод</label
-              >
-              <p>Опыт работы</p>
-              <label
-                ><input
-                  type="radio"
-                  id="doesnt-matter"
-                  value=""
-                  name="work-experience"
-                  checked
-                />Не имеет значения</label
-              >
-              <label
-                ><input
-                  type="radio"
-                  id="from-3-to-6-years-old"
-                  value="between3And6"
-                  name="work-experience"
-                />От 3 до 6 лет</label
-              >
-              <label
-                ><input
-                  type="radio"
-                  id="from-1-to-3-years"
-                  value="between1And3"
-                  name="work-experience"
-                />От 1 года до 3 лет</label
-              >
-              <label
-                ><input
-                  type="radio"
-                  id="no-experience"
-                  value="noExperience"
-                  name="work-experience"
-                />Нет опыта</label
-              >
-              <label
-                ><input
-                  type="radio"
-                  id="over-6-years"
-                  value="moreThan6"
-                  name="work-experience"
-                />Более 6 лет</label
-              >
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="submit" class="btn btn-primary">Create</button>
-            </div>
+
+            </select>
           </div>
-        </form>
-      </div>
+          <div class="form-group">
+            <div class="form-left">
+              <p>Тип занятости</p>
+              <label><input type="checkbox" value="full" name="employment-type[]">Полная занятость</label>
+              <label><input type="checkbox" value="part" name="employment-type[]">Частичная занятость</label>
+              <label><input type="checkbox" value="project" name="employment-type[]">Проектная работа</label>
+              <label><input type="checkbox" value="volunteer" name="employment-type[]">Волонтерство</label>
+              <label><input type="checkbox" value="probation" name="employment-type[]">Стажировка</label>
+            </div>
+            <p>График работы</p>
+            <label><input type="checkbox" value="fullDay" name="timetable[]">Полный день</label>
+            <label><input type="checkbox" value="remote" name="timetable[]">Удаленная работа</label>
+            <label><input type="checkbox" value="flexible" name="timetable[]">Гибкий график</label>
+            <label><input type="checkbox" value="shift" name="timetable[]">Сменный график</label>
+            <label><input type="checkbox" value="flyInFlyOut" name="timetable[]">Вахтовый метод</label>
+            <p>Опыт работы</p>
+            <label ><input type="radio" id="doesnt-matter" value="" name="work-experience" checked>Не имеет значения</label>
+            <label ><input type="radio" id="from-3-to-6-years-old" value="between3And6" name="work-experience">От 3 до 6 лет</label>
+            <label ><input type="radio" id="from-1-to-3-years" value="between1And3" name="work-experience">От 1 года до 3 лет</label>
+            <label ><input type="radio" id="no-experience" value="noExperience" name="work-experience">Нет опыта</label>
+            <label ><input type="radio" id="over-6-years" value="moreThan6" name="work-experience">Более 6 лет</label>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+
     </div>
   </div>
 
