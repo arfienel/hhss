@@ -1,5 +1,5 @@
 {% extends 'base.html'%} {% block content %}
-<div class="form-wrapper">
+<div id="searchBar" class="form-wrapper">
   <form method="get" class="search-bar">
     <input type="text" name="search" placeholder="Search" />
     <button type="submit"><img src="../static/search.png" alt="" /></button>
@@ -52,20 +52,9 @@
       </h5>
     </div>
     <div class="col-sm-2">
-      <button
-        style="border-radius: 10px"
-        type="button"
-        data-bs-toggle="modal"
-        data-bs-target="#TrackerModal{{ tracker_parser[0].id}}"
-        id="modalBtn{{tracker_parser[0].id }}"
-        onclick="load_parser_data({{ tracker_parser[0].id }})"
-        class="position-relative top-50 start-50 translate-middle"
+      <button style="border-radius: 10px" type="button" data-bs-toggle="modal" data-bs-target="#TrackerModal{{ tracker_parser[0].id}}" id="modalBtn{{tracker_parser[0].id }}" onclick="load_parser_data({{ tracker_parser[0].id }})" class="position-relative top-50 start-50 translate-middle"
       >
-        <img
-          id="settingsImg{{ tracker_parser[0].id }}"
-          style="width: 60px; height: 60px"
-          src="{{ static('settings.png') }}"
-          alt="settings"
+        <img id="settingsImg{{ tracker_parser[0].id }}" style="width: 60px; height: 60px" src="{{ static('settings.png') }}" alt="settings"
         />
       </button>
     </div>
@@ -95,11 +84,7 @@
               >{{ tracker_parser[0].search_text }}</a
             >
           </h4>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
           ></button>
         </div>
 
@@ -123,23 +108,13 @@
           </div>
           {% if request.user.id == tracker_parser[0].user_creator_id %}
           {% elif request.user.id in tracker_parser[0].subscribers %}
-          <button
-            type="button"
-            onclick="unsubscribe_from_tracker({{tracker_parser[0].id}});"
-            id="sub_button{{tracker_parser[0].id}}"
-            style=""
-            class="btn btn-danger"
+          <button type="button" onclick="unsubscribe_from_tracker({{tracker_parser[0].id}});" id="sub_button{{tracker_parser[0].id}}" style="" class="btn btn-danger"
           >
             unsubscribe
           </button>
 
           {% else %}
-          <button
-            type="button"
-            onclick="subscribe_on_tracker({{tracker_parser[0].id}});"
-            id="sub_button{{tracker_parser[0].id}}"
-            style=""
-            class="btn btn-info"
+          <button type="button" onclick="subscribe_on_tracker({{tracker_parser[0].id}});" id="sub_button{{tracker_parser[0].id}}" style="" class="btn btn-info"
           >
             subscribe
           </button>
@@ -348,5 +323,4 @@
     $("#search-alert").delay(3000).slideUp(200);
   });
 </script>
-
 {% endblock %}
