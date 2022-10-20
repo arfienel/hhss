@@ -258,8 +258,8 @@ def update_tracker(request):
         tracker_to_update.work_experience = request.POST['work-experience']
         tracker_to_update.exclude_from_search = request.POST['exclude_from_search']
         tracker_to_update.save()
-        #thread = threading.Thread(target=parse_one_tracker, args=[tracker_to_update.id])
-        #thread.start()
+        thread = threading.Thread(target=parse_one_tracker, args=[tracker_to_update.id])
+        thread.start()
         return HttpResponse(f'Successfully updated {tracker_to_update.id, tracker_to_update.search_text}')
     else:
         raise HttpResponseNotAllowed

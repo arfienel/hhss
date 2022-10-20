@@ -53,7 +53,8 @@ async def get_vacancies(conn: object, tracker: object) -> None:
     ассинхронная функция для парсинга hh на вакансии и заполнения ими БД
     """
     r = requests.get(f'https://api.hh.ru/vacancies/',
-                     params=(('experience', f'{tracker.work_experience}'), ('text', f'{tracker.search_text}'),
+                     params=((('experience', f'{tracker.work_experience}') if tracker.work_experience != '' else ('', '')),
+                             ('text', f'{tracker.search_text}'),
                              ('excluded_text', tracker.exclude_from_search), ('per_page', '0'),
                              *(('area', area) for area in tracker.areas),
                              *(('schedule', schedule) for schedule in tracker.work_schedule),
@@ -61,6 +62,7 @@ async def get_vacancies(conn: object, tracker: object) -> None:
                              ),
                      headers=HEADERS, )
     print(r.url)
+    print(r.json())
     number_of_vacancies = r.json()['found']
     page = 0
     id_of_vacancies = []
@@ -70,7 +72,7 @@ async def get_vacancies(conn: object, tracker: object) -> None:
             async with session.get(f'https://api.hh.ru/vacancies/',
                                    params=(
                                            ('text', f'{tracker.search_text}'),
-                                           ('experience', f'{tracker.work_experience}'),
+                                           (('experience', f'{tracker.work_experience}') if tracker.work_experience != '' else ('', '')),
                                            ('excluded_text', tracker.exclude_from_search),
                                            ('per_page', '100'), ('page', f'{page}'),
                                            *(('area', area) for area in tracker.areas),
