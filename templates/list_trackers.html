@@ -130,13 +130,15 @@
 
   <script>
     page = 0
-        window.onscroll = function() {
+      window.onscroll = function(){loadTrackers();};
+        loadTrackers();
+        function loadTrackers() {
+
           var d = document.documentElement;
           var offset = d.scrollTop + window.innerHeight;
           var height = d.offsetHeight;
 
-
-          if (offset === height) {
+          if (offset >= height) {
             page++;
             $.ajax({
                 url: '/list_more_trackers/'+'?page='+page{% if request.GET['search'] %}+'&?search='+{{ request.GET['search'] }} {% endif %},
