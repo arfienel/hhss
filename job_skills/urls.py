@@ -1,7 +1,13 @@
-from django.urls import path
+from django.urls import include, path
+from rest_framework import routers
 from.views import *
 
+router = routers.DefaultRouter()
+
 urlpatterns = [
+    path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/job_trackers/', JobTrackerView.as_view(), name='get_tracker'),
     path('', index, name='index'),
     path('create_tracker/', create_tracker, name='create_tracker'),
     path('delete_tracker/', delete_tracker, name='delete_tracker'),
