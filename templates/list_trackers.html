@@ -319,7 +319,12 @@
     });
   }
 </script>
-
+<script>
+  searchBar = document.getElementById('searchBar');
+  hidden_search_bar = document.getElementById('hidden_search_bar');
+  hidden_search_bar.innerHTML += searchBar.innerHTML;
+  searchBar.remove()
+  </script>
 <script>
   $(function () {
     $("#search-alert").delay(3000).slideUp(200);

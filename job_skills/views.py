@@ -14,7 +14,11 @@ from django.core.serializers import serialize
 from .models import *
 from .hh_parser import parse_one_tracker
 from .forms import UserRegistrationForm
-
+from django.contrib.auth.models import User, Group
+from rest_framework import viewsets, views
+from .serializers import *
+from .permissions import *
+from rest_framework.response import Response
 
 def index(request):
     if request.session.get('error_message'):
@@ -284,3 +288,21 @@ def registration(request):
 def user_logout(request):
     logout(request)
     return redirect('index')
+
+
+# api views (drf)
+
+class JobTrackerView(views.APIView):
+    permission_classes = (IsOwnerOrReadOnly, )
+
+    def get(self, request, format=None):
+        trackers = JobTracker.objects.all()
+        serializer = TrackerSerializer(trackers, many=True)
+        return Response({'tracker': serializer.data})
+
+    def post(self, request):
+        tracker = request.data.get('trackers')
+        serializer = JobTracker(tracker)
+        if serializer.is_valid(raise_exception=True):
+            tracker_saved = serializer.save()
+        return Response({'success': f'tracker {tracker_saved.search_text} created succesfully'})

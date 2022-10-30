@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     "debug_toolbar",
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -152,6 +153,11 @@ INTERNAL_IPS = [
     "0.0.0.0",
     "127.0.0.1"
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'

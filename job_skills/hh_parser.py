@@ -252,5 +252,4 @@ def parse_one_tracker(tracker_id: int = None):
 
 
 if __name__ == "__main__":
-    # asyncio.run(main())
-    parse_one_tracker(48)
+    asyncio.run(main())

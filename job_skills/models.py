@@ -21,7 +21,7 @@ class JobTracker(models.Model):
     modified_date = models.DateField(default=now, db_index=True)
     search_text = models.CharField(max_length=100, db_index=True)
     status_parser = models.BooleanField(default=False)
-    exclude_from_search = models.CharField(max_length=100, default='', blank=True)
+    exclude_from_search = models.CharField(max_length=300, default='', blank=True)
     hh_url = models.TextField(default='https://hh.ru')
     subscribers = models.ManyToManyField(User, related_name='job_tracker_subs')
     areas = ArrayField(models.IntegerField(), default=[], db_index=True)
