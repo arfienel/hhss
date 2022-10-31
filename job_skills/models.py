@@ -3,6 +3,15 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.timezone import now
 from django.contrib.postgres.fields import ArrayField
+from django.core.exceptions import ValidationError
+
+
+def validate_search_text(search_text):
+    if len(search_text) < 2:
+        if any(['js', '1c', '1с', 'c#']) == search_text.lower():
+            pass
+        else:
+            raise ValidationError(f'bad argument for search_text - {search_text}')
 
 
 class Area(models.Model):
@@ -19,15 +28,15 @@ class Area(models.Model):
 class JobTracker(models.Model):
     user_creator = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     modified_date = models.DateField(default=now, db_index=True)
-    search_text = models.CharField(max_length=100, db_index=True)
+    search_text = models.CharField(max_length=100, db_index=True, validators=[validate_search_text])
     status_parser = models.BooleanField(default=False)
     exclude_from_search = models.CharField(max_length=300, default='', blank=True)
     hh_url = models.TextField(default='https://hh.ru')
-    subscribers = models.ManyToManyField(User, related_name='job_tracker_subs')
-    areas = ArrayField(models.IntegerField(), default=[], db_index=True)
-    employment_type = ArrayField(models.CharField(max_length=100), default=[], db_index=True)
+    subscribers = models.ManyToManyField(User, blank=True, related_name='job_tracker_subs')
+    areas = ArrayField(models.IntegerField(), blank=True, default=[], db_index=True)
+    employment_type = ArrayField(models.CharField(max_length=100), blank=True, default=[], db_index=True)
     work_experience = models.CharField(max_length=100, default='', blank=True, db_index=True)
-    work_schedule = ArrayField(models.CharField(max_length=100), default=[], db_index=True)
+    work_schedule = ArrayField(models.CharField(max_length=100), blank=True, default=[], db_index=True)
 
     def save(self, *args, **kwargs):
         if not kwargs.pop('skip_date_modify', False):
