@@ -1,4 +1,4 @@
 MAILTO=""
 BASH_ENV="/root/.bashrc"
 SHELL=/bin/bash
-0 0 */3 * * /usr/local/bin/python3 /code/job_skills/hh_parser.py >> /code/logs/hh_cron.log 2>&1
+0 0 */2 * * /usr/local/bin/python3 /code/job_skills/hh_parser.py >> /code/logs/hh_cron.log 2>&1

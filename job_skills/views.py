@@ -313,14 +313,19 @@ class JobTrackerView(views.APIView):
                 tracker = JobTracker.objects.get(pk=pk)
             except:
                 return Response({"error": "Object does not exists"})
-            last_parser_data = ParserData.objects.filter(tracker_id=tracker.id)[0]
-            skills = SkillData.objects.filter(parser_data=last_parser_data.id).values('name', 'amount')
-            serializer = TrackerSerializer(tracker, many=False)
-            response = {'tracker': serializer.data, 'skills': skills}
-            return Response(response)
+            if 'for_chart' in request.GET:
+                parser_data = ParserData.objects.filter(tracker_id=tracker.id).values('date', 'amount_of_vacancies')
+                serializer = TrackerSerializer(tracker, many=False)
+                response = {'tracker': serializer.data, 'chart_data': parser_data}
+                return Response(response)
+            else:
+                last_parser_data = ParserData.objects.filter(tracker_id=tracker.id)[0]
+                skills = SkillData.objects.filter(parser_data=last_parser_data.id).values('name', 'amount')
+                serializer = TrackerSerializer(tracker, many=False)
+                response = {'tracker': serializer.data, 'skills': skills}
+                return Response(response)
 
     def post(self, request):
-        print(request.data)
         tracker = request.data
         serializer = TrackerSerializer(data=tracker)
         if serializer.is_valid(raise_exception=True):
