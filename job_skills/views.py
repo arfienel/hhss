@@ -11,14 +11,16 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.db.models import Q
 from django.core.serializers import serialize
+from .serializers import TrackerSerializer, AreaSerializer
+from .permissions import IsOwnerOrReadOnly
 from .models import *
 from .hh_parser import parse_one_tracker
 from .forms import UserRegistrationForm
-from django.contrib.auth.models import User, Group
-from rest_framework import viewsets, views
-from .serializers import *
-from .permissions import *
+from django.contrib.auth.models import User
+from rest_framework import views
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
+
 
 def index(request):
     if request.session.get('error_message'):
@@ -100,10 +102,13 @@ def list_more_trackers(request):
     trackers = JobTracker.objects.filter(search_text__icontains=search_field).order_by('-modified_date', 'pk')[page*6:page*6+6].all()
 
     for tracker in trackers:
-        areas = Area.objects.filter(hh_id__in=tracker.areas)
-        parser = ParserData.objects.filter(tracker_id=tracker.id)[:1]
-        skills = SkillData.objects.filter(parser_data=parser[0].id)[:3]
-        data.append((serialize('json', [tracker, ]), serialize('json', parser), serialize('json', skills), serialize('json', areas)))
+        try:
+            areas = Area.objects.filter(hh_id__in=tracker.areas)
+            parser = ParserData.objects.filter(tracker_id=tracker.id)[:1]
+            skills = SkillData.objects.filter(parser_data=parser[0].id)[:3]
+            data.append((serialize('json', [tracker, ]), serialize('json', parser), serialize('json', skills), serialize('json', areas)))
+        except Exception as exc:
+            print(exc)
     return JsonResponse(data, safe=False, content_type='application/json')
 
 
@@ -291,18 +296,75 @@ def user_logout(request):
 
 
 # api views (drf)
-
 class JobTrackerView(views.APIView):
     permission_classes = (IsOwnerOrReadOnly, )
 
-    def get(self, request, format=None):
-        trackers = JobTracker.objects.all()
-        serializer = TrackerSerializer(trackers, many=True)
-        return Response({'tracker': serializer.data})
+    def get(self, request, *args, **kwargs):
+        pk = kwargs.get("pk", None)
+        if not pk:
+            if request.user.is_authenticated:
+                trackers = JobTracker.objects.filter(user_creator=request.user)
+            else:
+                trackers = JobTracker.objects.all()
+            serializer = TrackerSerializer(trackers, many=True)
+            return Response({'tracker': serializer.data})
+        else:
+            try:
+                tracker = JobTracker.objects.get(pk=pk)
+            except:
+                return Response({"error": "Object does not exists"})
+            if 'for_chart' in request.GET:
+                parser_data = ParserData.objects.filter(tracker_id=tracker.id).values('date', 'amount_of_vacancies')
+                serializer = TrackerSerializer(tracker, many=False)
+                response = {'tracker': serializer.data, 'chart_data': parser_data}
+                return Response(response)
+            else:
+                last_parser_data = ParserData.objects.filter(tracker_id=tracker.id)[0]
+                skills = SkillData.objects.filter(parser_data=last_parser_data.id).values('name', 'amount')
+                serializer = TrackerSerializer(tracker, many=False)
+                response = {'tracker': serializer.data, 'skills': skills}
+                return Response(response)
 
     def post(self, request):
-        tracker = request.data.get('trackers')
-        serializer = JobTracker(tracker)
+        tracker = request.data
+        serializer = TrackerSerializer(data=tracker)
         if serializer.is_valid(raise_exception=True):
-            tracker_saved = serializer.save()
-        return Response({'success': f'tracker {tracker_saved.search_text} created succesfully'})
+            tracker_saved = serializer.save(user_creator=request.user)
+        thread = threading.Thread(target=parse_one_tracker, args=[tracker_saved.id])
+        thread.start()
+        return Response({'success': f'tracker {tracker_saved.search_text} created succesfully. It`s id - {tracker_saved.id}'})
+
+    def put(self, request, *args, **kwargs):
+        pk = kwargs.get("pk", None)
+        if not pk:
+            return Response({"error": "Method PUT not allowed"})
+
+        try:
+            tracker = JobTracker.objects.get(pk=pk)
+        except:
+            return Response({"error": "Object does not exists"})
+        self.check_object_permissions(self.request, tracker)
+        serializer = TrackerSerializer(data=request.data, instance=tracker)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({"post": serializer.data})
+
+    def delete(self, request, *args, **kwargs):
+        pk = kwargs.get("pk", None)
+        if not pk:
+            return Response({"error": "Method DELETE not allowed"})
+
+        try:
+            tracker = JobTracker.objects.get(pk=pk)
+        except:
+            return Response({"error": "Object does not exists"})
+        self.check_object_permissions(self.request, tracker)
+        tracker.delete()
+        return Response({"post": f"deleted tracker {pk}"})
+
+
+class AreaListView(ListAPIView):
+    queryset = Area.objects.all()
+    serializer_class = AreaSerializer
+    pagination_class = None

@@ -243,6 +243,7 @@
                                       <br>
                                       <br>
                                     <div id="tracker_stats${tracker_id}">
+                                    <div id="chart${tracker_id}"
                                     </div>
                               </div>
                         </div>
@@ -251,6 +252,8 @@
                     `;
 
                     container_to_append.innerHTML += modal_to_insert;
+
+                    load_tracker_chart(tracker_id);
                     });
                 }
             });
@@ -258,6 +261,70 @@
         };
   </script>
 </div>
+
+
+<script>
+  function load_tracker_chart(tracker_id) {
+    $.ajax({
+        url: "/api/job_trackers/" + tracker_id + "/?format=json&for_chart=1" ,
+        method: "get",
+        dataType: "html",
+        success: function (data) {
+          data = JSON.parse(data);
+          if(data['chart_data'].length < 2){
+
+          }
+          else {
+          chart_amount_of_vacancies = [];
+          chart_dates = [];
+          for(i in data['chart_data']){
+            chart_data = data['chart_data'][i]
+            console.log(chart_data);
+            chart_dates.push(chart_data['date']);
+            chart_amount_of_vacancies.push(chart_data['amount_of_vacancies']);
+          }
+          console.log([chart_amount_of_vacancies, chart_dates])
+          var options = {
+          series: [{
+            name: "amount",
+            data: chart_amount_of_vacancies.reverse()
+        }],
+          chart: {
+          height: 350,
+          type: 'line',
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'straight'
+        },
+        title: {
+          text: 'amount of vacancies',
+          align: 'left'
+        },
+        grid: {
+          row: {
+            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+            opacity: 0.5
+          },
+        },
+        xaxis: {
+          categories: chart_dates.reverse(),
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart"+tracker_id), options);
+        chart.render();
+        }
+          }
+      });
+  }
+</script>
+
 
 <script>
   function load_parser_data(tracker_id) {
