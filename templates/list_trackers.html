@@ -29,9 +29,9 @@
         </li>
         {% endfor %} {% else %}
         <li class="bg-secondary list-group-item text-light">
-          Data is still uploading
+          {{ _("Data is still uploading") }}
         </li>
-        <li class="bg-secondary list-group-item text-light">Please wait</li>
+        <li class="bg-secondary list-group-item text-light">{{ _("Please wait") }}</li>
         <li class="bg-secondary list-group-item text-light">...</li>
         {% endif %}
       </ul>
@@ -42,7 +42,7 @@
       <h5
         class="position-relative top-50 start-50 translate-middle text-center text-light"
       >
-        {% if tracker_parser[1] %} Vacancies amount
+        {% if tracker_parser[1] %} {{ _("Vacancies amount") }}
         <br />{{tracker_parser[1].amount_of_vacancies}} {% else %}
         <img
           style="width: 50px; height: 50px"
@@ -64,7 +64,7 @@
   <!-- если результата нет-->
   {% else %}
   <div class="alert alert-warning" role="alert">
-    <p style="margin-bottom: 0">Nothing was found</p>
+    <p style="margin-bottom: 0">{{ _("Nothing was found") }}</p>
   </div>
   {% endif %}
 
@@ -91,13 +91,13 @@
         <div class="modal-body">
           <div class="mb-3">
             <h3 class="transfer-request">
-              Текст запроса - {{tracker_parser[0].search_text}}
+              {{ _("Search text") }}- {{tracker_parser[0].search_text}}
             </h3>
           </div>
           {% if tracker_parser[0].exclude_from_search %}
           <div class="mb-3">
             <h4>
-              Исключено из запроса - {{ tracker_parser[0].exclude_from_search }}
+              {{ _("Excluded from search") }} - {{ tracker_parser[0].exclude_from_search }}
             </h4>
           </div>
           {% endif %}
@@ -110,13 +110,13 @@
           {% elif request.user.id in tracker_parser[0].subscribers %}
           <button type="button" onclick="unsubscribe_from_tracker({{tracker_parser[0].id}});" id="sub_button{{tracker_parser[0].id}}" style="" class="btn btn-danger"
           >
-            unsubscribe
+            {{ _("unsubscribe") }}
           </button>
 
           {% else %}
           <button type="button" onclick="subscribe_on_tracker({{tracker_parser[0].id}});" id="sub_button{{tracker_parser[0].id}}" style="" class="btn btn-info"
           >
-            subscribe
+            {{ _("subscribe") }}
           </button>
           {% endif %}
           <br />
@@ -156,7 +156,6 @@
                     areas_fields.forEach(area => {
                       areas.push(area['fields']['name']);
                     });
-                    console.log(areas,tracker);
                     tracker_id = JSON.parse(array[0])[0]['pk'];
 
                     if(skills[0]){
@@ -184,7 +183,7 @@
                         <!-- правая часть квадрата. Количество парсеров и шестеренка -->
                         <div class="col-sm-2">
                             <h5 class="position-relative top-50 start-50 translate-middle text-center text-light">
-                                    Vacancies amount <br>${parser['amount_of_vacancies']}
+                                    {{ _("Vacancies amount") }} <br>${parser['amount_of_vacancies']}
                             </h5>
                         </div>
                         <div class="col-sm-2">
@@ -204,7 +203,7 @@
                     if(tracker['exclude_from_search']){
                         modal_exclude_from_search_part = `
                             <div class="mb-3">
-                                <h4>Исключено из запроса - ${tracker['exclude_from_search']}</h4>
+                                <h4>{{ _("Excluded from search") }} - ${tracker['exclude_from_search']}</h4>
                             </div>
                         `;
                     };
@@ -215,12 +214,12 @@
                     else {
                       if(tracker['subscribers'].includes({{request.user.id}})){
                         modal_subscribe_part = `
-                          <button type="button" onclick="unsubscribe_from_tracker(`+ tracker_id +`);" id="sub_button` + tracker_id + `" style="" class="btn btn-danger">unsubscribe</button>
+                          <button type="button" onclick="unsubscribe_from_tracker(`+ tracker_id +`);" id="sub_button` + tracker_id + `" style="" class="btn btn-danger">{{ _("unsubscribe") }}</button>
                         `;
                       }
                       else {
                         modal_subscribe_part = `
-                          <button type="button" onclick="subscribe_on_tracker(`+ tracker_id +`);" id="sub_button` + tracker_id + `" style="" class="btn btn-info">subscribe</button>
+                          <button type="button" onclick="subscribe_on_tracker(`+ tracker_id +`);" id="sub_button` + tracker_id + `" style="" class="btn btn-info">{{ _("subscribe") }}</button>
                         `;
                       }
                     }
@@ -235,7 +234,7 @@
                               </div>
                               <div class="modal-body">
                                     <div class="mb-3">
-                                        <h3>Текст запроса - ${tracker['search_text']}</h3>
+                                        <h3>{{ _("Search text") }} - ${tracker['search_text']}</h3>
                                     </div>
                                     ` + modal_exclude_from_search_part + `<br>
                                     ` + areas.toString() + `<br>

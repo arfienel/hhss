@@ -8,6 +8,7 @@ RUN apt-get update
 RUN apt-get -y install apt-utils
 RUN apt-get -y install cron
 RUN apt-get -y install rsyslog
+RUN apt-get -y install gettext
 COPY hh_cron /etc/cron.d/
 RUN chmod 0644 /etc/cron.d/hh_cron
 RUN crontab /etc/cron.d/hh_cron
