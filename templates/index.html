@@ -9,7 +9,7 @@
   </script>
   <!-- если есть результат -->
   {% if trackers %}
-  <h1 style="text-align: center; margin-bottom: 22px;">Your created trackers</h1>
+  <h1 style="text-align: center; margin-bottom: 22px;">{{ _('Your created trackers') }}</h1>
   <div class="container">
     <!-- Начало цикла для всех трекеров -->
     {% for tracker in trackers %}
@@ -34,7 +34,7 @@
           <li class="bg-secondary list-group-item text-light">
             Data is still uploading
           </li>
-          <li class="bg-secondary list-group-item text-light">Please wait</li>
+          <li class="bg-secondary list-group-item text-light">{{ _("Please wait") }}</li>
           <li class="bg-secondary list-group-item text-light">...</li>
           {% endif %}
         </ul>
@@ -44,7 +44,7 @@
         <h5
           class="position-relative top-50 start-50 translate-middle text-center text-light text-border"
         >
-          {% if parsers[tracker.id] %} Vacancies amount
+          {% if parsers[tracker.id] %} {{ _("Vacancies amount") }}
           <br />
           {{parsers[tracker.id].amount_of_vacancies}} {% else %}
           <img
@@ -80,7 +80,7 @@
           data-bs-target="#createTrackerModal"
           class="btn btn-success py-3 px-4 btn-margin"
         >
-          <h4 class="add-tracker">Add tracker</h4>
+          <h4 class="add-tracker">{{ _("Add tracker") }}</h4>
         </button>
       </div>
     </div>
@@ -91,23 +91,23 @@
   <!-- если чел зареган -->
   {% if request.user.is_authenticated %}
   <div class="welcome">
-    <h1>Seems like you don`t tracking jobs yet</h1>
+    <h1>{{ _("Seems like you don`t tracking jobs yet") }}</h1>
     <h2 style="text-align: center; cursor: pointer" class="text-primary">
       <a data-bs-toggle="modal" data-bs-target="#createTrackerModal"
-        >Start tracking</a
+        >{{ _("Start tracking") }}</a
       >
     </h2>
   </div>
   <!-- если чел НЕ зареган-->
   {% else %}
   <div class="welcome">
-    <h1>To create your own job skills tracker,</h1>
+    <h1>{{ _("To create your own job skills tracker") }},</h1>
     <h2>
-      you need to
+      {{ _("you need to") }}
 
-      <a href="{{ url('login') }}">Log in</a>
-      <span>or</span>
-      <a href="{{ url('registration') }}">Sign up</a>
+      <a href="{{ url('login') }}">{{ _("Log in") }}</a>
+      <span>{{ _("or") }}</span>
+      <a href="{{ url('registration') }}">{{ _("Sign up") }}</a>
     </h2>
     <h1 style="text-align: center; cursor: pointer" class="text-primary"></h1>
   </div>
@@ -118,7 +118,7 @@
 {% if subscribed_trackers %}
 
 <h1 style="text-align: center; margin-bottom: 20px; margin-top: 20px">
-  Your subscribed trackers
+  {{ _("Your subscribed trackers") }}
 </h1>
 
 <div class="container">
@@ -143,9 +143,9 @@
         </li>
         {% endfor %} {% else %}
         <li class="bg-secondary list-group-item text-light">
-          Data is still uploading
+          {{ _("Data is still uploading") }}
         </li>
-        <li class="bg-secondary list-group-item text-light">Please wait</li>
+        <li class="bg-secondary list-group-item text-light">{{ _("Please wait") }}</li>
         <li class="bg-secondary list-group-item text-light">...</li>
         {% endif %}
       </ul>
@@ -155,7 +155,7 @@
       <h5
         class="position-relative top-50 start-50 translate-middle text-center text-light"
       >
-        {% if parsers[tracker.id] %} Vacancies amount
+        {% if parsers[tracker.id] %} {{ _("Vacancies amount") }}
         <br />{{parsers[tracker.id].amount_of_vacancies}} {% else %}
         <div class="sherst">
           <img
@@ -210,7 +210,7 @@
 
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">
-              Creating job skill stats tracker
+              {{ _("Creating job skill stats tracker") }}
             </h5>
             <button
               type="button"
@@ -221,26 +221,26 @@
           </div>
           <div class="modal-body">
             <div class="mb-3">
-              <label class="form-label">Search text</label>
+              <label class="form-label">{{ _("Search text") }}</label>
               <input type="text" class="form-control" name="search_text" />
-              <div class="form-text">Enter a job title you want to track</div>
+              <div class="form-text">{{ _("Enter a job title you want to track") }}</div>
             </div>
 
             <div class="mb-3">
-              <label class="form-label">Exclude from search</label>
+              <label class="form-label">{{ _("Exclude from search") }}</label>
               <input
                 type="text"
                 class="form-control"
                 name="exclude_from_search"
               />
               <div class="form-text">
-                Enter text that you don`t want to see in job description. Divide
-                each parameter with comma
+                {{ _("Enter text that you don`t want to see in job description. Divide
+                each parameter with comma") }}
               </div>
             </div>
 
             <div class="mb-3">
-              <label class="form-label">Select your areas to search</label
+              <label class="form-label">{{ _("Select your areas to search") }}</label
               ><br />
               <select
                 class="js-example-basic-multiple"
@@ -249,7 +249,7 @@
                 style="width: 100%"
                 name="area[]"
               >
-                <option value="">Everywhere</option>
+                <option value="">{{ _("Everywhere") }}</option>
                 {% for area in areas %}
                 <option value="{{area.hh_id}}">{{area.name}}</option>
                 {% endfor %}
@@ -280,9 +280,9 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            Close
+            {{ _("Close") }}
           </button>
-          <button type="submit" class="btn btn-primary">Create</button>
+          <button type="submit" class="btn btn-primary">{{ _("Create") }}</button>
         </div>
     </div>
       </form>
