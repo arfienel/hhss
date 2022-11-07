@@ -108,13 +108,13 @@
           </div>
           {% if request.user.id == tracker_parser[0].user_creator_id %}
           {% elif request.user.id in tracker_parser[0].subscribers %}
-          <button type="button" onclick="unsubscribe_from_tracker({{tracker_parser[0].id}});" id="sub_button{{tracker_parser[0].id}}" style="" class="btn btn-danger"
+          <button type="button" onclick="unsubscribe_from_tracker({{tracker_parser[0].id}});" id="sub_button{{tracker_parser[0].id}}" style="" class="btn btn-danger" 
           >
             {{ _("unsubscribe") }}
           </button>
 
           {% else %}
-          <button type="button" onclick="subscribe_on_tracker({{tracker_parser[0].id}});" id="sub_button{{tracker_parser[0].id}}" style="" class="btn btn-info"
+          <button type="button" onclick="subscribe_on_tracker({{tracker_parser[0].id}});" id="sub_button{{tracker_parser[0].id}}" style="" class="btn btn-info" 
           >
             {{ _("subscribe") }}
           </button>

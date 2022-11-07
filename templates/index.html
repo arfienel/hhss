@@ -124,7 +124,7 @@
 <div class="container">
   <!-- Начало цикла для всех трекеров -->
   {% for tracker in subscribed_trackers %}
-  <div class="row bg-secondary rounded mb-3 py-3 grey-box">
+  <div  id="trackerBox{{tracker.id}}" class="row bg-secondary rounded mb-3 py-3 grey-box">
     <!-- Текст поиска слева -->
     <div class="col-sm-2">
       <h2
@@ -499,19 +499,15 @@
             <p>{{area.name}}</p>
             {% endif %} {% endfor %}
             <br />
-            <button
-              type="button"
-              onclick="unsubscribe_from_tracker({{tracker.id}});"
-              id="sub_button{{tracker.id}}"
-              style=""
-              class="btn btn-danger"
-            >
+            <button type="button" onclick="unsubscribe_from_tracker({{tracker.id}});" id="sub_button{{tracker.id}}"  class="btn btn-danger" data-bs-dismiss="modal" data-bs-target="#my-modal" aria-label="Close">
               unsubscribe
             </button>
             <br /><br />
             {% endif %}
             <div id="chart{{tracker.id}}"></div>
-            <div class="tracker-status" id="tracker_stats{{tracker.id}}"></div>
+            <div class="tracker-status" id="tracker_stats{{tracker.id}}">
+              
+            </div>
           </div>
         </form>
       </div>
@@ -674,9 +670,10 @@
         });
       }
     }
-  </script>
+  </script>v
   <script>
     function unsubscribe_from_tracker(tracker_id) {
+      const el = document.getElementById("trackerBox"+ tracker_id);
       $.ajax({
         url: "/unsubscribe_from_tracker/",
         method: "post",
@@ -685,7 +682,9 @@
           tracker_id: tracker_id,
           csrfmiddlewaretoken: "{{ csrf_token }}",
         },
-        success: function (data) {},
+        success: function (data) {
+          el.remove();
+        },
       });
     }
   </script>
