@@ -1,8 +1,9 @@
-from datetime import datetime as dt
-from datetime import timedelta
 import asyncio
 import threading
 import json
+import logging
+from datetime import datetime as dt
+from datetime import timedelta
 from django.shortcuts import render, HttpResponse, redirect, HttpResponseRedirect, reverse
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotAllowed, JsonResponse
@@ -11,15 +12,15 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.db.models import Q
 from django.core.serializers import serialize
-from .serializers import TrackerSerializer, AreaSerializer
-from .permissions import IsOwnerOrReadOnly
-from .models import *
-from .hh_parser import parse_one_tracker
-from .forms import UserRegistrationForm
 from django.contrib.auth.models import User
 from rest_framework import views
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
+from .models import *
+from .hh_parser import parse_one_tracker
+from .forms import UserRegistrationForm
+from .serializers import TrackerSerializer, AreaSerializer
+from .permissions import IsOwnerOrReadOnly
 
 
 def index(request):
@@ -156,7 +157,6 @@ def validate_areas(request):
             area = []
         areas = [int(ar) for ar in area]
     except Exception as exc:
-        # добавить логгер и ошибки попроавить
         print(exc)
         request.session['error_message'] = 'incorrectly selected areas'
         return 0
