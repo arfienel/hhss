@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-06 17:47+0000\n"
+"POT-Creation-Date: 2022-11-09 16:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,100 +47,109 @@ msgstr "Ваши созданные трекеры"
 #: templates/index.html:37 templates/index.html:148
 #: templates/list_trackers.html:34
 msgid "Please wait"
-msgstr ""
+msgstr "Пожалуйста подождите"
 
 #: templates/index.html:47 templates/index.html:158
 #: templates/list_trackers.html:45 templates/list_trackers.html:186
 msgid "Vacancies amount"
-msgstr ""
+msgstr "Количество вакансий"
 
 #: templates/index.html:83
 msgid "Add tracker"
-msgstr ""
+msgstr "Добавить трекер"
 
 #: templates/index.html:94
 msgid "Seems like you don`t tracking jobs yet"
-msgstr ""
+msgstr "Похоже что вы еще не отслеживаете работы"
 
 #: templates/index.html:97
 msgid "Start tracking"
-msgstr ""
+msgstr "Начать отслеживать"
 
 #: templates/index.html:104
 msgid "To create your own job skills tracker"
-msgstr ""
+msgstr "Чтобы создать свой трекер навыков работ"
 
 #: templates/index.html:106
 msgid "you need to"
-msgstr ""
+msgstr "Ван надо"
 
 #: templates/index.html:108
 msgid "Log in"
-msgstr ""
+msgstr "Войти"
 
 #: templates/index.html:109
 msgid "or"
-msgstr ""
+msgstr "или"
 
 #: templates/index.html:110
 msgid "Sign up"
-msgstr ""
+msgstr "Зарегистрироваться"
+
 
 #: templates/index.html:121
-#, fuzzy
-#| msgid "Your created trackers"
 msgid "Your subscribed trackers"
-msgstr "Ваши созданные трекеры"
+msgstr "Ваши отслеживаемые трекеры"
 
 #: templates/index.html:146 templates/list_trackers.html:32
 msgid "Data is still uploading"
-msgstr ""
+msgstr "Данные еще загружаются"
 
 #: templates/index.html:213
 msgid "Creating job skill stats tracker"
-msgstr ""
+msgstr "Создается"
 
 #: templates/index.html:224 templates/list_trackers.html:94
 #: templates/list_trackers.html:237
 msgid "Search text"
-msgstr ""
+msgstr "Текст запроса"
 
 #: templates/index.html:226
 msgid "Enter a job title you want to track"
-msgstr ""
+msgstr "Введите текст который ходите находить в вакансиях"
 
 #: templates/index.html:230
 msgid "Exclude from search"
-msgstr ""
+msgstr "Убрать из поиска"
 
-#: templates/index.html:243
+#: templates/index.html:243 templates/index.html:356
 msgid "Select your areas to search"
-msgstr ""
+msgstr "Выберите регионы для поиска"
 
-#: templates/index.html:252
+#: templates/index.html:252 templates/index.html:365
 msgid "Everywhere"
-msgstr ""
+msgstr "Везде"
 
 #: templates/index.html:283
 msgid "Close"
-msgstr ""
+msgstr "Закрыть"
 
 #: templates/index.html:285
 msgid "Create"
-msgstr ""
+msgstr "Создать"
+
+#: templates/index.html:324
+msgid "Job tracker updated successfully"
+msgstr "Трекер успешно создан"
+
+#: templates/index.html:385
+#, fuzzy
+#| msgid "Your created trackers"
+msgid "subscribers"
+msgstr "Ваши созданные трекеры"
 
 #: templates/list_trackers.html:67
 msgid "Nothing was found"
-msgstr ""
+msgstr "Ничего не нашлось"
 
 #: templates/list_trackers.html:100 templates/list_trackers.html:206
 msgid "Excluded from search"
-msgstr ""
+msgstr "Убрано из поиска"
 
 #: templates/list_trackers.html:113 templates/list_trackers.html:217
 msgid "unsubscribe"
-msgstr ""
+msgstr "Отписаться"
 
 #: templates/list_trackers.html:119 templates/list_trackers.html:222
 msgid "subscribe"
-msgstr ""
+msgstr "Подписаться"

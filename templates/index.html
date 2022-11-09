@@ -9,7 +9,7 @@
   </script>
   <!-- если есть результат -->
   {% if trackers %}
-  <h1 style="text-align: center; margin-bottom: 22px;">{{ _('Your created trackers') }}</h1>
+  <h1 style="text-align: center; margin-bottom: 22px;">{{ _("Your created trackers") }}</h1>
   <div class="container">
     <!-- Начало цикла для всех трекеров -->
     {% for tracker in trackers %}
@@ -321,7 +321,7 @@
                 id="succ_text_{{tracker.id}}"
                 style="display: none"
               >
-                Job tracker updated successfully
+                {{ _("Job tracker updated successfully") }}
               </h6>
             </div>
             {% endif %} {% if request.user.id == tracker.user_creator.id %}
@@ -353,7 +353,7 @@
               </div>
             </div>
             <div class="mb-3">
-              <label class="form-label">Select your areas to search</label
+              <label class="form-label">{{ _("Select your areas to search") }}</label
               ><br />
               <select
                 class="js-example-basic-multiple"
@@ -362,7 +362,7 @@
                 style="width: 100%"
                 name="area[]"
               >
-                <option value="">Everywhere</option>
+                <option value="">{{ _("Everywhere") }}</option>
                 {% for area in areas %}
                 <option
                   value="{{area.hh_id}}"
@@ -382,7 +382,7 @@
                 {% endfor %}
               </select>
             </div>
-            subscribers - {{ tracker.subscribers.count() }}
+            {{ _("subscribers") }} - {{ tracker.subscribers.count() }}
             <br />
             <div class="form-group">
               <div class="form-left2">
@@ -657,7 +657,7 @@
       delete_confirm = confirm("are you sure want to delete this tracker?");
       if (delete_confirm) {
         $.ajax({
-          url: "/delete_tracker/",
+          url: "/en/delete_tracker/",
           method: "post",
           dataType: "html",
           data: {
@@ -670,13 +670,14 @@
         });
       }
     }
-  </script>v
+  </script>
   <script>
     function unsubscribe_from_tracker(tracker_id) {
-      const el = document.getElementById("trackerBox"+ tracker_id);
+      el = document.getElementById("trackerBox"+ tracker_id);
       $.ajax({
-        url: "/unsubscribe_from_tracker/",
+        url: "/en/unsubscribe_from_tracker/",
         method: "post",
+
         dataType: "html",
         data: {
           tracker_id: tracker_id,

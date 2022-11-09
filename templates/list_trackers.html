@@ -351,7 +351,7 @@
     sub_button = document.getElementById("sub_button" + tracker_id);
     sub_button.disabled = true;
     $.ajax({
-      url: "/subscribe_on_tracker/",
+      url: "/en/subscribe_on_tracker/",
       method: "post",
       dataType: "html",
       data: { tracker_id: tracker_id, csrfmiddlewaretoken: "{{ csrf_token }}" },
@@ -370,7 +370,7 @@
     sub_button = document.getElementById("sub_button" + tracker_id);
     sub_button.disabled = true;
     $.ajax({
-      url: "/unsubscribe_from_tracker/",
+      url: "/en/unsubscribe_from_tracker/",
       method: "post",
       dataType: "html",
       data: { tracker_id: tracker_id, csrfmiddlewaretoken: "{{ csrf_token }}" },
