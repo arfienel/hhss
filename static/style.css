@@ -101,7 +101,30 @@ h6 {
     font-size: calc(1.375rem + 1.5vw);
   }
 }
+.mn-b{
+  margin-bottom: 10px;
+}
+.br{
+  border: 1px solid #000;
+  border-radius: 5px;
+}
+.pg{
+  padding: 5px;
+}
 /*База*/
+.lang{
+  
+}
+.lang select{
+  margin: 6px 0 5px 0;
+  padding:0 10px 3px 10px;
+  outline: none;
+  border: 1px solid #000;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: #eee;
+}
 .welcome {
   border: 1px solid #c2c4c9;
   border-radius: 15px;
@@ -376,7 +399,7 @@ header .container-header {
 .hidden_search_bar{
   display: flex;
   align-items: center;
-  margin-right: 10%;
+  margin-right: 5%;
 }
 
 
@@ -458,6 +481,10 @@ header .container-header {
     text-align: center;
     width: 63.7px;
   }
+  .lang select{
+    margin: 3px 0 2px 0;
+  }
+  
 }
 @media only screen and (max-width: 426px) {
   .log-in-text {

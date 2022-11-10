@@ -325,65 +325,9 @@
               </h6>
             </div>
             {% endif %} {% if request.user.id == tracker.user_creator.id %}
-            <div class="mb-3">
-              <label class="form-label">Search text</label>
-              <input
-                type="text"
-                minlength="3"
-                maxlength="60"
-                id="search_text_{{tracker.id}}"
-                value="{{tracker.search_text}}"
-                class="form-control"
-                name="search_text"
-              />
-              <div class="form-text">Enter a job title you want to track</div>
+            <div class="mn-b">
+              <span class="br pg">{{ _("Subscribers") }} - {{ tracker.subscribers.count() }}</span>
             </div>
-            <div class="mb-3">
-              <label class="form-label">Exclude from search</label>
-              <input
-                type="text"
-                id="exclude_from_search_{{tracker.id}}"
-                value="{{tracker.exclude_from_search}}"
-                class="form-control"
-                name="exclude_from_search"
-              />
-              <div class="form-text">
-                Enter text that you don`t want to see in job description.
-                Please, divide each parameter with comma
-              </div>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">{{ _("Select your areas to search") }}</label
-              ><br />
-              <select
-                class="js-example-basic-multiple"
-                id="updateTrackerArea{{ tracker.id }}"
-                multiple="multiple"
-                style="width: 100%"
-                name="area[]"
-              >
-                <option value="">{{ _("Everywhere") }}</option>
-                {% for area in areas %}
-                <option
-                  value="{{area.hh_id}}"
-                  {%
-                  if
-                  area.hh_id
-                  in
-                  tracker.areas
-                  %}
-                  selected
-                  {%
-                  endif
-                  %}
-                >
-                  {{area.name}}
-                </option>
-                {% endfor %}
-              </select>
-            </div>
-            {{ _("subscribers") }} - {{ tracker.subscribers.count() }}
-            <br />
             <div class="form-group">
               <div class="form-left2">
                 <p>Тип занятости</p>

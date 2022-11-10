@@ -41,27 +41,23 @@
           </ul>
         </div>
         <div class="hidden_search_bar" id="hidden_search_bar"></div>
-        <form action="{{ url('set_language') }}" method="post">
-         <input
-            type="hidden"
-            name="csrfmiddlewaretoken"
-            value="{{ csrf_token }}"
-          />
-
-        <input name="next" type="hidden" value="{{ request.get_full_path() }}" />
-        <select name="language">
-
-              <option value="ru"{% if 'ru' == get_language() %} selected="selected"{% endif %}>
-                рус
-              </option>
-              <option value="en"{% if 'en' == get_language() %} selected="selected"{% endif %}>
-                eng
-              </option>
-
-        </select>
-        <input type="submit" value="Change" />
-      </form>
         <ul class="nav nav-pills font-size-nav">
+          <form class="lang" action="{{ url('set_language') }}" method="post">
+            <input
+               type="hidden"
+               name="csrfmiddlewaretoken"
+               value="{{ csrf_token }}"
+             />
+           <input name="next" type="hidden" value="{{ request.get_full_path() }}" />
+           <select  onchange="this.form.submit()" name="language">
+                 <option value="ru"{% if 'ru' == get_language() %} selected="selected"{% endif %}>
+                   Рус
+                 </option>
+                 <option value="en"{% if 'en' == get_language() %} selected="selected"{% endif %}>
+                   Eng
+                 </option>
+           </select>
+         </form>
           <!-- если чел зареган -->
           {% if request.user.is_authenticated %}
           <li class="nav-item mx-1">
