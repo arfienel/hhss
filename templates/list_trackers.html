@@ -2,7 +2,7 @@
 <div id="searchBar" class="form-wrapper">
   <form method="get" class="search-bar">
     <input type="text" name="search" placeholder="Search" />
-    <button type="submit"><img src="../static/search.png" alt="" /></button>
+    <button type="submit"><img src="/static/search.png" alt="" /></button>
   </form>
 </div>
 <div class="alert-position" id="search-alert">{% if trackers_parsers %}</div>
@@ -396,4 +396,6 @@
     $("#search-alert").delay(3000).slideUp(200);
   });
 </script>
+
+
 {% endblock %}
