@@ -331,29 +331,29 @@
               <div class="form-left2">
                 <p>Тип занятости</p>
                 <label
-                  ><input type="checkbox" value="full" name="employment-type[]"
+                  ><input disabled type="checkbox" value="full" name="employment-type[]"
                   {% if 'full' in tracker.employment_type %} checked {% endif
                   %}>Полная занятость</label
                 >
                 <label
-                  ><input type="checkbox" value="part" name="employment-type[]"
+                  ><input disabled type="checkbox" value="part" name="employment-type[]"
                   {% if 'part' in tracker.employment_type %} checked {% endif
                   %}>Частичная занятость</label
                 >
                 <label
-                  ><input type="checkbox" value="project"
+                  ><input disabled type="checkbox" value="project"
                   name="employment-type[]" {% if 'project' in
                   tracker.employment_type %} checked {% endif %}>Проектная
                   работа</label
                 >
                 <label
-                  ><input type="checkbox" value="volunteer"
+                  ><input disabled type="checkbox" value="volunteer"
                   name="employment-type[]" {% if 'volunteer' in
                   tracker.employment_type %} checked {% endif
                   %}>Волонтерство</label
                 >
                 <label
-                  ><input type="checkbox" value="probation"
+                  ><input disabled type="checkbox" value="probation"
                   name="employment-type[]" {% if 'probation' in
                   tracker.employment_type %} checked {% endif
                   %}>Стажировка</label
@@ -362,57 +362,57 @@
               <div class="float-left">
                 <p>График работы</p>
                 <label
-                  ><input type="checkbox" value="fullDay" name="timetable[]" {%
+                  ><input disabled type="checkbox" value="fullDay" name="timetable[]" {%
                   if 'fullDay' in tracker.work_schedule %}checked{% endif
                   %}>Полный день</label
                 >
                 <label
-                  ><input type="checkbox" value="remote" name="timetable[]" {%
+                  ><input disabled type="checkbox" value="remote" name="timetable[]" {%
                   if 'remote' in tracker.work_schedule %}checked{% endif
                   %}>Удаленная работа</label
                 >
                 <label
-                  ><input type="checkbox" value="flexible" name="timetable[]" {%
+                  ><input disabled type="checkbox" value="flexible" name="timetable[]" {%
                   if 'flexible' in tracker.work_schedule %}checked{% endif
                   %}>Гибкий график</label
                 >
                 <label
-                  ><input type="checkbox" value="shift" name="timetable[]" /> {%
+                  ><input disabled type="checkbox" value="shift" name="timetable[]" /> {%
                   if 'shift' in tracker.work_schedule %}checked{% endif
                   %}Сменный график</label
                 >
                 <label
-                  ><input type="checkbox" value="flyInFlyOut" name="timetable[]"
+                  ><input disabled type="checkbox" value="flyInFlyOut" name="timetable[]"
                   {% if 'flyInFlyOut' in tracker.work_schedule %}checked{% endif
                   %}>Вахтовый метод</label
                 >
               </div>
               <p>Опыт работы</p>
               <label for="doesnt-matter{{tracker.id}}"
-                ><input type="radio" id="doesnt-matter{{tracker.id}}" value=""
+                ><input disabled type="radio" id="doesnt-matter{{tracker.id}}" value=""
                 name="work-experience" {% if tracker.work_experience == '' %}
                 checked {% endif %}>Не имеет значения</label
               >
               <label for="from-3-to-6-years-old{{tracker.id}}"
-                ><input type="radio" value="between3And6"
+                ><input disabled type="radio" value="between3And6"
                 id="from-3-to-6-years-old{{tracker.id}}" name="work-experience"
                 {% if tracker.work_experience == 'between3And6' %} checked {%
                 endif %}>От 3 до 6 лет</label
               >
               <label for="from-1-to-3-years{{tracker.id}}"
-                ><input type="radio" value="between1And3"
+                ><input disabled type="radio" value="between1And3"
                 id="from-1-to-3-years{{tracker.id}}" name="work-experience" {%
                 if tracker.work_experience == 'between1And3' %} checked {% endif
                 %}>От 1 года до 3 лет</label
               >
               <label for="no-experience{{tracker.id}}"
-                ><input type="radio" value="noExperience"
+                ><input disabled type="radio" value="noExperience"
                 id="no-experience{{tracker.id}}" name="work-experience" {% if
                 tracker.work_experience == 'noExperience' %} checked {% endif
                 %}>Нет опыта</label
               >
               <label for="over-6-years{{tracker.id}}"
-                ><input type="radio" value="moreThan6"
+                ><input disabled type="radio" value="moreThan6"
                 id="over-6-years{{tracker.id}}" name="work-experience" {% if
                 tracker.work_experience == 'moreThan6' %} checked {% endif
                 %}>Более 6 лет</label
