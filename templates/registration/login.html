@@ -9,7 +9,7 @@
 {% endif %} {% endif %}
 <div class="reg-log-padding">
   <fieldset class="registration-login">
-    <h1 class="headline-reg-log">Log in</h1>
+    <h1 class="headline-reg-log">{{ _("Log in form") }}</h1>
     <form class="form-log" method="post" action="{{ url('login') }}">
       <input
         type="hidden"
@@ -27,15 +27,12 @@
           font-size: 16px;
         "
       >
-        <a class="lost-password" href="{{ url('password_reset') }}"
-          >Lost password?</a
-        >
       </p>
-      <input class="btn-log" type="submit" value="login" />
+      <input class="btn-log" type="submit" value="{{ _('login') }}" />
       <input type="hidden" name="next" value="{{ next }}" />
     </form>
     <p class="message-log">
-      Your username and password didn't match. Please try again.
+      {{ _("Your username and password didn't match. Please try again") }}.
     </p>
   </fieldset>
 </div>

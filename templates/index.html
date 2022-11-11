@@ -235,8 +235,7 @@
                 name="exclude_from_search"
               />
               <div class="form-text">
-                {{ _("Enter text that you don`t want to see in job description. Divide
-                each parameter with comma") }}
+                {{ _("Enter text that you don`t want to see in job description. Divide each parameter with comma") }}
               </div>
             </div>
 
@@ -250,7 +249,6 @@
                 style="width: 100%"
                 name="area[]"
               >
-                <option value="">{{ _("Everywhere") }}</option>
                 {% for area in areas %}
                 <option value="{{area.hh_id}}">{{area.name}}</option>
                 {% endfor %}
@@ -427,16 +425,16 @@
               style="margin-bottom: 10px; margin-top: 10px"
               class="btn btn-danger"
             >
-              Delete
+              {{ _("Delete") }}
             </button>
 
             {% else %}
             <div class="mb-3">
-              <h3>Текст запроса - {{tracker.search_text}}</h3>
+              <h3>{{ _("Search text") }} - {{tracker.search_text}}</h3>
             </div>
             {% if tracker.exclude_from_search %}
             <div class="mb-3">
-              <h4>Исключено из запроса - {{ tracker.exclude_from_search }}</h4>
+              <h4>{{ _("excluded_from_search") }} - {{ tracker.exclude_from_search }}</h4>
             </div>
             {% endif %}
             <br />
@@ -445,7 +443,7 @@
             {% endif %} {% endfor %}
             <br />
             <button type="button" onclick="unsubscribe_from_tracker({{tracker.id}});" id="sub_button{{tracker.id}}"  class="btn btn-danger" data-bs-dismiss="modal" data-bs-target="#my-modal" aria-label="Close">
-              unsubscribe
+              {{ _("unsubscribe") }}
             </button>
             <br /><br />
             {% endif %}
@@ -602,7 +600,7 @@
       delete_confirm = confirm("are you sure want to delete this tracker?");
       if (delete_confirm) {
         $.ajax({
-          url: "/en/delete_tracker/",
+          url: "{{ url('delete_tracker') }}",
           method: "post",
           dataType: "html",
           data: {

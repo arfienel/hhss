@@ -1,5 +1,5 @@
 from django.contrib.staticfiles.storage import staticfiles_storage
-from django.urls import reverse
+from django.urls import reverse_lazy
 from jinja2 import Environment
 from django.contrib import messages
 from django.utils import translation
@@ -19,7 +19,7 @@ def change_lang(request, lang=None, *args, **kwargs):
     cur_language = translation.get_language()
     try:
         translation.activate(lang)
-        url = reverse(url_parts.view_name, kwargs=url_parts.kwargs)
+        url = reverse_lazy(url_parts.view_name, kwargs=url_parts.kwargs)
     finally:
         translation.activate(cur_language)
 
@@ -32,7 +32,7 @@ def environment(**options):
     env.globals.update({
         'get_messages': messages.get_messages,
         'static': staticfiles_storage.url,
-        'url': reverse,
+        'url': reverse_lazy,
         'zip': zip,
         'list': list,
         'len': len,

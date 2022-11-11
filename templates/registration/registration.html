@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 <div class="reg-log-padding">
   <fieldset class="registration-login">
-    <h1 class="headline-reg-log">Sign up</h1>
+    <h1 class="headline-reg-log">{{ _("registration form") }}</h1>
     <form class="form-reg" method="post">
       <input
         type="hidden"
@@ -12,7 +12,7 @@
       for field in form %}
       <p>{{ field.label_tag() }} {{ field }}</p>
       {% endfor %}
-      <button class="btn-reg" type="submit">Sign up</button>
+      <button class="btn-reg" type="submit">{{ _("Sign up") }}</button>
     </form>
   </fieldset>
 </div>
