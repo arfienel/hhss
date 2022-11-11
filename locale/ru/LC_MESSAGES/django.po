@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-09 16:30+0000\n"
+"POT-Creation-Date: 2022-11-11 08:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,12 +20,72 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: hhss/settings.py:137
+#: hhss/settings.py:168
 msgid "Russian"
 msgstr ""
 
-#: hhss/settings.py:138
+#: hhss/settings.py:169
 msgid "English"
+msgstr ""
+
+#: job_skills/forms.py:9
+msgid "Username"
+msgstr "Имя пользователя"
+
+#: job_skills/forms.py:10
+msgid "Password"
+msgstr "Пароль"
+
+#: job_skills/forms.py:11
+msgid "Password confirmation"
+msgstr "Подтверждение пароля"
+
+#: job_skills/forms.py:17
+msgid "This username already taken"
+msgstr "Это имя уже занято"
+
+#: job_skills/forms.py:19
+msgid "Passwords didn`t  match"
+msgstr "Пароли не одинаковы"
+
+#: job_skills/views.py:147
+msgid "minimum 3 letters"
+msgstr "Минимум 3 буквы"
+
+#: job_skills/views.py:162
+msgid "incorrectly selected areas"
+msgstr "Неправильно выбраны регионы"
+
+#: job_skills/views.py:178
+msgid "incorrectly selected work schedule"
+msgstr "Неправильно выбрано расписание работ"
+
+#: job_skills/views.py:194
+msgid "incorrectly selected employment types"
+msgstr "Неправильно выбраны типы устройства"
+
+#: job_skills/views.py:204
+msgid "Understandable, have a great day!"
+msgstr "Понятно, хорошего дня)"
+
+#: job_skills/views.py:206
+msgid ""
+"You already created 5 trackers, which is maximum, try to delete or update "
+"other trackers"
+msgstr ""
+"Вы уже создали 5 трекеров, удалите некоторые из своих трекеров чтобы создать "
+"новые"
+
+#: job_skills/views.py:239 job_skills/views.py:260
+msgid "wait"
+msgstr "подождите"
+
+#: job_skills/views.py:239
+msgid "days, before delete tracker"
+msgstr "дней, перед удалением трекера"
+
+#: job_skills/views.py:260
+msgid " days, before update tracker"
 msgstr ""
 
 #: templates/base.html:9
@@ -40,102 +100,122 @@ msgstr ""
 msgid "All trackers"
 msgstr "Все трекеры"
 
-#: templates/index.html:12
+#: templates/base.html:65
+#, fuzzy
+#| msgid "Log in"
+msgid "Log out"
+msgstr "Войти"
+
+#: templates/base.html:70 templates/index.html:111
+#: templates/registration/registration.html:15
+msgid "Sign up"
+msgstr "Зарегистрироваться"
+
+#: templates/base.html:74 templates/index.html:109
+msgid "Log in"
+msgstr "Войти"
+
+#: templates/index.html:13
 msgid "Your created trackers"
 msgstr "Ваши созданные трекеры"
 
-#: templates/index.html:37 templates/index.html:148
+#: templates/index.html:38 templates/index.html:149
 #: templates/list_trackers.html:34
 msgid "Please wait"
 msgstr "Пожалуйста подождите"
 
-#: templates/index.html:47 templates/index.html:158
+#: templates/index.html:48 templates/index.html:159
 #: templates/list_trackers.html:45 templates/list_trackers.html:186
 msgid "Vacancies amount"
 msgstr "Количество вакансий"
 
-#: templates/index.html:83
+#: templates/index.html:84
 msgid "Add tracker"
 msgstr "Добавить трекер"
 
-#: templates/index.html:94
+#: templates/index.html:95
 msgid "Seems like you don`t tracking jobs yet"
 msgstr "Похоже что вы еще не отслеживаете работы"
 
-#: templates/index.html:97
+#: templates/index.html:98
 msgid "Start tracking"
 msgstr "Начать отслеживать"
 
-#: templates/index.html:104
+#: templates/index.html:105
 msgid "To create your own job skills tracker"
 msgstr "Чтобы создать свой трекер навыков работ"
 
-#: templates/index.html:106
+#: templates/index.html:107
 msgid "you need to"
 msgstr "Ван надо"
 
-#: templates/index.html:108
-msgid "Log in"
-msgstr "Войти"
-
-#: templates/index.html:109
+#: templates/index.html:110
 msgid "or"
 msgstr "или"
 
-#: templates/index.html:110
-msgid "Sign up"
-msgstr "Зарегистрироваться"
-
-#: templates/index.html:121
+#: templates/index.html:122
 msgid "Your subscribed trackers"
 msgstr "Ваши отслеживаемые трекеры"
 
-#: templates/index.html:146 templates/list_trackers.html:32
+#: templates/index.html:147 templates/list_trackers.html:32
 msgid "Data is still uploading"
 msgstr "Данные еще загружаются"
 
-#: templates/index.html:213
+#: templates/index.html:214
 msgid "Creating job skill stats tracker"
 msgstr "Создается"
 
-#: templates/index.html:224 templates/list_trackers.html:94
-#: templates/list_trackers.html:237
+#: templates/index.html:225 templates/index.html:435
+#: templates/list_trackers.html:94 templates/list_trackers.html:237
 msgid "Search text"
 msgstr "Текст запроса"
 
-#: templates/index.html:226
+#: templates/index.html:227
 msgid "Enter a job title you want to track"
 msgstr "Введите текст который ходите находить в вакансиях"
 
-#: templates/index.html:230
+#: templates/index.html:231
 msgid "Exclude from search"
 msgstr "Убрать из поиска"
 
-#: templates/index.html:243 templates/index.html:356
+#: templates/index.html:244
 msgid "Select your areas to search"
 msgstr "Выберите регионы для поиска"
 
-#: templates/index.html:252 templates/index.html:365
+#: templates/index.html:253
 msgid "Everywhere"
 msgstr "Везде"
 
-#: templates/index.html:283
+#: templates/index.html:284
 msgid "Close"
 msgstr "Закрыть"
 
-#: templates/index.html:285
+#: templates/index.html:286
 msgid "Create"
 msgstr "Создать"
 
-#: templates/index.html:324
+#: templates/index.html:325
 msgid "Job tracker updated successfully"
 msgstr "Трекер успешно создан"
 
-#: templates/index.html:385
+#: templates/index.html:330
+msgid "Subscribers"
+msgstr "Отслеживают"
+
+#: templates/index.html:430
+msgid "Delete"
+msgstr "Удалить"
+
+#: templates/index.html:439
 #, fuzzy
-#| msgid "Your created trackers"
-msgid "subscribers"
-msgstr "Ваши созданные трекеры"
+#| msgid "Excluded from search"
+msgid "excluded_from_search"
+msgstr "Убрано из поиска"
+
+#: templates/index.html:448 templates/list_trackers.html:113
+#: templates/list_trackers.html:217
+msgid "unsubscribe"
+msgstr "Отписаться"
 
 #: templates/list_trackers.html:67
 msgid "Nothing was found"
@@ -145,10 +225,22 @@ msgstr "Ничего не нашлось"
 msgid "Excluded from search"
 msgstr "Убрано из поиска"
 
-#: templates/list_trackers.html:113 templates/list_trackers.html:217
-msgid "unsubscribe"
-msgstr "Отписаться"
-
 #: templates/list_trackers.html:119 templates/list_trackers.html:222
 msgid "subscribe"
 msgstr "Подписаться"
+
+#: templates/registration/login.html:12
+msgid "Log in form"
+msgstr "Форма входа"
+
+#: templates/registration/login.html:31
+msgid "login"
+msgstr "войти"
+
+#: templates/registration/login.html:35
+msgid "Your username and password didn't match. Please try again"
+msgstr "Не правильно введены логин и пароль, попробуйте ещё"
+
+#: templates/registration/registration.html:4
+msgid "registration form"
+msgstr "Форма регистрации"

@@ -62,16 +62,16 @@
           <!-- если чел зареган -->
           {% if request.user.is_authenticated %}
           <li class="nav-item mx-1">
-            <a href="{{ url('logout') }}" class="nav-link active" aria-current="page" >Log out</a>
+            <a href="{{ url('logout') }}" class="nav-link active" aria-current="page" >{{ _("Log out") }}</a>
           </li>
           <!-- если чел НЕ зареган -->
           {% else %}
           <li class="nav-item mx-1">
-            <a href="{{ url('registration') }}" class="nav-link active" aria-current="page" >Sign up</a
+            <a href="{{ url('registration') }}" class="nav-link active" aria-current="page" >{{ _("Sign up") }}</a
             >
           </li>
           <li class="nav-item mx-1">
-            <a href="{{ url('login') }}" class="nav-link active log-in-text" aria-current="page" >Log in</a
+            <a href="{{ url('login') }}" class="nav-link active log-in-text" aria-current="page" >{{ _("Log in") }}</a
             >
           </li>
           {% endif %}
