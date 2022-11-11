@@ -279,8 +279,7 @@ def registration(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = User.objects.create_user(username=form.cleaned_data['username'],
-                                            password=form.cleaned_data['password'],
-                                            email=form.cleaned_data['email'])
+                                            password=form.cleaned_data['password'])
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             # authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             return redirect('index')

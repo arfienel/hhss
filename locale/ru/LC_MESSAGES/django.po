@@ -38,7 +38,7 @@ msgstr ""
 
 #: templates/base.html:38
 msgid "All trackers"
-msgstr ""
+msgstr "Все трекеры"
 
 #: templates/index.html:12
 msgid "Your created trackers"
@@ -85,7 +85,6 @@ msgstr "или"
 #: templates/index.html:110
 msgid "Sign up"
 msgstr "Зарегистрироваться"
-
 
 #: templates/index.html:121
 msgid "Your subscribed trackers"

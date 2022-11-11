@@ -8,7 +8,6 @@ class UserRegistrationForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': ''}), label='Username', max_length=100)
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': ''}))
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': ''}), label='Password confirmation')
-    email = forms.EmailField(max_length=254, widget=forms.EmailInput(attrs={'class': ''}))
 
 
     def clean(self):
@@ -21,4 +20,4 @@ class UserRegistrationForm(forms.Form):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password1', 'password2',)
+        fields = ('username', 'password1', 'password2',)
