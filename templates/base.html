@@ -30,7 +30,7 @@
       <div class="container-header">
         <div class="navbar-wrap">
           <a href="/" class="navbar-brand"
-            ><img class="logo-brand" src="{{ static('job.png') }}" alt="logo"
+            ><img  class="logo-brand" src="{{ static('job.png') }}" alt="logo" id="logo-img"
             /><span id="example" class="brand-name">{{ _("Skill stats") }}</span></a>
           <ul class="navbar-menu">
             <li>
@@ -99,10 +99,16 @@
   let switchMode = document.getElementById("switchMode");
   switchMode.onclick = function(){
     let theme = document.getElementById("theme");
+    let logo = document.getElementById("logo-img");
     if (theme.getAttribute("href") == "/static/light.css"){
       theme.href = "/static/dark.css";
     } else {
       theme.href = "/static/light.css";
+    }
+    if (logo.getAttribute("src") == "/static/job.png"){
+      logo.src = "/static/job-white.png";
+    } else {
+      logo.src = "/static/job.png"
     }
   }
 </script>
