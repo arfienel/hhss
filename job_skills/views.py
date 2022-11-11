@@ -144,7 +144,7 @@ def validate_search_text(request):
         if any(['js', '1c', '1с', 'c#']) == search_text.lower():
             pass
         else:
-            request.session['error_message'] = _('minimum 3 letters')
+            request.session['error_message'] = str(_('minimum 3 letters'))
             return 0
 
     return search_text
@@ -159,7 +159,7 @@ def validate_areas(request):
         areas = [int(ar) for ar in area]
     except Exception as exc:
         print(exc)
-        request.session['error_message'] = _('incorrectly selected areas')
+        request.session['error_message'] = str(_('incorrectly selected areas'))
         return 0
     else:
         return areas
@@ -175,7 +175,7 @@ def validate_work_schedule(request):
     except Exception as exc:
         # добавить логгер и ошибки попроавить
         print(exc)
-        request.session['error_message'] = _('incorrectly selected work schedule')
+        request.session['error_message'] = str(_('incorrectly selected work schedule'))
         return 0
     else:
         return timetables
@@ -191,7 +191,7 @@ def validate_employment_type(request):
     except Exception as exc:
         # добавить логгер и ошибки попроавить
         print(exc)
-        request.session['error_message'] = _('incorrectly selected employment types')
+        request.session['error_message'] = str(_('incorrectly selected employment types'))
         return 0
     else:
         return employment_types
@@ -201,9 +201,9 @@ def create_tracker(request):
     if request.method == "POST":
         if JobTracker.objects.filter(user_creator=request.user.id).count() >= 5:
             if request.user.is_staff:
-                request.session['error_message'] = _('Understandable, have a great day!')
+                request.session['error_message'] = str(_('Understandable, have a great day!'))
             else:
-                request.session['error_message'] = _('You already created 5 trackers, which is maximum, try to delete or update other trackers')
+                request.session['error_message'] = str(_('You already created 5 trackers, which is maximum, try to delete or update other trackers'))
                 return redirect('index')
         new_job_tracker = JobTracker()
         new_job_tracker.search_text = validate_search_text(request)
@@ -236,7 +236,8 @@ def delete_tracker(request):
         if request.user.is_staff:
             pass
         elif date_difference <= timedelta(days=3):
-            request.session['error_message'] = _('wait') + f' {str((timedelta(days=3) - date_difference).days)}' + _('days, before delete tracker')
+            request.session['error_message'] = _('days, before delete tracker') + f' {int((timedelta(days=3) - date_difference).days)}'
+            print(request.session['error_message'])
             return HttpResponse(request.session['error_message'])
         tracker_to_delete.delete()
         return HttpResponse(f'Successfully deleted {tracker_to_delete.id, tracker_to_delete.search_text}')
@@ -257,7 +258,7 @@ def update_tracker(request):
         if request.user.is_staff:
             pass
         elif date_difference <= timedelta(days=3):
-            request.session['error_message'] = _('wait') + f'{str((timedelta(days=3) - date_difference).days)}' + _(' days, before update tracker')
+            request.session['error_message'] = str(_('wait')) + f'{str((timedelta(days=3) - date_difference).days)}' + str(_(' days, before update tracker'))
             return HttpResponse(request.session['error_message'])
         tracker_to_update.search_text = validate_search_text(request)
         tracker_to_update.areas = validate_areas(request)

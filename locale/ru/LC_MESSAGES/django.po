@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-11 08:47+0000\n"
+"POT-Creation-Date: 2022-11-11 16:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -76,15 +76,15 @@ msgstr ""
 "Вы уже создали 5 трекеров, удалите некоторые из своих трекеров чтобы создать "
 "новые"
 
-#: job_skills/views.py:239 job_skills/views.py:260
-msgid "wait"
-msgstr "подождите"
-
 #: job_skills/views.py:239
 msgid "days, before delete tracker"
 msgstr "дней, перед удалением трекера"
 
-#: job_skills/views.py:260
+#: job_skills/views.py:261
+msgid "wait"
+msgstr "подождите"
+
+#: job_skills/views.py:261
 msgid " days, before update tracker"
 msgstr ""
 
@@ -163,56 +163,58 @@ msgstr "Данные еще загружаются"
 
 #: templates/index.html:214
 msgid "Creating job skill stats tracker"
-msgstr "Создается"
+msgstr "Создание трекера"
 
-#: templates/index.html:225 templates/index.html:435
+#: templates/index.html:225 templates/index.html:433
 #: templates/list_trackers.html:94 templates/list_trackers.html:237
 msgid "Search text"
 msgstr "Текст запроса"
 
 #: templates/index.html:227
 msgid "Enter a job title you want to track"
-msgstr "Введите текст который ходите находить в вакансиях"
+msgstr "Профессия или должность"
 
 #: templates/index.html:231
 msgid "Exclude from search"
 msgstr "Убрать из поиска"
 
-#: templates/index.html:244
+#: templates/index.html:238
+msgid ""
+"Enter text that you don`t want to see in job description. Divide each "
+"parameter with comma"
+msgstr "Напишите какой текст не должен быть в вакансиях, через запятую"
+
+#: templates/index.html:243
 msgid "Select your areas to search"
 msgstr "Выберите регионы для поиска"
 
-#: templates/index.html:253
-msgid "Everywhere"
-msgstr "Везде"
-
-#: templates/index.html:284
+#: templates/index.html:282
 msgid "Close"
 msgstr "Закрыть"
 
-#: templates/index.html:286
+#: templates/index.html:284
 msgid "Create"
 msgstr "Создать"
 
-#: templates/index.html:325
+#: templates/index.html:323
 msgid "Job tracker updated successfully"
 msgstr "Трекер успешно создан"
 
-#: templates/index.html:330
+#: templates/index.html:328
 msgid "Subscribers"
 msgstr "Отслеживают"
 
-#: templates/index.html:430
+#: templates/index.html:428
 msgid "Delete"
 msgstr "Удалить"
 
-#: templates/index.html:439
+#: templates/index.html:437
 #, fuzzy
 #| msgid "Excluded from search"
 msgid "excluded_from_search"
 msgstr "Убрано из поиска"
 
-#: templates/index.html:448 templates/list_trackers.html:113
+#: templates/index.html:446 templates/list_trackers.html:113
 #: templates/list_trackers.html:217
 msgid "unsubscribe"
 msgstr "Отписаться"
@@ -244,3 +246,6 @@ msgstr "Не правильно введены логин и пароль, по�
 #: templates/registration/registration.html:4
 msgid "registration form"
 msgstr "Форма регистрации"
+
+#~ msgid "Everywhere"
+#~ msgstr "Везде"

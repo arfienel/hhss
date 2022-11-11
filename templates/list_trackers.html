@@ -141,7 +141,7 @@
           if (offset >= height) {
             page++;
             $.ajax({
-                url: '/list_more_trackers/'+'?page='+page{% if request.GET['search'] %}+'&?search='+{{ request.GET['search'] }} {% endif %},
+                url: '{{ url("list_more_trackers") }}'+'?page='+page{% if request.GET['search'] %}+'&?search='+{{ request.GET['search'] }} {% endif %},
                 method: 'get',
                 dataType: 'html',
                 success: function(data){

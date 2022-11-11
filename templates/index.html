@@ -235,8 +235,7 @@
                 name="exclude_from_search"
               />
               <div class="form-text">
-                {{ _("Enter text that you don`t want to see in job description. Divide
-                each parameter with comma") }}
+                {{ _("Enter text that you don`t want to see in job description. Divide each parameter with comma") }}
               </div>
             </div>
 
@@ -250,7 +249,6 @@
                 style="width: 100%"
                 name="area[]"
               >
-                <option value="">{{ _("Everywhere") }}</option>
                 {% for area in areas %}
                 <option value="{{area.hh_id}}">{{area.name}}</option>
                 {% endfor %}
@@ -602,7 +600,7 @@
       delete_confirm = confirm("are you sure want to delete this tracker?");
       if (delete_confirm) {
         $.ajax({
-          url: "/en/delete_tracker/",
+          url: "{{ url('delete_tracker') }}",
           method: "post",
           dataType: "html",
           data: {

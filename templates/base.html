@@ -50,8 +50,8 @@
                value="{{ csrf_token }}"
              />
            <input name="next" type="hidden" value="{{ request.get_full_path() }}" />
-           <select  onchange="this.form.submit()" name="language">
-                 <option value="ru"{% if 'ru' == get_language() %} selected="selected"{% endif %}>
+           <select style="" onchange="this.form.submit()" name="language">
+                 <option style="background-color:white;" value="ru"{% if 'ru' == get_language() %} selected="selected"{% endif %}>
                    Рус
                  </option>
                  <option value="en"{% if 'en' == get_language() %} selected="selected"{% endif %}>
