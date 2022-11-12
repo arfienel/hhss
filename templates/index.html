@@ -14,7 +14,11 @@
   <div class="container">
     <!-- Начало цикла для всех трекеров -->
     {% for tracker in trackers %}
-    <div class="row bg-secondary rounded mb-3 py-3 grey-box">
+    <div style="cursor: pointer;" onclick="load_parser_data({{ tracker.id }})" 
+    data-bs-toggle="modal"
+    data-bs-target="#trackerModal{{ tracker.id }}"
+    id="modalBtn{{tracker.id}}" 
+    class="row bg-secondary rounded mb-3 py-3 grey-box">
       <!-- Текст поиска слева -->
       <div class="col-sm-2">
         <h3
@@ -54,23 +58,6 @@
           />
           {% endif %}
         </h5>
-      </div>
-      <div class="col-sm-2">
-        <button
-          style="border-radius: 10px"
-          type="button"
-          data-bs-toggle="modal"
-          data-bs-target="#trackerModal{{ tracker.id }}"
-          id="modalBtn{{tracker.id}}"
-          onclick="load_parser_data({{ tracker.id }})"
-          class="position-relative top-50 start-50 translate-middle"
-        >
-          <img
-            id="settingsImg{{ tracker.id }}"
-            style="width: 60px; height: 60px"
-            src="{{ static('settings.png') }}"
-          />
-        </button>
       </div>
     </div>
     {% endfor %}
