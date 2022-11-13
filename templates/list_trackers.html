@@ -154,7 +154,7 @@
                     if(skills[0]){
 
                     html_skills_part = `
-                    <div class="col-sm-6">
+                    <div class="col-sm-6" >
                     <ul class="list-group list-group-flush text-center" id="job_trackers">
                                 <li class="bg-secondary list-group-item text-light">${skills[0]['fields']['name']} - ${skills[0]['fields']['amount']}</li>
                                 <li class="bg-secondary list-group-item text-light">${skills[1]['fields']['name']} - ${skills[1]['fields']['amount']}</li>
@@ -166,7 +166,11 @@
                     html_skills_part = `<div class="col-sm-6"></div>`;
                     };
                     html_to_insert = `
-                    <div class="row bg-secondary rounded mb-3 py-3 grey-box">
+                    <div class="row bg-secondary rounded mb-3 py-3 grey-box"
+                    onclick="load_parser_data(${tracker_id})"
+                    data-bs-toggle="modal"
+                    data-bs-target="#trackerModal${tracker_id}"
+                    id="modalBtn${tracker_id}" >
                         <!-- Текст поиска слева -->
                         <div class="col-sm-2">
                             <h2 class="position-relative top-50 start-50 translate-middle text-center text-light text-limit">${tracker['search_text']}</h2>
@@ -179,11 +183,7 @@
                                     {{ _("Vacancies amount") }} <br>${parser['amount_of_vacancies']}
                             </h5>
                         </div>
-                        <div class="col-sm-2">
-                            <button style="border-radius: 10px" type="button" data-bs-toggle="modal" data-bs-target="#TrackerModal${tracker_id}" id="modalBtn${tracker_id}" onclick="load_parser_data(${tracker_id})" class="position-relative top-50 start-50 translate-middle">
-                                <img id="settingsImg${tracker_id}" style="width:60px;height:60px;" src="/static/settings.png">
-                            </button>
-                        </div>
+
                     </div>
                     `;
                     container_to_append.innerHTML += html_to_insert;
@@ -218,7 +218,7 @@
                     }
 
                     modal_to_insert = `
-                    <div class="modal fade" id="TrackerModal${tracker_id}" tabindex="-1"  aria-hidden="true">
+                    <div class="modal fade" id="trackerModal${tracker_id}" tabindex="-1"  aria-hidden="true">
                       <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                               <div class="modal-header">
@@ -288,11 +288,21 @@
             enabled: false
           }
         },
+          theme: {
+            mode: 'dark',
+            palette: 'palette1',
+            monochrome: {
+                enabled: false,
+                color: '#255aee',
+                shadeTo: 'light',
+                shadeIntensity: 0.65
+            },
+        },
         dataLabels: {
           enabled: false
         },
         stroke: {
-          curve: 'straight'
+          curve: 'smooth'
         },
         title: {
           text: 'amount of vacancies',
