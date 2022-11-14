@@ -8,11 +8,13 @@ from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-9)6y8381)ycplwu8!pputn$)-ds4sgpoyx++z(g5o^2#9zzbwh'
+with open(os.path.join(BASE_DIR, 'secret_key.txt')) as f:
+    SECRET_KEY = f.read().strip()
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'www.intrertr.beget.tech', 'intrertr.beget.tech']
 
 # Application definition
 
@@ -33,9 +35,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.middleware.locale.LocaleMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware",
-    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -113,9 +116,10 @@ def show_toolbar(request):
     return True
 
 
-DEBUG_TOOLBAR_CONFIG = {
-    "SHOW_TOOLBAR_CALLBACK": show_toolbar,
-}
+if DEBUG:
+    DEBUG_TOOLBAR_CONFIG = {
+        "SHOW_TOOLBAR_CALLBACK": show_toolbar,
+    }
 
 WSGI_APPLICATION = 'hhss.wsgi.application'
 
@@ -158,12 +162,12 @@ LOCALE_PATHS = (
 )
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+#STATICFILES_DIRS = [
+#    BASE_DIR / "static",
+#]
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
-
-
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 LANGUAGES = [
     ('ru', _('Russian')),
     ('en', _('English')),
@@ -204,3 +208,5 @@ REST_FRAMEWORK = {
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+
