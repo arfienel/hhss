@@ -6,6 +6,7 @@ from django.utils import translation
 from django.urls.base import resolve
 from django.shortcuts import redirect
 
+
 def change_lang(request, lang=None, *args, **kwargs):
     """
     Get active page's url by a specified language, it activates
