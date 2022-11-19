@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="icon" type="image/x-icon" href="{{ static('hh.png') }}" />
+    <link rel="icon" type="image/x-icon" href="{{ static('fav.png') }}" />
     <title>{{ _("HH skill stats") }}</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"
     />
@@ -22,69 +22,84 @@
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"
     ></script>
+    <link rel="stylesheet" href="{{ static('normalize.css') }}">
     <link rel="stylesheet" href="{{ static('style.css') }}" id="theme" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
   </head>
   <body>
-    <header>
-      <div class="container-header">
-        <div class="navbar-wrap">
-          <a href="/" class="navbar-brand"
+    <div class="overlay"></div>
+    <header class="header">
+      <div class="container header__container">
+        <a href="/" class="navbar-brand"
             ><img  class="logo-brand" src="{{ static('job.png') }}" alt="logo" id="logo-img"
             /><span id="example" class="brand-name">{{ _("Skill stats") }}</span></a>
-          <ul class="navbar-menu">
-            <li>
-              <a href="{{ url('list_trackers') }}"
-                ><span class="fs-5">{{ _("All trackers") }}</span></a
+            <div class="hidden_search_bar" id="hidden_search_bar"></div>
+
+        <nav class="nav header__nav">
+          <ul class="nav__list">
+            <li class="nav__item">
+              <ul class="nav__list nav__all">
+                <li class="nav__link">
+                  <a href="{{ url('list_trackers') }}"
+                    ><span class="fs-5">{{ _("All trackers") }}</span></a
+                  >
+                </li>    
+              </ul>
+            </li>
+            <div class="nav_item_div">
+                <div class="card">
+                  <div class="form-check form-switch">
+                    <input type="checkbox" class="form-check-input" id="checkbox" onclick="setDarkMode()">
+                    <label class="form-check-label" for="checkbox"><span style="padding-bottom: 1px;">Dark theme</span></label>
+                  </div>
+                </div>
+            </div>
+            <div class="nav_item_div">
+                <form class="lang" action="{{ url('set_language') }}" method="post">
+                  <input
+                     type="hidden"
+                     name="csrfmiddlewaretoken"
+                     value="{{ csrf_token }}"
+                   />
+                 <input name="next" type="hidden" value="{{ request.get_full_path() }}" />
+                 <div class="select">
+                 <select onchange="this.form.submit()" name="language">
+                       <option value="ru"{% if 'ru' == get_language() %} selected="selected"{% endif %}>
+                         Рус
+                       </option>
+                       <option value="en"{% if 'en' == get_language() %} selected="selected"{% endif %}>
+                         Eng
+                       </option>
+                 </select>
+
+                </div>
+               </form>
+            </div>
+                      <!-- если чел зареган -->
+           <div class="nav_item_div flex_div">
+            {% if request.user.is_authenticated %}
+            <li class="nav-item mx-1">
+              <a href="{{ url('logout') }}" class="" aria-current="page" >{{ _("Log out") }}</a>
+            </li>
+            <!-- если чел НЕ зареган -->
+            {% else %}
+            <li class="sign_log nav-item mx-1">
+              <a href="{{ url('registration') }}" class="" aria-current="page" >{{ _("Sign up") }}</a
               >
             </li>
+            <li class="nav-item mx-1">
+              <a href="{{ url('login') }}" class="log-in-text" aria-current="page" >{{ _("Log in") }}</a
+              >
+            </li>
+            {% endif %}
+          </div>
           </ul>
-        </div>
-        <div class="hidden_search_bar" id="hidden_search_bar"></div>
-        <ul class="nav nav-pills font-size-nav">
-        <div class="card">
-          <div class="form-check form-switch">
-            <input type="checkbox" class="form-check-input" id="checkbox" onclick="setDarkMode()">
-            <label class="form-check-label" for="checkbox"><span style="padding-bottom: 1px;">Dark theme</span></label>
-          </div>
-        </div>
-          <form class="lang" action="{{ url('set_language') }}" method="post">
-            <input
-               type="hidden"
-               name="csrfmiddlewaretoken"
-               value="{{ csrf_token }}"
-             />
-           <input name="next" type="hidden" value="{{ request.get_full_path() }}" />
-           <div class="select">
-           <select onchange="this.form.submit()" name="language">
-                 <option value="ru"{% if 'ru' == get_language() %} selected="selected"{% endif %}>
-                   Рус
-                 </option>
-                 <option value="en"{% if 'en' == get_language() %} selected="selected"{% endif %}>
-                   Eng
-                 </option>
-           </select>
-          </div>
-         </form>
-          <!-- если чел зареган -->
-          {% if request.user.is_authenticated %}
-          <li class="nav-item mx-1">
-            <a href="{{ url('logout') }}" class="nav-link active" aria-current="page" >{{ _("Log out") }}</a>
-          </li>
-          <!-- если чел НЕ зареган -->
-          {% else %}
-          <li class="nav-item mx-1">
-            <a href="{{ url('registration') }}" class="nav-link active" aria-current="page" >{{ _("Sign up") }}</a
-            >
-          </li>
-          <li class="nav-item mx-1">
-            <a href="{{ url('login') }}" class="nav-link active log-in-text" aria-current="page" >{{ _("Log in") }}</a
-            >
-          </li>
-          {% endif %}
-        </ul>
+        </nav>
+        <button class="burger" aria-label="Открыть меню">
+          <span></span>
+        </button>
       </div>
     </header>
     <!-- Сообщения об ошибках -->
@@ -126,4 +141,68 @@
       localStorage.removeItem('theme', 'dark');
     }
   }
+</script>
+
+<script>
+  const menu = document.querySelector('.nav'),
+			burger = document.querySelector('.burger'),
+			mobileBack = document.querySelector('.mobile-back'),
+			overlay = document.querySelector('.overlay');
+
+const lockScroll = () => {
+	document.body.classList.add('lock');
+}
+
+const unlockScroll = () => {
+	document.body.classList.remove('lock');
+}
+
+const initialMenu = () => {
+	document.querySelector('.nav__list--dropdown').classList.remove('transformation');
+	document.querySelector('.nav').querySelector('.nav__list').classList.remove('transformation');
+	scrollTop();
+}
+
+const scrollTop = () => {
+	menu.scrollTo({
+		top: 0,
+		behavior: 'smooth',
+	});
+}
+
+burger.addEventListener('click', () => {
+	menu.classList.add('open');
+	overlay.classList.add('open');
+	lockScroll();
+	initialMenu();
+});
+
+overlay.addEventListener('click', () => {
+	menu.classList.remove('open');
+	overlay.classList.remove('open');
+	unlockScroll();
+});
+
+menu.addEventListener('click', (e) => {
+	if (e.target.classList.contains('nav__link--drop')) {
+		e.preventDefault();
+		e.target.closest('.nav__list').classList.add('transformation');
+		e.target.closest('.nav__item').querySelector('.nav__list--dropdown').classList.add('transformation');
+		scrollTop();
+	}
+
+	if (e.target.classList.contains('mobile-back__link')) {
+		e.preventDefault();
+		e.target.closest('.nav__list--dropdown').classList.remove('transformation');
+		e.target.closest('.nav').querySelector('.nav__list').classList.remove('transformation');
+		scrollTop();
+	}
+
+	if (e.target.classList.contains('nav__link') && !e.target.classList.contains('nav__link--drop')) {
+		e.preventDefault();
+		menu.classList.remove('open');
+		overlay.classList.remove('open');
+		unlockScroll();
+	}
+});
 </script>
