@@ -1,4 +1,5 @@
 {% extends 'base.html'%} {% block content %}
+<div class="content">
 <div id="searchBar" class="form-wrapper">
   <form method="get" class="search-bar">
     <input type="text" name="search" placeholder="Search" />
@@ -73,7 +74,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title headline-limit">
-            <a href="{{ tracker_parser[0].hh_url }}"
+            <a target="_blank" href="{{ tracker_parser[0].hh_url }}"
               >{{ tracker_parser[0].search_text }}</a
             >
           </h4>
@@ -119,6 +120,7 @@
       </div>
     </div>
   </div>
+</div>
   {% endfor %}
 
   <script>
@@ -166,7 +168,7 @@
                     html_skills_part = `<div class="col-sm-6"></div>`;
                     };
                     html_to_insert = `
-                    <div class="row bg-secondary rounded mb-3 py-3 grey-box"
+                    <div style="cursor:pointer;" class="row bg-secondary rounded mb-3 py-3 grey-box"
                     onclick="load_parser_data(${tracker_id})"
                     data-bs-toggle="modal"
                     data-bs-target="#trackerModal${tracker_id}"
@@ -222,7 +224,7 @@
                       <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                               <div class="modal-header">
-                                <h4 class="modal-title"><a href="${tracker['hh_url']}">${tracker['search_text']}</a></h4>
+                                <h4 class="modal-title"><a target="_blank" href="${tracker['hh_url']}">${tracker['search_text']}</a></h4>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div class="modal-body">

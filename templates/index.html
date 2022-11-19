@@ -1,7 +1,5 @@
 {% extends 'base.html' %} {% block content %}
-
 <div class="content">
-
   <div id="chart"></div>
   <script>
 
@@ -10,7 +8,7 @@
   </script>
   <!-- если есть результат -->
   {% if trackers %}
-  <h1 style="text-align: center; margin-bottom: 22px;">{{ _("Your created trackers") }}</h1>
+  <h1 style="text-align: center; margin-bottom: 25px; margin-top: 10;">{{ _("Your created trackers") }}</h1>
   <div class="container">
     <!-- Начало цикла для всех трекеров -->
     {% for tracker in trackers %}
@@ -21,8 +19,8 @@
     class="row bg-secondary rounded mb-3 py-3 grey-box">
       <!-- Текст поиска слева -->
       <div class="col-sm-2">
-        <h3
-          class="position-relative top-50 start-50 translate-middle text-center text-light text-limit"
+        <h3 style="padding-bottom:5px;"
+          class="position-relative top-50 start-50 translate-middle text-center text-light text-limit text-border"
         >
           {{ tracker.search_text }}
         </h3>
@@ -46,8 +44,8 @@
       </div>
       <!-- правая часть квадрата. Количество парсеров и шестеренка -->
       <div class="col-sm-2">
-        <h5
-          class="position-relative top-50 start-50 translate-middle text-center text-light text-border"
+        <h5 style=" overflow:hidden;"
+          class="position-relative top-50 start-50 translate-middle text-center text-light"
         >
           {% if parsers[tracker.id] %} {{ _("Vacancies amount") }}
           <br />
@@ -112,7 +110,7 @@
 <div class="container">
   <!-- Начало цикла для всех трекеров -->
   {% for tracker in subscribed_trackers %}
-  <div class="row bg-secondary rounded mb-3 py-3 grey-box"
+  <div style="cursor: pointer;" class="row bg-secondary rounded mb-3 py-3 grey-box"
   onclick="load_parser_data({{ tracker.id }})"
     data-bs-toggle="modal"
     data-bs-target="#trackerModal{{ tracker.id }}"
@@ -278,7 +276,7 @@
         <form id="trackerForm{{tracker.id}}">
           <div class="modal-header">
             <h4 class="modal-title headline-limit">
-              <a href="{{ tracker.hh_url }}">{{ tracker.search_text }}</a>
+              <a target="_blank" href="{{ tracker.hh_url }}">{{ tracker.search_text }}</a>
             </h4>
             <button
               type="button"
