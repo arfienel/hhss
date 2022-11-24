@@ -32,6 +32,8 @@
   <li>Docker - чтобы удобно(надеюсь) развертывать проект</li>
   <li>DRF - для создания api</li>
   <li>whitenoise - для статики на проде</li>
+  <li>Bootstrap - для использования шаблонов</li>
+  <li>jqe</li>
 </ul>
 <br>
 <h1>Установка/Запуск</h1>
@@ -42,5 +44,4 @@
 <br>
 <h1>Работали над этим приложением</h1>
 <p>Backend - Калегин Максим maksimkalegin1@gmail.com</p>
-<p>Frontend - Перов Максим <p>
-
+<p>Frontend - Перов Максим perow.maksim089@gmail.com <p>
