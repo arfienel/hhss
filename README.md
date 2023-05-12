@@ -43,4 +43,4 @@
 <br>
 <h1>Работали над этим приложением</h1>
 <p>Backend - Калегин Максим maksimkalegin1@gmail.com</p>
-<p>Frontend - Перов Максим perow.maksim089@gmail.com <p>
+<p>Frontend - Перов Максим perow.maksim2015@gmail.com<p>
