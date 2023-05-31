@@ -4,7 +4,7 @@ import os
 import time
 import logging
 from datetime import datetime
-from sqlalchemy.sql import select, insert, update
+from sqlalchemy.sql import update, select, insert
 import aiopg
 import requests
 import ujson
@@ -122,6 +122,14 @@ async def get_vacancies(conn: object, tracker: object) -> None:
                 break
             except RuntimeError:
                 await asyncio.sleep(5)
+
+    await conn.execute(update(JobTracker).where(JobTracker.id == tracker.id).values(status_parser=True))
+    while True:
+        try:
+
+            break
+        except RuntimeError:
+            await asyncio.sleep(5)
     return number_of_vacancies
 
 
@@ -175,6 +183,7 @@ async def get_tracker(conn, tracker_id: int):
     """
     result = await conn.execute(select(JobTracker).where(JobTracker.id == tracker_id))
     query = await result.fetchone()
+    print(query)
     tracker = JobTracker(id=query[0], search_text=query[1], status_parser=query[2], exclude_from_search=query[3],
                          modified_date=query[4], user_creator_id=query[5], hh_url=query[6],
                          areas=query[7], employment_type=query[8], work_experience=query[9], work_schedule=query[10])
@@ -252,4 +261,5 @@ def parse_one_tracker(tracker_id: int = None):
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    #asyncio.run(main())
+    asyncio.run(main(tracker_id=17))

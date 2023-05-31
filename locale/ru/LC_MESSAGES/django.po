@@ -147,7 +147,7 @@ msgstr "Чтобы создать свой трекер навыков рабо�
 
 #: templates/index.html:107
 msgid "you need to"
-msgstr "Ван надо"
+msgstr "Вам надо"
 
 #: templates/index.html:110
 msgid "or"
