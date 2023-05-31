@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 with open(os.path.join(BASE_DIR, 'secret_key.txt')) as f:
     SECRET_KEY = f.read().strip()
 
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'www.intrertr.beget.tech', 'intrertr.beget.tech']
@@ -162,10 +162,10 @@ LOCALE_PATHS = (
 )
 
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-#STATICFILES_DIRS = [
-#    BASE_DIR / "static",
-#]
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 LANGUAGES = [

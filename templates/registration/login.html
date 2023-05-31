@@ -11,24 +11,12 @@
   <fieldset class="registration-login">
     <h1 class="headline-reg-log">{{ _("Log in form") }}</h1>
     <form class="form-log" method="post" action="{{ url('login') }}">
-      <input
-        type="hidden"
-        name="csrfmiddlewaretoken"
-        value="{{ csrf_token }}"
-      />
+      <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
       <p>{{ form.username.label_tag() }} {{ form.username }}</p>
       <p>{{ form.password.label_tag() }} {{ form.password }}</p>
-      <p
-        style="
-          float: left;
-          width: 50%;
-          display: block;
-          margin-top: 16px;
-          font-size: 16px;
-        "
-      >
-      </p>
-      <input class="btn-log" type="submit" value="{{ _('login') }}" />
+      <div class="btn-log-wrapper">
+        <input class="btn-log" type="submit" value="{{ _('login') }}" />
+      </div>
       <input type="hidden" name="next" value="{{ next }}" />
     </form>
     <p class="message-log">
