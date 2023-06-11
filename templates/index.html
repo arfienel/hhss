@@ -12,16 +12,13 @@
   <div class="container">
     <!-- Начало цикла для всех трекеров -->
     {% for tracker in trackers %}
-    <div style="cursor: pointer;" onclick="load_parser_data({{ tracker.id }})" 
-    data-bs-toggle="modal"
-    data-bs-target="#trackerModal{{ tracker.id }}"
-    id="modalBtn{{tracker.id}}" 
-    class="row bg-secondary rounded mb-3 py-3 grey-box">
+    <div style="cursor: pointer;" onclick="load_parser_data({{ tracker.id }})" data-bs-toggle="modal"
+      data-bs-target="#trackerModal{{ tracker.id }}" id="modalBtn{{tracker.id}}"
+      class="row bg-secondary rounded mb-3 py-3 grey-box">
       <!-- Текст поиска слева -->
       <div class="col-sm-2">
         <h3 style="padding-bottom:5px;"
-          class="position-relative top-50 start-50 translate-middle text-center text-light text-limit text-border"
-        >
+          class="position-relative top-50 start-50 translate-middle text-center text-light text-limit text-border">
           {{ tracker.search_text }}
         </h3>
       </div>
@@ -44,16 +41,11 @@
       </div>
       <!-- правая часть квадрата. Количество парсеров и шестеренка -->
       <div class="col-sm-2">
-        <h5 style=" overflow:hidden;"
-          class="position-relative top-50 start-50 translate-middle text-center text-light"
-        >
+        <h5 style=" overflow:hidden;" class="position-relative top-50 start-50 translate-middle text-center text-light">
           {% if parsers[tracker.id] %} {{ _("Vacancies amount") }}
           <br />
           {{parsers[tracker.id].amount_of_vacancies}} {% else %}
-          <img
-            style="width: 50px; height: 50px"
-            src="{{ static('loading.gif') }}"
-          />
+          <img style="width: 50px; height: 50px" src="{{ static('loading.gif') }}" />
           {% endif %}
         </h5>
       </div>
@@ -61,11 +53,8 @@
     {% endfor %}
     <div class="row rounded py-3">
       <div class="col-sm-4">
-        <button
-          data-bs-toggle="modal"
-          data-bs-target="#createTrackerModal"
-          class="btn btn-success py-3 px-4 btn-margin"
-        >
+        <button data-bs-toggle="modal" data-bs-target="#createTrackerModal"
+          class="btn btn-success py-3 px-4 btn-margin">
           <h4 class="add-tracker">{{ _("Add tracker") }}</h4>
         </button>
       </div>
@@ -79,9 +68,7 @@
   <div class="welcome">
     <h1>{{ _("Seems like you don`t tracking jobs yet") }}</h1>
     <h2 style="text-align: center; cursor: pointer" class="text-primary">
-      <a data-bs-toggle="modal" data-bs-target="#createTrackerModal"
-        >{{ _("Start tracking") }}</a
-      >
+      <a data-bs-toggle="modal" data-bs-target="#createTrackerModal">{{ _("Start tracking") }}</a>
     </h2>
   </div>
   <!-- если чел НЕ зареган-->
@@ -107,360 +94,266 @@
   {{ _("Your subscribed trackers") }}
 </h1>
 
-<div class="container">
-  <!-- Начало цикла для всех трекеров -->
-  {% for tracker in subscribed_trackers %}
-  <div style="cursor: pointer;" class="row bg-secondary rounded mb-3 py-3 grey-box"
-  onclick="load_parser_data({{ tracker.id }})"
-    data-bs-toggle="modal"
-    data-bs-target="#trackerModal{{ tracker.id }}"
-    id="modalBtn{{tracker.id}}" >
-    <!-- Текст поиска слева -->
-    <div class="col-sm-2">
-      <h2
-        class="position-relative top-50 start-50 translate-middle text-center text-light text-limit"
-      >
-        {{ tracker.search_text }}
-      </h2>
-    </div>
-    <div class="col-sm-6">
-      <ul class="list-group list-group-flush text-center" id="job_trackers">
-        <!-- 3 навыка и их количество появлений -->
-        {% if parsers[tracker.id] %} {% for skill in
-        skills[parsers[tracker.id].id][0:3] %}
-        <li class="bg-secondary list-group-item text-light">
-          {{ skill.name }} - {{ skill.amount }}
-        </li>
-        {% endfor %} {% else %}
-        <li class="bg-secondary list-group-item text-light">
-          {{ _("Data is still uploading") }}
-        </li>
-        <li class="bg-secondary list-group-item text-light">{{ _("Please wait") }}</li>
-        <li class="bg-secondary list-group-item text-light">...</li>
-        {% endif %}
-      </ul>
-    </div>
-    <!-- правая часть квадрата. Количество парсеров и шестеренка -->
-    <div class="col-sm-2">
-      <h5
-        class="position-relative top-50 start-50 translate-middle text-center text-light"
-      >
-        {% if parsers[tracker.id] %} {{ _("Vacancies amount") }}
-        <br />{{parsers[tracker.id].amount_of_vacancies}} {% else %}
-        <div class="sherst">
-          <img
-            style="width: 50px; height: 50px"
-            src="{{ static('loading.gif') }}"
-          />
-        </div>
-        {% endif %}
-      </h5>
-    </div>
-
-  </div>
-  {% endfor %} {% endif %}
-
-  <!-- Modals -->
-  <!-- Модалка создания трекера  -->
-  <div
-    class="modal fade"
-    id="createTrackerModal"
-    tabindex="-1"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form
-          class="modal-form"
-          method="POST"
-          action="{{ url('create_tracker') }}"
-        >
-          <input
-            type="hidden"
-            name="csrfmiddlewaretoken"
-            value="{{ csrf_token }}"
-          />
-
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">
-              {{ _("Creating job skill stats tracker") }}
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+<div class='content'>
+  <div class="container">
+    <!-- Начало цикла для всех трекеров -->
+    {% for tracker in subscribed_trackers %}
+    <div style="cursor: pointer;" class="row bg-secondary rounded mb-3 py-3 grey-box"
+      onclick="load_parser_data({{ tracker.id }})" data-bs-toggle="modal" data-bs-target="#trackerModal{{ tracker.id }}"
+      id="modalBtn{{tracker.id}}">
+      <!-- Текст поиска слева -->
+      <div class="col-sm-2">
+        <h2 class="position-relative top-50 start-50 translate-middle text-center text-light text-limit">
+          {{ tracker.search_text }}
+        </h2>
+      </div>
+      <div class="col-sm-6">
+        <ul class="list-group list-group-flush text-center" id="job_trackers">
+          <!-- 3 навыка и их количество появлений -->
+          {% if parsers[tracker.id] %} {% for skill in
+          skills[parsers[tracker.id].id][0:3] %}
+          <li class="bg-secondary list-group-item text-light">
+            {{ skill.name }} - {{ skill.amount }}
+          </li>
+          {% endfor %} {% else %}
+          <li class="bg-secondary list-group-item text-light">
+            {{ _("Data is still uploading") }}
+          </li>
+          <li class="bg-secondary list-group-item text-light">{{ _("Please wait") }}</li>
+          <li class="bg-secondary list-group-item text-light">...</li>
+          {% endif %}
+        </ul>
+      </div>
+      <!-- правая часть квадрата. Количество парсеров и шестеренка -->
+      <div class="col-sm-2">
+        <h5 class="position-relative top-50 start-50 translate-middle text-center text-light">
+          {% if parsers[tracker.id] %} {{ _("Vacancies amount") }}
+          <br />{{parsers[tracker.id].amount_of_vacancies}} {% else %}
+          <div class="sherst">
+            <img style="width: 50px; height: 50px" src="{{ static('loading.gif') }}" />
           </div>
-          <div class="modal-body">
-            <div class="mb-3">
-              <label class="form-label">{{ _("Search text") }}</label>
-              <input type="text" class="form-control" name="search_text" />
-              <div class="form-text">{{ _("Enter a job title you want to track") }}</div>
-            </div>
+          {% endif %}
+        </h5>
+      </div>
 
-            <div class="mb-3">
-              <label class="form-label">{{ _("Exclude from search") }}</label>
-              <input
-                type="text"
-                class="form-control"
-                name="exclude_from_search"
-              />
-              <div class="form-text">
-                {{ _("Enter text that you don`t want to see in job description. Divide each parameter with comma") }}
+    </div>
+    {% endfor %} {% endif %}
+
+    <!-- Modals -->
+    <!-- Модалка создания трекера  -->
+    <div class="modal fade" id="createTrackerModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form class="modal-form" method="POST" action="{{ url('create_tracker') }}">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                {{ _("Creating job skill stats tracker") }}
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label class="form-label">{{ _("Search text") }}</label>
+                <input type="text" class="form-control" name="search_text" />
+                <div class="form-text">{{ _("Enter a job title you want to track") }}</div>
               </div>
-            </div>
 
-            <div class="mb-3">
-              <label class="form-label">{{ _("Select your areas to search") }}</label
-              ><br />
-              <select
-                class="js-example-basic-multiple"
-                id="createTrackerArea"
-                multiple="multiple"
-                style="width: 100%"
-                name="area[]"
-              >
-                {% for area in areas %}
-                <option value="{{area.hh_id}}">{{area.name}}</option>
-                {% endfor %}
-
-            </select>
-          </div>
-          <div class="form-group">
-            <div class="form-left">
-              <p>Тип занятости</p>
-              <label><input type="checkbox" value="full" name="employment-type[]">Полная занятость</label>
-              <label><input type="checkbox" value="part" name="employment-type[]">Частичная занятость</label>
-              <label><input type="checkbox" value="project" name="employment-type[]">Проектная работа</label>
-              <label><input type="checkbox" value="volunteer" name="employment-type[]">Волонтерство</label>
-              <label><input type="checkbox" value="probation" name="employment-type[]">Стажировка</label>
-            </div>
-            <p>График работы</p>
-            <label><input type="checkbox" value="fullDay" name="timetable[]">Полный день</label>
-            <label><input type="checkbox" value="remote" name="timetable[]">Удаленная работа</label>
-            <label><input type="checkbox" value="flexible" name="timetable[]">Гибкий график</label>
-            <label><input type="checkbox" value="shift" name="timetable[]">Сменный график</label>
-            <label><input type="checkbox" value="flyInFlyOut" name="timetable[]">Вахтовый метод</label>
-            <p>Опыт работы</p>
-            <label ><input type="radio" id="doesnt-matter" value="" name="work-experience" checked>Не имеет значения</label>
-            <label ><input type="radio" id="from-3-to-6-years-old" value="between3And6" name="work-experience">От 3 до 6 лет</label>
-            <label ><input type="radio" id="from-1-to-3-years" value="between1And3" name="work-experience">От 1 года до 3 лет</label>
-            <label ><input type="radio" id="no-experience" value="noExperience" name="work-experience">Нет опыта</label>
-            <label ><input type="radio" id="over-6-years" value="moreThan6" name="work-experience">Более 6 лет</label>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            {{ _("Close") }}
-          </button>
-          <button type="submit" class="btn btn-primary">{{ _("Create") }}</button>
-        </div>
-    </div>
-      </form>
-  </div>
-  </div>
-    </div>
-  </div>
-
-  <!-- модалка каждого трекера -->
-  {% for tracker in list(trackers) + subscribed_trackers %}
-  <div
-    class="modal fade"
-    id="trackerModal{{ tracker.id }}"
-    tabindex="-1"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <form id="trackerForm{{tracker.id}}">
-          <div class="modal-header">
-            <h4 class="modal-title headline-limit">
-              <a target="_blank" href="{{ tracker.hh_url }}">{{ tracker.search_text }}</a>
-            </h4>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            {% if request.user.id == tracker.user_creator %}
-            <div class="mb-3">
-              <h6
-                class="text-success"
-                id="succ_text_{{tracker.id}}"
-                style="display: none"
-              >
-                {{ _("Job tracker updated successfully") }}
-              </h6>
-            </div>
-            {% endif %} {% if request.user.id == tracker.user_creator.id %}
-            <div class="mn-b">
-              <span class="br pg">{{ _("Subscribers") }} - {{ tracker.subscribers.count() }}</span>
-            </div>
-            <div class="form-group">
-              <div class="form-left2">
-                <p>Тип занятости</p>
-                <label
-                  ><input disabled type="checkbox" value="full" name="employment-type[]"
-                  {% if 'full' in tracker.employment_type %} checked {% endif
-                  %}>Полная занятость</label
-                >
-                <label
-                  ><input disabled type="checkbox" value="part" name="employment-type[]"
-                  {% if 'part' in tracker.employment_type %} checked {% endif
-                  %}>Частичная занятость</label
-                >
-                <label
-                  ><input disabled type="checkbox" value="project"
-                  name="employment-type[]" {% if 'project' in
-                  tracker.employment_type %} checked {% endif %}>Проектная
-                  работа</label
-                >
-                <label
-                  ><input disabled type="checkbox" value="volunteer"
-                  name="employment-type[]" {% if 'volunteer' in
-                  tracker.employment_type %} checked {% endif
-                  %}>Волонтерство</label
-                >
-                <label
-                  ><input disabled type="checkbox" value="probation"
-                  name="employment-type[]" {% if 'probation' in
-                  tracker.employment_type %} checked {% endif
-                  %}>Стажировка</label
-                >
+              <div class="mb-3">
+                <label class="form-label">{{ _("Exclude from search") }}</label>
+                <input type="text" class="form-control" name="exclude_from_search" />
+                <div class="form-text">
+                  {{ _("Enter text that you don`t want to see in job description. Divide each parameter with comma") }}
+                </div>
               </div>
-              <div class="float-left">
+
+              <div class="mb-3">
+                <label class="form-label">{{ _("Select your areas to search") }}</label><br />
+                <select class="js-example-basic-multiple" id="createTrackerArea" multiple="multiple" style="width: 100%"
+                  name="area[]">
+                  {% for area in areas %}
+                  <option value="{{area.hh_id}}">{{area.name}}</option>
+                  {% endfor %}
+
+                </select>
+              </div>
+              <div class="form-group">
+                <div class="form-left">
+                  <p>Тип занятости</p>
+                  <label><input type="checkbox" value="full" name="employment-type[]">Полная занятость</label>
+                  <label><input type="checkbox" value="part" name="employment-type[]">Частичная занятость</label>
+                  <label><input type="checkbox" value="project" name="employment-type[]">Проектная работа</label>
+                  <label><input type="checkbox" value="volunteer" name="employment-type[]">Волонтерство</label>
+                  <label><input type="checkbox" value="probation" name="employment-type[]">Стажировка</label>
+                </div>
                 <p>График работы</p>
-                <label
-                  ><input disabled type="checkbox" value="fullDay" name="timetable[]" {%
-                  if 'fullDay' in tracker.work_schedule %}checked{% endif
-                  %}>Полный день</label
-                >
-                <label
-                  ><input disabled type="checkbox" value="remote" name="timetable[]" {%
-                  if 'remote' in tracker.work_schedule %}checked{% endif
-                  %}>Удаленная работа</label
-                >
-                <label
-                  ><input disabled type="checkbox" value="flexible" name="timetable[]" {%
-                  if 'flexible' in tracker.work_schedule %}checked{% endif
-                  %}>Гибкий график</label
-                >
-                <label
-                  ><input disabled type="checkbox" value="shift" name="timetable[]" /> {%
-                  if 'shift' in tracker.work_schedule %}checked{% endif
-                  %}Сменный график</label
-                >
-                <label
-                  ><input disabled type="checkbox" value="flyInFlyOut" name="timetable[]"
-                  {% if 'flyInFlyOut' in tracker.work_schedule %}checked{% endif
-                  %}>Вахтовый метод</label
-                >
+                <label><input type="checkbox" value="fullDay" name="timetable[]">Полный день</label>
+                <label><input type="checkbox" value="remote" name="timetable[]">Удаленная работа</label>
+                <label><input type="checkbox" value="flexible" name="timetable[]">Гибкий график</label>
+                <label><input type="checkbox" value="shift" name="timetable[]">Сменный график</label>
+                <label><input type="checkbox" value="flyInFlyOut" name="timetable[]">Вахтовый метод</label>
+                <p>Опыт работы</p>
+                <label><input type="radio" id="doesnt-matter" value="" name="work-experience" checked>Не имеет
+                  значения</label>
+                <label><input type="radio" id="from-3-to-6-years-old" value="between3And6" name="work-experience">От 3
+                  до
+                  6 лет</label>
+                <label><input type="radio" id="from-1-to-3-years" value="between1And3" name="work-experience">От 1 года
+                  до
+                  3 лет</label>
+                <label><input type="radio" id="no-experience" value="noExperience" name="work-experience">Нет
+                  опыта</label>
+                <label><input type="radio" id="over-6-years" value="moreThan6" name="work-experience">Более 6
+                  лет</label>
               </div>
-              <p>Опыт работы</p>
-              <label for="doesnt-matter{{tracker.id}}"
-                ><input disabled type="radio" id="doesnt-matter{{tracker.id}}" value=""
-                name="work-experience" {% if tracker.work_experience == '' %}
-                checked {% endif %}>Не имеет значения</label
-              >
-              <label for="from-3-to-6-years-old{{tracker.id}}"
-                ><input disabled type="radio" value="between3And6"
-                id="from-3-to-6-years-old{{tracker.id}}" name="work-experience"
-                {% if tracker.work_experience == 'between3And6' %} checked {%
-                endif %}>От 3 до 6 лет</label
-              >
-              <label for="from-1-to-3-years{{tracker.id}}"
-                ><input disabled type="radio" value="between1And3"
-                id="from-1-to-3-years{{tracker.id}}" name="work-experience" {%
-                if tracker.work_experience == 'between1And3' %} checked {% endif
-                %}>От 1 года до 3 лет</label
-              >
-              <label for="no-experience{{tracker.id}}"
-                ><input disabled type="radio" value="noExperience"
-                id="no-experience{{tracker.id}}" name="work-experience" {% if
-                tracker.work_experience == 'noExperience' %} checked {% endif
-                %}>Нет опыта</label
-              >
-              <label for="over-6-years{{tracker.id}}"
-                ><input disabled type="radio" value="moreThan6"
-                id="over-6-years{{tracker.id}}" name="work-experience" {% if
-                tracker.work_experience == 'moreThan6' %} checked {% endif
-                %}>Более 6 лет</label
-              >
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                  {{ _("Close") }}
+                </button>
+                <button type="submit" class="btn btn-primary">{{ _("Create") }}</button>
+              </div>
             </div>
-
-            <button
-              type="button"
-              onclick="delete_tracker({{tracker.id}});"
-              style="margin-bottom: 10px; margin-top: 10px"
-              class="btn btn-danger"
-            >
-              {{ _("Delete") }}
-            </button>
-
-            {% else %}
-            <div class="mb-3">
-              <h3>{{ _("Search text") }} - {{tracker.search_text}}</h3>
-            </div>
-            {% if tracker.exclude_from_search %}
-            <div class="mb-3">
-              <h4>{{ _("excluded_from_search") }} - {{ tracker.exclude_from_search }}</h4>
-            </div>
-            {% endif %}
-            <br />
-            {% for area in areas %} {% if area.hh_id in tracker.areas %}
-            <p>{{area.name}}</p>
-            {% endif %} {% endfor %}
-            <br />
-            <button type="button" onclick="unsubscribe_from_tracker({{tracker.id}});" id="sub_button{{tracker.id}}"  class="btn btn-danger" data-bs-dismiss="modal" data-bs-target="#my-modal" aria-label="Close">
-              {{ _("unsubscribe") }}
-            </button>
-            <br /><br />
-            {% endif %}
-            <div id="chart{{tracker.id}}"></div>
-            <div class="tracker-status" id="tracker_stats{{tracker.id}}">
-              
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   </div>
+</div>
+<!-- модалка каждого трекера -->
+{% for tracker in list(trackers) + subscribed_trackers %}
+<div class="modal fade" id="trackerModal{{ tracker.id }}" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form id="trackerForm{{tracker.id}}">
+        <div class="modal-header">
+          <h4 class="modal-title headline-limit">
+            <a target="_blank" href="{{ tracker.hh_url }}">{{ tracker.search_text }}</a>
+          </h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          {% if request.user.id == tracker.user_creator %}
+          <div class="mb-3">
+            <h6 class="text-success" id="succ_text_{{tracker.id}}" style="display: none">
+              {{ _("Job tracker updated successfully") }}
+            </h6>
+          </div>
+          {% endif %} {% if request.user.id == tracker.user_creator.id %}
+
+          <div class="form-group">
+            <div class="form-left2">
+              <p>Тип занятости</p>
+              <label><input disabled type="checkbox" value="full" name="employment-type[]" {% if 'full' in
+                  tracker.employment_type %} checked {% endif %}>Полная занятость</label>
+              <label><input disabled type="checkbox" value="part" name="employment-type[]" {% if 'part' in
+                  tracker.employment_type %} checked {% endif %}>Частичная занятость</label>
+              <label><input disabled type="checkbox" value="project" name="employment-type[]" {% if 'project' in
+                  tracker.employment_type %} checked {% endif %}>Проектная
+                работа</label>
+              <label><input disabled type="checkbox" value="volunteer" name="employment-type[]" {% if 'volunteer' in
+                  tracker.employment_type %} checked {% endif %}>Волонтерство</label>
+              <label><input disabled type="checkbox" value="probation" name="employment-type[]" {% if 'probation' in
+                  tracker.employment_type %} checked {% endif %}>Стажировка</label>
+            </div>
+            <div class="float-left">
+              <p>График работы</p>
+              <label><input disabled type="checkbox" value="fullDay" name="timetable[]" {% if 'fullDay' in
+                  tracker.work_schedule %}checked{% endif %}>Полный день</label>
+              <label><input disabled type="checkbox" value="remote" name="timetable[]" {% if 'remote' in
+                  tracker.work_schedule %}checked{% endif %}>Удаленная работа</label>
+              <label><input disabled type="checkbox" value="flexible" name="timetable[]" {% if 'flexible' in
+                  tracker.work_schedule %}checked{% endif %}>Гибкий график</label>
+              <label><input disabled type="checkbox" value="shift" name="timetable[]" /> {%
+                if 'shift' in tracker.work_schedule %}checked{% endif
+                %}Сменный график</label>
+              <label><input disabled type="checkbox" value="flyInFlyOut" name="timetable[]" {% if 'flyInFlyOut' in
+                  tracker.work_schedule %}checked{% endif %}>Вахтовый метод</label>
+            </div>
+            <p>Опыт работы</p>
+            <label for="doesnt-matter{{tracker.id}}"><input disabled type="radio" id="doesnt-matter{{tracker.id}}"
+                value="" name="work-experience" {% if tracker.work_experience=='' %} checked {% endif %}>Не имеет
+              значения</label>
+            <label for="from-3-to-6-years-old{{tracker.id}}"><input disabled type="radio" value="between3And6"
+                id="from-3-to-6-years-old{{tracker.id}}" name="work-experience" {% if
+                tracker.work_experience=='between3And6' %} checked {% endif %}>От 3 до 6 лет</label>
+            <label for="from-1-to-3-years{{tracker.id}}"><input disabled type="radio" value="between1And3"
+                id="from-1-to-3-years{{tracker.id}}" name="work-experience" {% if
+                tracker.work_experience=='between1And3' %} checked {% endif %}>От 1 года до 3 лет</label>
+            <label for="no-experience{{tracker.id}}"><input disabled type="radio" value="noExperience"
+                id="no-experience{{tracker.id}}" name="work-experience" {% if tracker.work_experience=='noExperience' %}
+                checked {% endif %}>Нет опыта</label>
+            <label for="over-6-years{{tracker.id}}"><input disabled type="radio" value="moreThan6"
+                id="over-6-years{{tracker.id}}" name="work-experience" {% if tracker.work_experience=='moreThan6' %}
+                checked {% endif %}>Более 6 лет</label>
+          </div>
+          <div class="tracker-footer">
+            <button type="button" onclick="delete_tracker({{tracker.id}});" class="btn btn-danger">
+              {{ _("Delete") }}
+            </button>
+            <div>
+              <span class="subscriptions_stats">{{ _("Subscribers") }} - {{ tracker.subscribers.count() }}</span>
+            </div>
+          </div>
+          {% else %}
+          <div class="mb-3">
+            <h3>{{ _("Search text") }} - {{tracker.search_text}}</h3>
+          </div>
+          {% if tracker.exclude_from_search %}
+          <div class="mb-3">
+            <h4>{{ _("excluded_from_search") }} - {{ tracker.exclude_from_search }}</h4>
+          </div>
+          {% endif %}
+          {% for area in areas %} {% if area.hh_id in tracker.areas %}
+          <p>{{area.name}}</p>
+          {% endif %} {% endfor %}
+          <button type="button" onclick="unsubscribe_from_tracker({{tracker.id}});" id="sub_button{{tracker.id}}"
+            class="btn btn-danger" data-bs-dismiss="modal" data-bs-target="#my-modal" aria-label="Close">
+            {{ _("unsubscribe") }}
+          </button>
+          {% endif %}
+          <div id="chart{{tracker.id}}"></div>
+          <div class='tracker-status' id="tracker_stats{{tracker.id}}">
+
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+
+<!-- Scripts -->
+<script>
+  $('#createTrackerArea').select2({
+    dropdownParent: $('#createTrackerModal')
+  });
+  {% for tracker in trackers %}
+  $('#updateTrackerArea{{ tracker.id }}').select2({
+    dropdownParent: $('#trackerModal{{ tracker.id }}')
+  });
   {% endfor %}
-
-
-  <!-- Scripts -->
-  <script>
-    $('#createTrackerArea').select2({
-              dropdownParent: $('#createTrackerModal')
-    });
-    {% for tracker in trackers %}
-    $('#updateTrackerArea{{ tracker.id }}').select2({
-      dropdownParent: $('#trackerModal{{ tracker.id }}')
-    });
-    {% endfor %}
-  </script>
+</script>
 
 <script>
 
 
   function load_tracker_chart(tracker_id) {
     $.ajax({
-        url: "/api/job_trackers/" + tracker_id + "/?format=json&for_chart=1" ,
-        method: "get",
-        dataType: "html",
-        success: function (data) {
-          data = JSON.parse(data);
-          if(data['chart_data'].length < 2){
+      url: "/api/job_trackers/" + tracker_id + "/?format=json&for_chart=1",
+      method: "get",
+      dataType: "html",
+      success: function (data) {
+        data = JSON.parse(data);
+        if (data['chart_data'].length < 2) {
 
-          }
-          else {
+        }
+        else {
           chart_amount_of_vacancies = [];
           chart_dates = [];
-          for(i in data['chart_data']){
+          for (i in data['chart_data']) {
             chart_data = data['chart_data'][i]
             console.log(chart_data);
             chart_dates.push(chart_data['date']);
@@ -468,146 +361,146 @@
           }
           console.log([chart_amount_of_vacancies, chart_dates])
           var options = {
-          series: [{
-            name: "amount",
-            data: chart_amount_of_vacancies.reverse()
-        }],
-          chart: {
-          height: 350,
-          type: 'line',
-          zoom: {
-            enabled: false
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: 'straight'
-        },
-        title: {
-          text: 'amount of vacancies',
-          align: 'left'
-        },
-        grid: {
-          row: {
-            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
-          },
-        },
-        xaxis: {
-          categories: chart_dates.reverse(),
-        }
-        };
+            series: [{
+              name: "amount",
+              data: chart_amount_of_vacancies.reverse()
+            }],
+            chart: {
+              height: 350,
+              type: 'line',
+              zoom: {
+                enabled: false
+              }
+            },
+            dataLabels: {
+              enabled: false
+            },
+            stroke: {
+              curve: 'straight'
+            },
+            title: {
+              text: 'amount of vacancies',
+              align: 'left'
+            },
+            grid: {
+              row: {
+                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                opacity: 0.5
+              },
+            },
+            xaxis: {
+              categories: chart_dates.reverse(),
+            }
+          };
 
-        var chart = new ApexCharts(document.querySelector("#chart"+tracker_id), options);
-        chart.render();
+          var chart = new ApexCharts(document.querySelector("#chart" + tracker_id), options);
+          chart.render();
         }
-          }
-      });
+      }
+    });
   }
 </script>
 
-  <script>
-    function load_parser_data(tracker_id) {
-      $.ajax({
-        url: "/load_parser_data/?tracker_id=" + tracker_id,
-        method: "get",
-        dataType: "html",
-        success: function (data) {
-          data = JSON.parse(data);
-          div_to_append = document.getElementById("tracker_stats" + tracker_id);
-          data.forEach((skill) => {
-            let p = document.createElement("p");
-            p.innerHTML = skill["name"] + ": " + skill["amount"];
-            div_to_append.append(p);
-          });
-          btn_call = document.getElementById("modalBtn" + tracker_id).onclick =
-            "";
-          load_tracker_chart(tracker_id);
-        },
+<script>
 
-      });
-    }
-  </script>
-  <script>
-    function update_tracker(tracker_id) {
-      form = $("#trackerForm" + tracker_id).serializeArray();
-      timetables = [];
-      employment_types = [];
-      work_experience = "";
-      form.forEach((el) => {
-        if (el.name == "timetable[]") {
-          timetables.push(el.value);
-        }
-        if (el.name == "employment-type[]") {
-          employment_types.push(el.value);
-        }
-        if (el.name == "work-experience") {
-          work_experience = el.value;
-        }
-      });
+  function load_parser_data(tracker_id) {
+    $.ajax({
+      url: "/load_parser_data/?tracker_id=" + tracker_id,
+      method: "get",
+      dataType: "html",
+      success: function (data) {
+        data = JSON.parse(data);
+        div_to_append = document.getElementById("tracker_stats" + tracker_id);
+        data.forEach((skill) => {
+          let p = document.createElement("p");
+          p.innerHTML = skill["name"] + ": " + skill["amount"];
+          div_to_append.append(p);
+        });
+        btn_call = document.getElementById("modalBtn" + tracker_id).onclick =
+          "";
+        load_tracker_chart(tracker_id);
+      },
 
+    });
+  }
+</script>
+<script>
+  function update_tracker(tracker_id) {
+    form = $("#trackerForm" + tracker_id).serializeArray();
+    timetables = [];
+    employment_types = [];
+    work_experience = "";
+    form.forEach((el) => {
+      if (el.name == "timetable[]") {
+        timetables.push(el.value);
+      }
+      if (el.name == "employment-type[]") {
+        employment_types.push(el.value);
+      }
+      if (el.name == "work-experience") {
+        work_experience = el.value;
+      }
+    });
+
+    $.ajax({
+      url: "/update_tracker/?",
+      method: "post",
+      dataType: "html",
+      data: {
+        tracker_id: tracker_id,
+        next: "{{ request.path }}",
+        csrfmiddlewaretoken: "{{ csrf_token }}",
+        search_text: form[0].value,
+        exclude_from_search: form[1].value,
+        "work-experience": work_experience,
+        "timetable[]": timetables,
+        "employment-type[]": employment_types,
+        "area[]": $("#updateTrackerArea" + tracker_id).val(),
+      },
+      success: function (data) {
+        location.reload();
+      },
+    });
+  }
+</script>
+
+<script>
+  function delete_tracker(tracker_id) {
+    delete_confirm = confirm("are you sure want to delete this tracker?");
+    if (delete_confirm) {
       $.ajax({
-        url: "/update_tracker/?",
+        url: "{{ url('delete_tracker') }}",
         method: "post",
         dataType: "html",
         data: {
           tracker_id: tracker_id,
-          next: "{{ request.path }}",
           csrfmiddlewaretoken: "{{ csrf_token }}",
-          search_text: form[0].value,
-          exclude_from_search: form[1].value,
-          "work-experience": work_experience,
-          "timetable[]": timetables,
-          "employment-type[]": employment_types,
-          "area[]": $("#updateTrackerArea" + tracker_id).val(),
         },
         success: function (data) {
           location.reload();
         },
       });
     }
-  </script>
+  }
+</script>
+<script>
+  function unsubscribe_from_tracker(tracker_id) {
+    el = document.getElementById("trackerBox" + tracker_id);
+    $.ajax({
+      url: "/en/unsubscribe_from_tracker/",
+      method: "post",
 
-  <script>
-    function delete_tracker(tracker_id) {
-      delete_confirm = confirm("are you sure want to delete this tracker?");
-      if (delete_confirm) {
-        $.ajax({
-          url: "{{ url('delete_tracker') }}",
-          method: "post",
-          dataType: "html",
-          data: {
-            tracker_id: tracker_id,
-            csrfmiddlewaretoken: "{{ csrf_token }}",
-          },
-          success: function (data) {
-            location.reload();
-          },
-        });
-      }
-    }
-  </script>
-  <script>
-    function unsubscribe_from_tracker(tracker_id) {
-      el = document.getElementById("trackerBox"+ tracker_id);
-      $.ajax({
-        url: "/en/unsubscribe_from_tracker/",
-        method: "post",
-
-        dataType: "html",
-        data: {
-          tracker_id: tracker_id,
-          csrfmiddlewaretoken: "{{ csrf_token }}",
-        },
-        success: function (data) {
-          el.remove();
-        },
-      });
-    }
-  </script>
+      dataType: "html",
+      data: {
+        tracker_id: tracker_id,
+        csrfmiddlewaretoken: "{{ csrf_token }}",
+      },
+      success: function (data) {
+        el.remove();
+      },
+    });
+  }
+</script>
 
 
-  {% endblock %}
-
+{% endblock %}

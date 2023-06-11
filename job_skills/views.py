@@ -84,7 +84,6 @@ def list_trackers(request):
             skills = SkillData.objects.filter(parser_data=parser['id'])[:3].values()
             trackers_parsers.append((tracker_to_append, parser, skills, areas))
         except IndexError:
-            # logger ebanut suda
             pass
     return render(request, 'list_trackers.html', {'trackers_parsers': trackers_parsers})
 
