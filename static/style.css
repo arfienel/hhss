@@ -18,7 +18,7 @@ body {
 }
 .btn-margin {
 	margin-left: -12px;
-	margin-top: -15px;
+	margin-top: -8px;
 }
 .logo-brand {
 	max-width: 40px;
@@ -53,13 +53,20 @@ h6 {
 }
 
 .tracker-status {
-	padding: 10px;
+	margin-top: 16px;
+}
+.modal-header .btn-close {
+	padding: 0.5rem 0.5rem;
+	margin: 0;
+}
+.transfer-request {
 }
 .form-group {
 	padding-left: 20px;
 	padding: 10px;
 	border: 1px solid #000;
 	border-radius: 5px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 .form-group p {
 	margin-bottom: 3px;
@@ -127,7 +134,12 @@ h1 a {
 	width: 100%;
 	margin: 0 auto;
 	margin-top: 200px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
+.darkmode .welcome {
+	box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
 .welcome a {
 	cursor: pointer;
 	text-decoration: none;
@@ -148,7 +160,6 @@ h1 a {
 	white-space: nowrap;
 }
 .btn-reg {
-	margin-top: 20px;
 	height: 40px;
 	border: none;
 	border-radius: 5px;
@@ -161,16 +172,8 @@ h1 a {
 	align-items: center;
 }
 .btn-reg:hover {
-	height: 40px;
-	border: none;
-	border-radius: 5px;
 	background-color: #0859d3;
 	color: #e2dfdf;
-	font-size: 16px;
-	display: inline-flex;
-	padding: 0 20px;
-	justify-content: center;
-	align-items: center;
 }
 .py-3 {
 	padding-top: 0.5rem !important;
@@ -180,7 +183,7 @@ h1 a {
 /*Header!!!!!!!!!!!!!!!!!!!!!!!!!*/
 header {
 	box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.07), 0 2px 2px 0 rgba(0, 0, 0, 0.04) !important;
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 	height: 70px;
 }
 .header {
@@ -357,7 +360,7 @@ header a {
 	text-decoration: none;
 	color: #000;
 }
-.nav__all li a {
+.nav__all .nav__link a {
 	text-decoration: none;
 	display: inline-block;
 	padding: 0.2rem 0.4rem;
@@ -448,7 +451,6 @@ ul {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	margin-top: 20px;
 }
 .btn-log:hover {
 	height: 40px;
@@ -483,10 +485,11 @@ ul {
 }
 .registration-login {
 	max-width: 600px;
-	margin: 60px auto 0 auto;
+	margin: 90px auto 0 auto;
 	border: 1px solid #c2c4c9;
 	padding: 150px 50px 100px 50px;
 	border-radius: 10px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 .btn-reg-log {
 	height: 40px;
@@ -501,16 +504,8 @@ ul {
 	align-items: center;
 }
 .btn-reg-log:hover {
-	height: 40px;
-	border: none;
-	border-radius: 5px;
 	background-color: #0859d3;
 	color: #e2dfdf;
-	font-size: 16px;
-	display: inline-flex;
-	padding: 0 20px;
-	justify-content: center;
-	align-items: center;
 }
 .reg-log-padding {
 	padding: 0 10px;
@@ -542,10 +537,12 @@ ul {
 .btn-reg-wrapper {
 	display: flex;
 	justify-content: center;
+	margin-top: 36px;
 }
 .btn-log-wrapper {
 	display: flex;
 	justify-content: flex-end;
+	margin-top: 36px;
 }
 .search-bar input:-webkit-autofill {
 	-webkit-box-shadow: 0 0 0 50px #6c757d inset;
@@ -671,12 +668,26 @@ select::-ms-expand {
 .select:hover::after {
 	color: #0859d3;
 }
+.tracker-footer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 16px;
+	flex-wrap: wrap;
+}
+.subscriptions_stats {
+}
+.tracker-title {
+	border-bottom: 1px solid grey;
+}
+.btn-subscribe-unsubscribe {
+	margin-bottom: 16px;
+}
+.btn-unsubscribe {
+	margin-top: 10px;
+}
 /*Dark theme*/
 .darkmode .card {
-	width: 8.8rem;
-	height: 2rem;
-	padding: 3px;
-	margin: 0px 5px 0 0;
 	background: #040404;
 	border: 1px solid #858585;
 }
@@ -693,56 +704,25 @@ select::-ms-expand {
 	color: #fff;
 }
 .darkmode .nav-item a {
-	text-decoration: none;
-	display: inline-block;
-	padding: 0.2rem 0.4rem;
 	color: #fff;
 	background-color: #040404;
-	border-radius: 0.25rem;
 	border: 1px solid #858585;
 }
 .darkmode select {
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	-ms-appearance: none;
-	padding-top: 5px;
-	appearance: none;
-	outline: 0;
-	box-shadow: none;
-	border: 0 !important;
 	background: #040404;
-	background-image: none;
-	flex: 1;
-	padding: 0 0.5em;
 	color: #fff;
-	cursor: pointer;
-	font-size: 1em;
-	line-height: normal;
 }
 .darkmode select::-ms-expand {
 	display: none;
 }
 .darkmode .select {
-	position: relative;
-	display: flex;
-	width: 90px;
-	height: 32px;
-	line-height: 3;
 	background: #fff;
-	overflow: hidden;
-	border-radius: 0.25em;
+
 	border: 1px solid #858585;
 }
 .darkmode .select::after {
-	content: '\25BC';
-	position: absolute;
-	top: -8px;
-	right: 0;
-	padding: 0px 0.5em;
 	background: #000;
 	border-left: 1px solid #858585;
-	cursor: pointer;
-	pointer-events: none;
 }
 .darkmode .select:hover::after {
 	color: #0859d3;
@@ -751,7 +731,6 @@ select::-ms-expand {
 }
 
 .darkmode .tracker-status {
-	border: 1px solid #858585;
 }
 
 .darkmode .form-group {
@@ -839,7 +818,6 @@ select::-ms-expand {
 	box-shadow: 0 0 0 0.25rem #505050;
 }
 .darkmode .modal-footer {
-	border-top: none;
 }
 .darkmode .modal-header {
 	border-bottom: 1px solid #858585;
@@ -851,52 +829,25 @@ select::-ms-expand {
 }
 
 .darkmode .modal-content {
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-	pointer-events: auto;
 	background-color: #fff;
-	background-clip: padding-box;
 	border: 1px solid rgba(0, 0, 0, 0.2);
-	border-radius: 0.3rem;
-	outline: 0;
+
 	background: rgb(29, 29, 29);
 }
 .darkmode .modal-body {
 	color: #fff;
 }
 .darkmode .btn-reg {
-	height: 40px;
-	border: none;
-	border-radius: 5px;
 	background-color: #040404;
 	color: white;
-	font-size: 16px;
-	display: inline-flex;
-	padding: 0 20px;
-	justify-content: center;
-	align-items: center;
 }
 .darkmode .btn-reg:hover {
-	height: 40px;
-	border: none;
-	border-radius: 5px;
 	background-color: #2b2b2b;
 	color: #e2dfdf;
-	font-size: 16px;
-	display: inline-flex;
-	padding: 0 20px;
-	justify-content: center;
-	align-items: center;
 }
-.darkmode .nav__all li a {
-	text-decoration: none;
-	display: inline-block;
-	padding: 0.2rem 0.4rem;
+.darkmode .nav__all .nav__link a {
 	color: #fff;
 	background-color: #040404;
-	border-radius: 0.25rem;
 	border: 1px solid #858585;
 }
 
@@ -905,82 +856,38 @@ select::-ms-expand {
 }
 
 .darkmode .brand-name {
-	font-size: 1.25rem;
 	color: #fff;
 }
 
 .darkmode .navbar-menu li a {
-	display: inline-block;
-	text-decoration: none;
-	padding: 0.5rem 1rem;
 	color: #fff;
 }
 .darkmode .navbar-menu li a:hover {
-	display: inline-block;
-	text-decoration: none;
 	color: #fff;
 	background-color: #2b2b2b;
-	border-radius: 0.25rem;
 }
 
 .darkmode .form-reg p input {
-	font-size: 18px;
-	padding: 10px;
-	display: block;
-	border-radius: 10px;
 	border: 1.5px solid #c2c4c9;
 	background-color: #f2f2f2;
-	width: 100%;
-	margin-top: 10px;
-	height: 45px;
-	box-sizing: border-box;
-	outline: none;
 }
 
 .darkmode .form-log p input {
-	font-size: 18px;
-	padding: 10px;
-	display: block;
-	border-radius: 10px;
 	border: 1.5px solid #c2c4c9;
 	background-color: #f2f2f2;
-	width: 100%;
-	margin: 10px 0 0 0;
-	height: 45px;
-	box-sizing: border-box;
-	outline: none;
 }
 .darkmode .btn-log {
-	height: 40px;
-	border: none;
-	border-radius: 5px;
 	background-color: #040404;
 	color: #fff;
-	font-size: 16px;
-	padding: 0 20px;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
 }
 .darkmode .btn-log:hover {
-	height: 40px;
-	border: none;
-	border-radius: 5px;
 	background-color: #2b2b2b;
 	color: #e2dfdf;
-	font-size: 16px;
-	padding: 0 20px;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
 }
 .darkmode .registration-login {
-	max-width: 600px;
-	margin: 20px auto 0 auto;
 	border: 1px solid #c2c4c9;
-	padding: 150px 50px 100px 50px;
-	border-radius: 10px;
 	color: #fff;
+	box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
 }
 .flex_div {
 	display: flex;
@@ -1166,7 +1073,7 @@ select::-ms-expand {
 		margin-right: 10px;
 		transform: rotate(90deg);
 	}
-	.nav__all li a {
+	.nav__all .nav__link a {
 		text-decoration: none;
 		display: block;
 		background-color: transparent;
@@ -1174,7 +1081,7 @@ select::-ms-expand {
 		padding: 0;
 		border: none;
 	}
-	.darkmode .nav__all li a {
+	.darkmode .nav__all .nav__link a {
 		text-decoration: none;
 		background-color: transparent;
 		color: #fff;
@@ -1382,7 +1289,7 @@ select::-ms-expand {
 		font-size: calc(1.375rem + 1.5vw);
 	}
 }
-@media (min-width: 576px) {
+@media (max-width: 576px) {
 	.container {
 		max-width: 100%;
 	}
@@ -1394,4 +1301,33 @@ select::-ms-expand {
 	.nav__link {
 		padding: 10px 20px;
 	}
+}
+
+@media (min-width: 992px) {
+	.container {
+		max-width: none;
+	}
+}
+@media (min-width: 768px) {
+	.container {
+		max-width: none;
+	}
+}
+@media (min-width: 576px) {
+	.container {
+		max-width: none;
+	}
+}
+@media (max-width: 1200px) {
+	.container {
+		max-width: 100%;
+	}
+}
+@media (min-width: 1200px) {
+	.container {
+		max-width: 1320px;
+	}
+}
+.errorlist {
+	color: red;
 }

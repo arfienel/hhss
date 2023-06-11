@@ -41,9 +41,9 @@
           <div class="nav__item-block">
             <div class="nav__item">
               <div class="nav__list nav__all">
-                <li class="nav__link">
+                <div class="nav__link">
                   <a href="{{ url('list_trackers') }}"><span class="fs-5">{{ _("All trackers") }}</span></a>
-                </li>
+                </div>
               </div>
             </div>
             <div class="nav_item_div">
@@ -76,20 +76,20 @@
           <!-- если чел зареган -->
           <div class="nav_item_div flex_div">
             {% if request.user.is_authenticated %}
-            <li class="nav-item mx-1">
+            <div class="nav-item mx-1">
               <a href="{{ url('logout') }}" class="" aria-current="page">{{ _("Log out") }}</a>
-            </li>
+            </div>
             <!-- если чел НЕ зареган -->
             {% else %}
-            <li class="sign_log nav-item mx-1">
+            <div class="sign_log nav-item mx-1">
               <a href="{{ url('registration') }}" class="" aria-current="page">{{ _("Sign up") }}</a>
-            </li>
-            <li class="nav-item mx-1">
+            </div>
+            <div class="nav-item mx-1">
               <a href="{{ url('login') }}" class="log-in-text" aria-current="page">{{ _("Log in") }}</a>
-            </li>
+            </div>
             {% endif %}
           </div>
-          </ul>
+        </div>
       </nav>
       <button class="burger" aria-label="Открыть меню">
         <span></span>
@@ -115,26 +115,54 @@
 </script>
 
 <script>
-  if (localStorage.getItem('theme') == 'dark') {
-    setDarkMode();
-    if (document.getElementById('checkbox').checked) {
-      localStorage.setItem('checkbox', true)
-    }
-  }
+  // if (localStorage.getItem('theme') == 'dark') {
+  //   setDarkMode();
+  //   if (document.getElementById('checkbox').checked) {
+  //     localStorage.setItem('checkbox', true)
+  //   }
+  // }
+  // function setDarkMode() {
+  //   let isDark = document.body.classList.toggle('darkmode');
+  //   let logo = document.getElementById('logo-img');
+  //   if (isDark) {
+  //     setDarkMode.checked = true;
+  //     logo.src = '/static/job-white.png/'
+  //     localStorage.setItem('theme', 'dark');
+  //     document.getElementById('checkbox').setAttribute('checked', 'checked')
+  //   } else {
+  //     setDarkMode.checked = true;
+  //     logo.src = '/static/job.png/'
+  //     localStorage.removeItem('theme', 'dark');
+  //   }
+  // }
   function setDarkMode() {
-    let isDark = document.body.classList.toggle('darkmode');
+    let body = document.body;
+    let checkbox = document.getElementById('checkbox');
     let logo = document.getElementById('logo-img');
-    if (isDark) {
-      setDarkMode.checked = true;
-      logo.src = '/static/job-white.png/'
+    let isDarkMode = checkbox.checked;
+
+    if (isDarkMode) {
+      body.classList.add('darkmode');
+      logo.src = '/static/job-white.png/';
       localStorage.setItem('theme', 'dark');
-      document.getElementById('checkbox').setAttribute('checked', 'checked')
     } else {
-      setDarkMode.checked = true;
-      logo.src = '/static/job.png/'
-      localStorage.removeItem('theme', 'dark');
+      body.classList.remove('darkmode');
+      logo.src = '/static/job.png/';
+      localStorage.removeItem('theme');
     }
   }
+
+  window.addEventListener('DOMContentLoaded', function () {
+    let checkbox = document.getElementById('checkbox');
+    let savedTheme = localStorage.getItem('theme');
+
+    if (savedTheme === 'dark') {
+      checkbox.checked = true;
+      setDarkMode();
+    } else {
+      checkbox.checked = false;
+    }
+  });
 </script>
 
 <script>

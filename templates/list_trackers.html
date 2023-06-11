@@ -1,161 +1,149 @@
 {% extends 'base.html'%} {% block content %}
 <div class="content">
-<div id="searchBar" class="form-wrapper">
-  <form method="get" class="search-bar">
-    <input type="text" name="search" placeholder="Search" />
-    <button type="submit"><img src="/static/search.png" alt="" /></button>
-  </form>
-</div>
-<div class="alert-position" id="search-alert">{% if trackers_parsers %}</div>
-<div class="container" id="list_trackers">
-  <!-- Начало цикла для всех трекеров -->
-  {% for tracker_parser in trackers_parsers %}
-  <div style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#TrackerModal{{ tracker_parser[0].id}}" id="modalBtn{{tracker_parser[0].id }}" onclick="load_parser_data({{ tracker_parser[0].id }})"  class="row bg-secondary rounded mb-3 py-3 grey-box">
-    <!-- Текст поиска слева -->
-    <div class="col-sm-2">
-      <h3
-        class="position-relative top-50 start-50 translate-middle text-center text-light text-limit"
-      >
-        {{ tracker_parser[0].search_text }}
-      </h3>
-    </div>
-
-    <!-- 3 навыка и их количество появлений -->
-    <div class="col-sm-6">
-      <ul class="list-group list-group-flush text-center" id="job_trackers">
-        {% if tracker_parser[1] %} {% for skill in tracker_parser[2] %}
-
-        <li class="bg-secondary list-group-item text-light">
-          {{ skill.name }} - {{ skill.amount }}
-        </li>
-        {% endfor %} {% else %}
-        <li class="bg-secondary list-group-item text-light">
-          {{ _("Data is still uploading") }}
-        </li>
-        <li class="bg-secondary list-group-item text-light">{{ _("Please wait") }}</li>
-        <li class="bg-secondary list-group-item text-light">...</li>
-        {% endif %}
-      </ul>
-    </div>
-
-    <!-- правая часть квадрата. Количество парсеров и шестеренка -->
-    <div class="col-sm-2">
-      <h5
-        class="position-relative top-50 start-50 translate-middle text-center text-light"
-      >
-        {% if tracker_parser[1] %} {{ _("Vacancies amount") }}
-        <br />{{tracker_parser[1].amount_of_vacancies}} {% else %}
-        <img
-          style="width: 50px; height: 50px"
-          src="{{ static('loading.gif') }}"
-        />
-        {% endif %}
-      </h5>
-    </div>
+  <div id="searchBar" class="form-wrapper">
+    <form method="get" class="search-bar">
+      <input type="text" name="search" placeholder="Search" />
+      <button type="submit"><img src="/static/search.png" alt="" /></button>
+    </form>
   </div>
-  {% endfor %}
+  <div class="alert-position" id="search-alert">{% if trackers_parsers %}</div>
+  <div class="container" id="list_trackers">
+    <!-- Начало цикла для всех трекеров -->
+    {% for tracker_parser in trackers_parsers %}
+    <div style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#TrackerModal{{ tracker_parser[0].id}}"
+      id="modalBtn{{tracker_parser[0].id }}" onclick="load_parser_data({{ tracker_parser[0].id }})"
+      class="row bg-secondary rounded mb-3 py-3 grey-box">
+      <!-- Текст поиска слева -->
+      <div class="col-sm-2">
+        <h3 class="position-relative top-50 start-50 translate-middle text-center text-light text-limit">
+          {{ tracker_parser[0].search_text }}
+        </h3>
+      </div>
 
-  <!-- если результата нет-->
-  {% else %}
-  <div class="alert alert-warning" role="alert">
-    <p style="margin-bottom: 0">{{ _("Nothing was found") }}</p>
-  </div>
-  {% endif %}
+      <!-- 3 навыка и их количество появлений -->
+      <div class="col-sm-6">
+        <ul class="list-group list-group-flush text-center" id="job_trackers">
+          {% if tracker_parser[1] %} {% for skill in tracker_parser[2] %}
 
-  <!-- модалка каждого трекера -->
-  {% for tracker_parser in trackers_parsers %}
-  <div
-    class="modal fade"
-    id="TrackerModal{{ tracker_parser[0].id }}"
-    tabindex="-1"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title headline-limit">
-            <a target="_blank" href="{{ tracker_parser[0].hh_url }}"
-              >{{ tracker_parser[0].search_text }}</a
-            >
-          </h4>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-          ></button>
-        </div>
+          <li class="bg-secondary list-group-item text-light">
+            {{ skill.name }} - {{ skill.amount }}
+          </li>
+          {% endfor %} {% else %}
+          <li class="bg-secondary list-group-item text-light">
+            {{ _("Data is still uploading") }}
+          </li>
+          <li class="bg-secondary list-group-item text-light">{{ _("Please wait") }}</li>
+          <li class="bg-secondary list-group-item text-light">...</li>
+          {% endif %}
+        </ul>
+      </div>
 
-        <div class="modal-body">
-          <div class="mb-3">
-            <h3 class="transfer-request">
-              {{ _("Search text") }}- {{tracker_parser[0].search_text}}
-            </h3>
-          </div>
-          {% if tracker_parser[0].exclude_from_search %}
-          <div class="mb-3">
-            <h4>
-              {{ _("Excluded from search") }} - {{ tracker_parser[0].exclude_from_search }}
+      <!-- правая часть квадрата. Количество парсеров и шестеренка -->
+      <div class="col-sm-2">
+        <h5 class="position-relative top-50 start-50 translate-middle text-center text-light">
+          {% if tracker_parser[1] %} {{ _("Vacancies amount") }}
+          <br />{{tracker_parser[1].amount_of_vacancies}} {% else %}
+          <img style="width: 50px; height: 50px" src="{{ static('loading.gif') }}" />
+          {% endif %}
+        </h5>
+      </div>
+    </div>
+    {% endfor %}
+
+    <!-- если результата нет-->
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+      <p style="margin-bottom: 0">{{ _("Nothing was found") }}</p>
+    </div>
+    {% endif %}
+
+    <!-- модалка каждого трекера -->
+    {% for tracker_parser in trackers_parsers %}
+    <div class="modal fade" id="TrackerModal{{ tracker_parser[0].id }}" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title headline-limit">
+              <a target="_blank" href="{{ tracker_parser[0].hh_url }}">{{ tracker_parser[0].search_text }}</a>
             </h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          {% endif %}
-          <div class="mb-3">
-          {% for area in tracker_parser[3] %}
-            <p>{{ area.name }}</p>
-          {% endfor %}
-          </div>
-          {% if request.user.id == tracker_parser[0].user_creator_id %}
-          {% elif request.user.id in tracker_parser[0].subscribers %}
-          <button type="button" onclick="unsubscribe_from_tracker({{tracker_parser[0].id}});" id="sub_button{{tracker_parser[0].id}}" style="" class="btn btn-danger" 
-          >
-            {{ _("unsubscribe") }}
-          </button>
 
-          {% else %}
-          <button type="button" onclick="subscribe_on_tracker({{tracker_parser[0].id}});" id="sub_button{{tracker_parser[0].id}}" style="" class="btn btn-info" 
-          >
-            {{ _("subscribe") }}
-          </button>
-          {% endif %}
-          <br />
-          <br />
-          <div id="tracker_stats{{ tracker_parser[0].id }}"></div>
+          <div class="modal-body">
+            <div class='tracker-title'>
+              <h3 class="transfer-request">
+                {{ _("Search text") }} - {{tracker_parser[0].search_text}}
+              </h3>
+            </div>
+            {% if tracker_parser[0].exclude_from_search %}
+            <div class="mb-3">
+              <h4>
+                {{ _("Excluded from search") }} - {{ tracker_parser[0].exclude_from_search }}
+              </h4>
+            </div>
+            {% endif %}
+            <div class="mb-3">
+              {% for area in tracker_parser[3] %}
+              <p>{{ area.name }}</p>
+              {% endfor %}
+            </div>
+            {% if request.user.id == tracker_parser[0].user_creator_id %}
+            {% elif request.user.id in tracker_parser[0].subscribers %}
+            <button type="button" onclick="unsubscribe_from_tracker({{tracker_parser[0].id}});"
+              id="sub_button{{tracker_parser[0].id}}" class="btn btn-danger">
+              {{ _("unsubscribe") }}
+            </button>
+
+            {% else %}
+            <button type="button" onclick="subscribe_on_tracker({{tracker_parser[0].id}});"
+              id="sub_button{{tracker_parser[0].id}}" class="btn btn-info">
+              {{ _("subscribe") }}
+            </button>
+            {% endif %}
+
+            <div class='tracker-status' id="tracker_stats{{ tracker_parser[0].id }}"></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
   {% endfor %}
 
   <script>
     page = 0
-      window.onscroll = function(){loadTrackers();};
-        loadTrackers();
-        function loadTrackers() {
+    window.onscroll = function () { loadTrackers(); };
+    loadTrackers();
+    function loadTrackers() {
 
-          var d = document.documentElement;
-          var offset = d.scrollTop + window.innerHeight;
-          var height = d.offsetHeight;
+      var d = document.documentElement;
+      var offset = d.scrollTop + window.innerHeight;
+      var height = d.offsetHeight;
 
-          if (offset >= height) {
-            page++;
-            $.ajax({
-                url: '{{ url("list_more_trackers") }}'+'?page='+page{% if request.GET['search'] %}+'&?search='+{{ request.GET['search'] }} {% endif %},
-                method: 'get',
-                dataType: 'html',
-                success: function(data){
-                data = JSON.parse(data);
-                container_to_append = document.getElementById('list_trackers')
-                data.forEach(array => {
-                    tracker = JSON.parse(array[0])[0]['fields'];
-                    parser = JSON.parse(array[1])[0]['fields'];
-                    skills = JSON.parse(array[2]);
-                    areas_fields = JSON.parse(array[3]);
-                    areas = [];
-                    areas_fields.forEach(area => {
-                      areas.push(area['fields']['name']);
-                    });
-                    tracker_id = JSON.parse(array[0])[0]['pk'];
+      if (offset >= height) {
+        page++;
+        $.ajax({
+          url: '{{ url("list_more_trackers") }}' + '?page=' + page{% if request.GET['search'] %} + '&search=' + request.GET['search'] %}
 
-                    if(skills[0]){
+          } {% endif %},
+    method: 'get',
+      dataType: 'html',
+        success: function(data) {
+          data = JSON.parse(data);
+          container_to_append = document.getElementById('list_trackers')
+          data.forEach(array => {
+            tracker = JSON.parse(array[0])[0]['fields'];
+            parser = JSON.parse(array[1])[0]['fields'];
+            skills = JSON.parse(array[2]);
+            areas_fields = JSON.parse(array[3]);
+            areas = [];
+            areas_fields.forEach(area => {
+              areas.push(area['fields']['name']);
+            });
+            tracker_id = JSON.parse(array[0])[0]['pk'];
 
-                    html_skills_part = `
+            if (skills[0]) {
+
+              html_skills_part = `
                     <div class="col-sm-6" >
                     <ul class="list-group list-group-flush text-center" id="job_trackers">
                                 <li class="bg-secondary list-group-item text-light">${skills[0]['fields']['name']} - ${skills[0]['fields']['amount']}</li>
@@ -163,11 +151,12 @@
                                 <li class="bg-secondary list-group-item text-light">${skills[2]['fields']['name']} - ${skills[2]['fields']['amount']}</li>
                             </ul>
                      </div>
-                    `;}
-                    else{
-                    html_skills_part = `<div class="col-sm-6"></div>`;
-                    };
-                    html_to_insert = `
+                    `;
+            }
+            else {
+              html_skills_part = `<div class="col-sm-6"></div>`;
+            };
+            html_to_insert = `
                     <div style="cursor:pointer;" class="row bg-secondary rounded mb-3 py-3 grey-box"
                     onclick="load_parser_data(${tracker_id})"
                     data-bs-toggle="modal"
@@ -188,38 +177,39 @@
 
                     </div>
                     `;
-                    container_to_append.innerHTML += html_to_insert;
+            container_to_append.innerHTML += html_to_insert;
 
 
 
 
-                    // модалка трекера
-                    modal_exclude_from_search_part = ``;
-                    if(tracker['exclude_from_search']){
-                        modal_exclude_from_search_part = `
+            // модалка трекера
+            modal_exclude_from_search_part = ``;
+            if (tracker['exclude_from_search']) {
+              modal_exclude_from_search_part = `
                             <div class="mb-3">
                                 <h4>{{ _("Excluded from search") }} - ${tracker['exclude_from_search']}</h4>
                             </div>
                         `;
-                    };
+            };
 
-                    if(tracker['user_creator'] == {{request.user.id}}){
-                      modal_subscribe_part = '';
-                    }
-                    else {
-                      if(tracker['subscribers'].includes({{request.user.id}})){
-                        modal_subscribe_part = `
-                          <button type="button" onclick="unsubscribe_from_tracker(`+ tracker_id +`);" id="sub_button` + tracker_id + `" style="" class="btn btn-danger">{{ _("unsubscribe") }}</button>
+            if (tracker['user_creator'] == { request.user.id }
+            ) {
+              modal_subscribe_part = '';
+            }
+            else {
+              if (tracker['subscribers'].includes({{ request.user.id }})) {
+            modal_subscribe_part = `
+                          <button type="button" onclick="unsubscribe_from_tracker(`+ tracker_id + `);" id="sub_button` + tracker_id + `" style="" class="btn btn-danger">{{ _("unsubscribe") }}</button>
                         `;
-                      }
+          }
                       else {
-                        modal_subscribe_part = `
-                          <button type="button" onclick="subscribe_on_tracker(`+ tracker_id +`);" id="sub_button` + tracker_id + `" style="" class="btn btn-info">{{ _("subscribe") }}</button>
+            modal_subscribe_part = `
+                          <button type="button" onclick="subscribe_on_tracker(`+ tracker_id + `);" id="sub_button` + tracker_id + `" style="" class="btn btn-info">{{ _("subscribe") }}</button>
                         `;
-                      }
-                    }
+          }
+        }
 
-                    modal_to_insert = `
+    modal_to_insert = `
                     <div class="modal fade" id="trackerModal${tracker_id}" tabindex="-1"  aria-hidden="true">
                       <div class="modal-dialog modal-lg">
                         <div class="modal-content">
@@ -245,10 +235,10 @@
                     </div>
                     `;
 
-                    container_to_append.innerHTML += modal_to_insert;
+    container_to_append.innerHTML += modal_to_insert;
 
-                    load_tracker_chart(tracker_id);
-                    });
+    load_tracker_chart(tracker_id);
+    });
                 }
             });
           }
@@ -260,18 +250,18 @@
 <script>
   function load_tracker_chart(tracker_id) {
     $.ajax({
-        url: "/api/job_trackers/" + tracker_id + "/?format=json&for_chart=1" ,
-        method: "get",
-        dataType: "html",
-        success: function (data) {
-          data = JSON.parse(data);
-          if(data['chart_data'].length < 2){
+      url: "/api/job_trackers/" + tracker_id + "/?format=json&for_chart=1",
+      method: "get",
+      dataType: "html",
+      success: function (data) {
+        data = JSON.parse(data);
+        if (data['chart_data'].length < 2) {
 
-          }
-          else {
+        }
+        else {
           chart_amount_of_vacancies = [];
           chart_dates = [];
-          for(i in data['chart_data']){
+          for (i in data['chart_data']) {
             chart_data = data['chart_data'][i]
             console.log(chart_data);
             chart_dates.push(chart_data['date']);
@@ -279,59 +269,61 @@
           }
           console.log([chart_amount_of_vacancies, chart_dates])
           var options = {
-          series: [{
-            name: "amount",
-            data: chart_amount_of_vacancies.reverse()
-        }],
-          chart: {
-          height: 350,
-          type: 'line',
-          zoom: {
-            enabled: false
-          }
-        },
-          theme: {
-            mode: 'dark',
-            palette: 'palette1',
-            monochrome: {
+            series: [{
+              name: "amount",
+              data: chart_amount_of_vacancies.reverse()
+            }],
+            chart: {
+              height: 350,
+              type: 'line',
+              zoom: {
+                enabled: false
+              }
+            },
+            theme: {
+              mode: 'dark',
+              palette: 'palette1',
+              monochrome: {
                 enabled: false,
                 color: '#255aee',
                 shadeTo: 'light',
                 shadeIntensity: 0.65
+              },
             },
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: 'smooth'
-        },
-        title: {
-          text: 'amount of vacancies',
-          align: 'left'
-        },
-        grid: {
-          row: {
-            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
-          },
-        },
-        xaxis: {
-          categories: chart_dates.reverse(),
-        }
-        };
+            dataLabels: {
+              enabled: false
+            },
+            stroke: {
+              curve: 'smooth'
+            },
+            title: {
+              text: 'amount of vacancies',
+              align: 'left'
+            },
+            grid: {
+              row: {
+                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                opacity: 0.5
+              },
+            },
+            xaxis: {
+              categories: chart_dates.reverse(),
+            }
+          };
 
-        var chart = new ApexCharts(document.querySelector("#chart"+tracker_id), options);
-        chart.render();
+          var chart = new ApexCharts(document.querySelector("#chart" + tracker_id), options);
+          chart.render();
         }
-          }
-      });
+      }
+    });
   }
 </script>
 
 
 <script>
+
   function load_parser_data(tracker_id) {
+
     $.ajax({
       url: "/load_parser_data/?tracker_id=" + tracker_id,
       method: "get",
@@ -346,6 +338,7 @@
         });
         btn_call = document.getElementById("modalBtn" + tracker_id).onclick =
           "";
+
       },
     });
   }
@@ -395,7 +388,7 @@
   hidden_search_bar = document.getElementById('hidden_search_bar');
   hidden_search_bar.innerHTML += searchBar.innerHTML;
   searchBar.remove()
-  </script>
+</script>
 <script>
   $(function () {
     $("#search-alert").delay(3000).slideUp(200);
