@@ -134,10 +134,10 @@ h1 a {
 	width: 100%;
 	margin: 0 auto;
 	margin-top: 200px;
-	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
 .darkmode .welcome {
-	box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+	box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
 }
 
 .welcome a {
@@ -170,6 +170,7 @@ h1 a {
 	padding: 0 20px;
 	justify-content: center;
 	align-items: center;
+	transition: all 0.3s ease 0s;
 }
 .btn-reg:hover {
 	background-color: #0859d3;
@@ -368,6 +369,11 @@ header a {
 	background-color: #0d6efd;
 	border-radius: 0.25rem;
 	border: 1px solid rgba(0, 0, 0, 0.125);
+	transition: all 0.3s ease 0s;
+}
+.nav__all .nav__link a:hover {
+	background-color: #0859d3;
+	color: #e2dfdf;
 }
 
 .nav-item a {
@@ -378,6 +384,11 @@ header a {
 	background-color: #0d6efd;
 	border-radius: 0.25rem;
 	border: 1px solid rgba(0, 0, 0, 0.125);
+	transition: all 0.3s ease 0s;
+}
+.nav-item a:hover {
+	background-color: #0859d3;
+	color: #e2dfdf;
 }
 
 ul {
@@ -451,18 +462,11 @@ ul {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	transition: all 0.3s ease 0s;
 }
 .btn-log:hover {
-	height: 40px;
-	border: none;
-	border-radius: 5px;
 	background-color: #0859d3;
 	color: #e2dfdf;
-	font-size: 16px;
-	padding: 0 20px;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
 }
 .lost-password {
 	text-decoration: none;
@@ -489,7 +493,7 @@ ul {
 	border: 1px solid #c2c4c9;
 	padding: 150px 50px 100px 50px;
 	border-radius: 10px;
-	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
 .btn-reg-log {
 	height: 40px;
@@ -564,6 +568,7 @@ ul {
 	display: inline-flex;
 	justify-content: center;
 	align-items: center;
+	transition: background-color 0.3s ease 0s;
 }
 .search-bar button:hover {
 	border: 0;
@@ -579,6 +584,11 @@ ul {
 .grey-box {
 	max-width: 101%;
 	height: 140px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	transition: opacity 0.2s ease 0s;
+}
+.grey-box:hover {
+	opacity: 0.9;
 }
 .alert-position {
 	position: absolute;
@@ -609,6 +619,7 @@ ul {
 .card {
 	width: 8.8rem;
 	padding: 3px;
+	cursor: pointer;
 }
 .navbar-brand {
 	padding-top: 0.3125rem;
@@ -617,6 +628,10 @@ ul {
 	font-size: 1.25rem;
 	text-decoration: none;
 	white-space: nowrap;
+	transition: opacity 0.2s ease 0s;
+}
+.navbar-brand:hover {
+	opacity: 0.7;
 }
 select {
 	-webkit-appearance: none;
@@ -686,6 +701,7 @@ select::-ms-expand {
 .btn-unsubscribe {
 	margin-top: 10px;
 }
+
 /*Dark theme*/
 .darkmode .card {
 	background: #040404;
@@ -707,6 +723,9 @@ select::-ms-expand {
 	color: #fff;
 	background-color: #040404;
 	border: 1px solid #858585;
+}
+.darkmode .nav-item a:hover {
+	opacity: 0.7;
 }
 .darkmode select {
 	background: #040404;
@@ -850,6 +869,9 @@ select::-ms-expand {
 	background-color: #040404;
 	border: 1px solid #858585;
 }
+.darkmode .nav__all .nav__link a:hover {
+	opacity: 0.7;
+}
 
 .darkmode header {
 	border-bottom: 1px solid #858585;
@@ -887,7 +909,7 @@ select::-ms-expand {
 .darkmode .registration-login {
 	border: 1px solid #c2c4c9;
 	color: #fff;
-	box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+	box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
 }
 .flex_div {
 	display: flex;
@@ -1095,6 +1117,7 @@ select::-ms-expand {
 		border-bottom: 1px solid #bfbfbf;
 		display: block;
 	}
+
 	.card {
 		width: 10.5rem;
 		height: 2rem;

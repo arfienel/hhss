@@ -16,7 +16,7 @@ class UserRegistrationForm(forms.Form):
         if User.objects.filter(username=cd.get('username')):
             raise ValidationError(_('This username already taken'))
         if cd.get('password') != cd.get('password2'):
-            raise ValidationError(_('Passwords didn`t  match'))
+            raise ValidationError(_('Passwords didn`t match, try again'))
         else:
             return cd
 
