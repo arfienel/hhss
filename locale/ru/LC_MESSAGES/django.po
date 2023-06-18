@@ -45,8 +45,8 @@ msgid "This username already taken"
 msgstr "Это имя уже занято"
 
 #: job_skills/forms.py:19
-msgid "Passwords didn`t  match"
-msgstr "Пароли не одинаковы"
+msgid "Passwords didn`t match, try again"
+msgstr "Пароли не совпадают, попробуйте еще раз"
 
 #: job_skills/views.py:147
 msgid "minimum 3 letters"
@@ -66,7 +66,7 @@ msgstr "Неправильно выбраны типы устройства"
 
 #: job_skills/views.py:204
 msgid "Understandable, have a great day!"
-msgstr "Понятно, хорошего дня)"
+msgstr "Понятно, хорошего дня!"
 
 #: job_skills/views.py:206
 msgid ""
@@ -135,7 +135,7 @@ msgstr "Добавить трекер"
 
 #: templates/index.html:95
 msgid "Seems like you don`t tracking jobs yet"
-msgstr "Похоже что вы еще не отслеживаете работы"
+msgstr "Похоже, что вы еще не отслеживаете работы"
 
 #: templates/index.html:98
 msgid "Start tracking"
@@ -221,11 +221,11 @@ msgstr "Отписаться"
 
 #: templates/list_trackers.html:67
 msgid "Nothing was found"
-msgstr "Ничего не нашлось"
+msgstr "Ничего не найдено"
 
 #: templates/list_trackers.html:100 templates/list_trackers.html:206
 msgid "Excluded from search"
-msgstr "Убрано из поиска"
+msgstr "Исключено из поиска"
 
 #: templates/list_trackers.html:119 templates/list_trackers.html:222
 msgid "subscribe"
@@ -237,7 +237,7 @@ msgstr "Форма входа"
 
 #: templates/registration/login.html:31
 msgid "login"
-msgstr "войти"
+msgstr "Войти"
 
 #: templates/registration/login.html:35
 msgid "Your username and password didn't match. Please try again"
